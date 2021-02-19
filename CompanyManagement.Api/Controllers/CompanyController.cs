@@ -5,8 +5,6 @@ using CompanyManagement.Api.Service;
 using log4net;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -57,5 +55,90 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+
+        [Authorize]
+        [HttpPost("GetCompanySmtp")]
+        public async Task<IActionResult> GetCompanySmtp(RequestBase request)
+        {
+            var responce = new Response<CompanyMailServer>();
+            try
+            {
+                var result = await _companyService.GetCompanySmtp(request);
+                responce.Data = result;
+                responce.Status = result != null;
+                responce.Message = result == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [Authorize]
+        [HttpPost("GetCompanyTheme")]
+        public async Task<IActionResult> GetCompanyTheme(RequestBase request)
+        {
+            var responce = new Response<CompanyTheme>();
+            try
+            {
+                var result = await _companyService.GetCompanyTheme(request);
+                responce.Data = result;
+                responce.Status = result != null;
+                responce.Message = result == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+
+        [Authorize]
+        [HttpPost("GetCompanySetting")]
+        public async Task<IActionResult> GetCompanySetting(RequestCompanySetting request)
+        {
+            var responce = new ResponseList<CompanySettingInfo>();
+            try
+            {
+                var result = await _companyService.GetCompanySetting(request);
+                responce.Data = result;
+                responce.Status = result?.Count > 0;
+                responce.Message = result?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [Authorize]
+        [HttpPost("GetCompanyBranch")]
+        public async Task<IActionResult> GetCompanyBranch(RequestBase request)
+        {
+            var responce = new ResponseList<BranchInfo>();
+            try
+            {
+                responce.Data = await _companyService.GetCompanyBranch(request);
+                responce.Status = responce.Data?.Count > 0;
+                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
     }
 }

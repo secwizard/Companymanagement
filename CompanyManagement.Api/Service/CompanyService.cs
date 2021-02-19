@@ -3,13 +3,12 @@ using CompanyManagement.Api.Data;
 using CompanyManagement.Api.Mapper;
 using CompanyManagement.Api.Models;
 using log4net;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 
 namespace CompanyManagement.Api.Service
@@ -37,15 +36,18 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var companyInfo = new CompanyInfo();
+                var res = new CompanyInfo();
 
-                var company = await _context.Company.Where(c => c.CompanyId == request.CompanyId).FirstOrDefaultAsync();
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
 
-                if(company !=null)
+                if(data !=null)
                 {
-                    _mapper.Map(company, companyInfo);
+                    _mapper.Map(data, res);
+                    return res;
                 }
-                return companyInfo;
+                return null;
             }
             catch (Exception ex)
             {
@@ -53,5 +55,101 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<CompanyMailServer> GetCompanySmtp(RequestBase request)
+        {
+            try
+            {
+                var res = new CompanyMailServer();
+
+                var data = await _context.MailServer
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+                    _mapper.Map(data, res);
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<CompanyTheme> GetCompanyTheme(RequestBase request)
+        {
+            try
+            {
+                var res = new CompanyTheme();
+
+                var data = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+                    _mapper.Map(data, res);
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<List<BranchInfo>> GetCompanyBranch(RequestBase request)
+        {
+            try
+            {
+                var res = new List<BranchInfo>();
+
+                var data = await _context.Branch
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).ToListAsync();
+
+                if (data != null)
+                {
+                    res = _mapper.Map<List<Branch>, List<BranchInfo>>(data);
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request)
+        {
+            try
+            {
+                var parms = new SqlParameter[] 
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@SettingType", request.SettingType??""),
+                    new SqlParameter("@DataText", request.DataText??"")
+                };
+
+                string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
+                var dataList = _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToList();
+
+                if (dataList?.Count > 0)
+                {
+                    return dataList;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
     }
 }
