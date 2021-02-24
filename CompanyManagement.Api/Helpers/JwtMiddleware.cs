@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using log4net;
 using System.Reflection;
+using CompanyManagement.Api.Generic;
 
 namespace CompanyManagement.Api.Helpers
 {
@@ -18,7 +19,9 @@ namespace CompanyManagement.Api.Helpers
         private readonly AppSettings _appSettings;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
+        public JwtMiddleware(RequestDelegate next
+            , IOptions<AppSettings> appSettings
+            )
         {
             _next = next;
             _appSettings = appSettings.Value;
@@ -39,7 +42,8 @@ namespace CompanyManagement.Api.Helpers
         {
             try
             {
-                context.Items["User"] = GetUserInfoById(token);
+                var data = GetUserInfoById(token);
+                context.Items["User"] = data;
             }
             catch
             {

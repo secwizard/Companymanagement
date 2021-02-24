@@ -55,6 +55,28 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<List<CompanyInfo>> GetCompanyList()
+        {
+            try
+            {
+                var res = new List<CompanyInfo>();
+
+                var data = await _context.Company
+                    .Where(c => c.IsActive == true).ToListAsync();
+
+                if (data != null)
+                {
+                    res = _mapper.Map<List<Company>, List<CompanyInfo>>(data);
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<CompanyMailServer> GetCompanySmtp(RequestBase request)
         {
             try

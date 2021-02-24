@@ -3,6 +3,7 @@ using CompanyManagement.Api.Helpers;
 using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Service;
 using log4net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Reflection;
@@ -18,14 +19,16 @@ namespace CompanyManagement.Api.Controllers
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ICompanyService _companyService;
-
-
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        //private ISession Session => _httpContextAccessor.HttpContext.Session;
 
         public CompanyController(CompanyDBContext context
-            , ICompanyService companyService)
+            , ICompanyService companyService
+            , IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _companyService = companyService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -42,10 +45,37 @@ namespace CompanyManagement.Api.Controllers
             var responce = new Response<CompanyInfo>();
             try
             {
-                var result = await _companyService.GetCompany(request);
-                responce.Data = result;
-                responce.Status = result != null;
-                responce.Message = result == null ? "Data not found." : string.Empty;
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId)
+                {
+                    responce.Data = await _companyService.GetCompany(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [Authorize]
+        [HttpPost("GetCompanyList")]
+        public async Task<IActionResult> GetCompanyList()
+        {
+            var responce = new ResponseList<CompanyInfo>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanyList();
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {
