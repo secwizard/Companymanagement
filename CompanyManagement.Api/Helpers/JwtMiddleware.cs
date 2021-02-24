@@ -71,6 +71,10 @@ namespace CompanyManagement.Api.Helpers
                     }
                 }
                 userInfo = JsonConvert.DeserializeObject<UserInfo>(jsonString);
+                if (!string.IsNullOrEmpty(userInfo.UserId.ToString()))
+                {
+                    return userInfo;
+                }
             }
             catch (Exception ex)
             {
