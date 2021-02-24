@@ -76,7 +76,7 @@ namespace CompanyManagement.Api.Helpers
             {
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
             }
-            return userInfo;
+            return null;
         }
     }
 }
