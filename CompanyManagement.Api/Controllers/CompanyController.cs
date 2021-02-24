@@ -93,10 +93,13 @@ namespace CompanyManagement.Api.Controllers
             var responce = new Response<CompanyMailServer>();
             try
             {
-                var result = await _companyService.GetCompanySmtp(request);
-                responce.Data = result;
-                responce.Status = result != null;
-                responce.Message = result == null ? "Data not found." : string.Empty;
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanySmtp(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {
@@ -114,10 +117,13 @@ namespace CompanyManagement.Api.Controllers
             var responce = new Response<CompanyTheme>();
             try
             {
-                var result = await _companyService.GetCompanyTheme(request);
-                responce.Data = result;
-                responce.Status = result != null;
-                responce.Message = result == null ? "Data not found." : string.Empty;
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanyTheme(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {
@@ -128,7 +134,6 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
-
         [Authorize]
         [HttpPost("GetCompanySetting")]
         public async Task<IActionResult> GetCompanySetting(RequestCompanySetting request)
@@ -136,10 +141,13 @@ namespace CompanyManagement.Api.Controllers
             var responce = new ResponseList<CompanySettingInfo>();
             try
             {
-                var result = await _companyService.GetCompanySetting(request);
-                responce.Data = result;
-                responce.Status = result?.Count > 0;
-                responce.Message = result?.Count > 0 ? string.Empty : "Data not found.";
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanySetting(request);
+                }
+                responce.Status = responce.Data?.Count > 0;
+                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {
@@ -157,7 +165,11 @@ namespace CompanyManagement.Api.Controllers
             var responce = new ResponseList<BranchInfo>();
             try
             {
-                responce.Data = await _companyService.GetCompanyBranch(request);
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanyBranch(request);
+                }
                 responce.Status = responce.Data?.Count > 0;
                 responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
             }
