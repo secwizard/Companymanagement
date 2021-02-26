@@ -46,7 +46,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId = -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1) 
                 {
                     responce.Data = await _companyService.GetCompany(request);
                 }
@@ -94,7 +94,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId = -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce.Data = await _companyService.GetCompanySmtp(request);
                 }
@@ -118,7 +118,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId = -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce.Data = await _companyService.GetCompanyTheme(request);
                 }
@@ -142,7 +142,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId = -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce.Data = await _companyService.GetCompanySetting(request);
                 }
@@ -166,7 +166,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId = -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce.Data = await _companyService.GetCompanyBranch(request);
                 }
