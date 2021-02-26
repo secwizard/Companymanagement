@@ -13,5 +13,14 @@ namespace CompanyManagement.UI.Services
 
         string ProcessPostRequest(string url, string postdata, string authorizationToken, bool bearerToken=true);
         string ProcessPostRequest(string url, string postdata);
+
+        #region ========== Login ==========
+        Task<string> LoginUser(string input);
+        #endregion
+        #region ========== Company ==========
+        Task<string> CompanyDtl(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> CompanyList(string authorizationToken, bool bearerToken = true);
+        #endregion
+
     }
 }

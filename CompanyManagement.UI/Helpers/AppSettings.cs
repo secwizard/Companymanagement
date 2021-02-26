@@ -10,5 +10,6 @@ namespace CompanyManagement.UI.Helpers
         public string ApiHost { get; set; }
         public string BaseUrl { get; set; }
         public string JSVersion { get; set; }
+        public string UserManagementAPI { get; set; }
     }
 }

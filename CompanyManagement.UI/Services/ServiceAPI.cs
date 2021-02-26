@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CompanyManagement.UI.Services
 {
@@ -112,6 +113,53 @@ namespace CompanyManagement.UI.Services
                 return client.UploadString(uri, "POST", postdata);
             }
         }
+
+        #region ======== Login ==========
+        public async Task<string> LoginUser(string input)
+        {
+            string url = $"{_appSettings.UserManagementAPI}/users/authenticate";
+            string response = await APIRequest(url, "POST", input);
+            return response;
+        }
+        #endregion
+
+        #region ======== Company ==========
+        public async Task<string> CompanyDtl(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompany";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> CompanyList(string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompanyList";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", "");
+        }
+
+        #endregion
+        #region Generic
+        public async Task<string> APIRequest(string url, string method, string postdata, string token = "")
+        {
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers.Add("token", token);
+
+            return await client.UploadStringTaskAsync(uri, method?.ToUpper(), postdata);
+        }
+
+        #endregion Generic
+
 
     }
 }

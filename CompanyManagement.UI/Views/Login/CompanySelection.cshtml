@@ -1,0 +1,87 @@
+﻿@using Wizard.ImageManagement.Models;
+@using Microsoft.Extensions.Options;
+@model IEnumerable<Wizard.ImageManagement.Models.Response.CompanyInfo>
+@inject IOptions<AppSettings> Settings
+@{
+    ViewData["Title"] = "Company Selection";
+    Layout = null;
+}
+
+
+<title>LogIn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="~/js/application/jquery-3.4.1.js"></script>
+<link href="~/css/application/bootstrap.css" rel="stylesheet" />
+<link href="~/css/application/bootstrap.min.css" rel="stylesheet" />
+<script src="~/js/application/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var baseURL = '@Settings.Value.BaseUrl';
+</script>
+<script src="~/js/application/Logon.js?v=@Settings.Value.JSVersion"></script>
+<link href="~/css/application/loginstyle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<script src="~/js/application/jquery.validate.min.js"></script>
+<script src="~/js/application/jquery.validate.js"></script>
+
+
+<div class="row">
+    <div class="container">
+
+
+        <div class="omb_login height-width100">
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="log-formbg">
+                        <h3 class="omb_authTitle text-center mb-20 mt-10">Select Company</h3>
+                        <div style="padding-bottom: 10px; text-align:center">
+                            <span id="spanDatasaved" class="successstyle" style="color:red">
+                            </span>
+                        </div>
+
+                        <div class="input-group mb-20">
+                            <span class="input-group-addon">
+                                <i class="fa fa-user"></i>  Company
+                                @*<input type="text" class="form-control text-lowercase" required name="Company" placeholder="Select Company" id="userid" onkeypress="hidemsg();">*@
+                                <select class="customselect" id="ddlCompany" name="Company">
+                                    @if (Model == null || Model.Count() < 1)
+                                    {
+                                        <option value="0">Company Not Available</option>
+                                    }
+                                    else
+                                    {
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.CompanyId">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </span>
+                        </div>
+                        <input type="button" class="btn btn-lg btn-primary btn-block" onclick="LogAfterValidate()" value="Submit" />
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@*---------------------------page loader------------------*@
+<div class="page-loaderdiv" style="display:none" id="divloader">
+    <div class="page-loader">
+        <i class="fa fa-cog fa-5x fa-spin" aria-hidden="true"></i>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
