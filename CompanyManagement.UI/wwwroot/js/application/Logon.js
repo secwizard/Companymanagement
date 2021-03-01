@@ -13,6 +13,7 @@
             data: PostSecurityManagerData,
             success: function (data) {
                 if (data.errorMessage == "OK") {
+                    debugger;
                     window.location = baseURL + data.returnUrl;
                     LogonHideLoader();
                 }

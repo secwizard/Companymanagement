@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using CompanyManagement.UI.Models
+@using CompanyManagement.UI.Helpers;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @using Microsoft.Extensions.Options;
 @inject IOptions<AppSettings> Settings
@@ -22,7 +22,7 @@
     <script src="~/js/application/GenericScript.js?v=@Settings.Value.JSVersion"></script>
     <script type="text/javascript">
         var baseURL = '@Settings.Value.BaseUrl';
-        var imageURL = '@Settings.Value.ImageBasePath';
+        @*var imageURL = '@Settings.Value.ImageBasePath';*@
     </script>
 
 </head>
@@ -38,12 +38,12 @@
                 </button>
                 @{
                     var link = @Settings.Value.BaseUrl + "Image/SerachImage/";
-                   // var imagepath = @Settings.Value.ImageBasePath + @Settings.Value.ImageBasePath + "logo/Naumy.gif";
+                    // var imagepath = @Settings.Value.ImageBasePath + @Settings.Value.ImageBasePath + "logo/Naumy.gif";
                 }
                 @{
                     var logo = (@HttpContextAccessor.HttpContext.Session.Get<UserToken>("CompanyConfiguration"));
                     var fullpath = logo.ImageFilePath + logo.Logo;
-                    }
+                }
                 <a class="navbar-brand" href="#" target="_blank" style="padding: 5px 0;">
                     <img class="logo" src="@fullpath" alt="Brand Logo" style="width:100px;height:40px;" />
                 </a>

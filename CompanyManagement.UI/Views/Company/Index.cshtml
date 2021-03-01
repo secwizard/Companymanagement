@@ -1,4 +1,4 @@
-﻿@using CompanyManagement.UI.Models;
+﻿@using CompanyManagement.UI.Helpers;
 @using Microsoft.Extensions.Options;
 @inject IOptions<AppSettings> Settings
 @{
@@ -28,7 +28,7 @@
 
 
             <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_1"  onclick="GetCompanyDetails()">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_1" onclick="GetCompanyDetails()">
                     <h4 class="panel-title">
                         <div class="row">
                             <div class="col-md-3">
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2"  onclick="GetBranchDetails()">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2" onclick="GetBranchDetails()">
                     <h4 class="panel-title">
                         <div class="row">
                             <div class="col-md-3">
