@@ -56,14 +56,15 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_Partial_Company", result);
         }
-        public async Task<IActionResult> AddEditCompany(RequestCompanyInfo companyInfo)
+        
+        public async Task<IActionResult> EditCompany(RequestCompanyInfo companyInfo)
         {
             Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
             try
             {
                 var user = Session.Get<UserToken>("CompanyConfiguration");
                 companyInfo.CreatedBy = user.Id;
-                var compDtl = await _restAPI.AddEditCompany(JsonConvert.SerializeObject(companyInfo), user.token);
+                var compDtl = await _restAPI.EditCompany(JsonConvert.SerializeObject(companyInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
             }
             catch (Exception ex)

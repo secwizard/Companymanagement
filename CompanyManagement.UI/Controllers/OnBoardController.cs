@@ -40,15 +40,29 @@ namespace CompanyManagement.UI.Controllers
         }
         public async Task<IActionResult> GetCompanydetails()
         {
-            var user = Session.Get<UserToken>("CompanyConfiguration");
-            var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
-            var compDtl = await _restAPI.CompanyDtl(JsonConvert.SerializeObject(request), user.token);
-            var result2 = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl).Data;
-            return PartialView("_Partial_OnBoardCompany", result2);
+            return PartialView("_Partial_OnBoardCompany");
         }
         public async Task<IActionResult> GetBranchdetails()
         {
             return PartialView("_Partial_OnBoardBranch");
+        }
+        public async Task<IActionResult> AddCompany(RequestCompanyInfo companyInfo)
+        {
+            Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companyInfo.CreatedBy = user.Id;
+                var compDtl = await _restAPI.AddCompany(JsonConvert.SerializeObject(companyInfo), user.token);
+                result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Company", result);
         }
     }
     

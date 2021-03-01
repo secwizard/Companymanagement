@@ -61,9 +61,11 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+        
+
         [Authorize]
-        [HttpPost("AddEditCompany")]
-        public async Task<IActionResult> AddEditCompany(CompanyInfo request)
+        [HttpPost("EditCompany")]
+        public async Task<IActionResult> EditCompany(CompanyInfo request)
         {
             var responce = new Response<CompanyInfo>();
             try
@@ -71,7 +73,7 @@ namespace CompanyManagement.Api.Controllers
                 var user = (UserInfo)HttpContext.Items["User"];
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
-                    responce = await _companyService.AddEditCompany(request);
+                    responce = await _companyService.EditCompany(request);
                 }
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;

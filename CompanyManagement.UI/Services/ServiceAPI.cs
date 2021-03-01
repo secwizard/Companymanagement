@@ -144,9 +144,19 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", "");
         }
-        public async Task<string> AddEditCompany(string postdata, string authorizationToken, bool bearerToken)
+        public async Task<string> AddCompany(string postdata, string authorizationToken, bool bearerToken)
         {
-            string url = $"{_appSettings.ApiHost}/company/AddEditCompany";
+            string url = $"{_appSettings.ApiHost}/OnBoard/AddCompany";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> EditCompany(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/EditCompany";
             using var client = new WebClient();
             Uri uri = new Uri(url);
             client.Headers.Add("Content-Type:application/json");

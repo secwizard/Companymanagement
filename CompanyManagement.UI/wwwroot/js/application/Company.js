@@ -41,7 +41,8 @@ function GetBranchDetails() {
         }
     });
 }
-function SaveCompany() {
+
+function EditCompany() {
     var companyId = parseInt($("#txtCompanyId").val());
     var name = $("#txtName").val();
     var shortName = $("#txtShortname").val();
@@ -67,7 +68,7 @@ function SaveCompany() {
     var loginImageFileName = $("#txtLoginImageFileName").val();
     var isActive = $('#IsActive').is(':checked');
     var pinRequired = $('#PinRequired').is(':checked');
-  
+
 
     var companyInfo = {
         CompanyId: companyId,
@@ -92,21 +93,23 @@ function SaveCompany() {
         LogoFileName: logoFileName,
         FavIconFileName: fabiconFileName,
         LoginImageFileName: loginImageFileName,
-        Website : website,
-        PINRequired : pinRequired,
-        IsActive : isActive
+        Website: website,
+        PINRequired: pinRequired,
+        IsActive: isActive
     }
     debugger;
     $.ajax({
-        url: baseURL + "Company/AddEditCompany",
+        url: baseURL + "Company/EditCompany",
         type: "GET",
-        dataType: "json",
+        dataType: "html",
         data: companyInfo,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
+            debugger;
             HideLoader();
         },
         error: function (data) {
+            debugger;
             console.log("error");
             console.log(data);
             HideLoader();

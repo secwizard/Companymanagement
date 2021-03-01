@@ -52,5 +52,28 @@ namespace CompanyManagement.Api.Controllers
             
             return Ok(responce);
         }
+        [Authorize]
+        [HttpPost("AddCompany")]
+        public async Task<IActionResult> AddCompany(CompanyInfo request)
+        {
+            var responce = new Response<CompanyInfo>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _onBoardService.AddCompany(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
     }
 }

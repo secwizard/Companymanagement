@@ -55,35 +55,30 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        public async Task<Response<CompanyInfo>> AddEditCompany(CompanyInfo request)
+        
+        public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
             try
             {
                 var res = new CompanyInfo();
-
                 var data = await _context.Company
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
 
                 if (data != null)
                 {
-                    data = MapCompany(data,request);
+                    data = MapCompany(data, request);
                     data.ModifiedBy = request.CreatedBy;
                     data.ModifiedDate = DateTime.Now;
                     _context.Entry(data).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    request.CompanyId = data.CompanyId;
+                    retVal.Data = request;
+                    retVal.Message = "OK";
+                    retVal.Status = true;
                 }
-                else
-                {
-                    data.CreatedBy = request.CreatedBy;
-                    data.CreatedDate = DateTime.Now;
-                    _context.Company.Add(data);
-                }
-                _context.SaveChanges();
-                request.CompanyId = data.CompanyId;
-                retVal.Data = request;
-                retVal.Message = "OK";
-                retVal.Status = true;
+
             }
             catch (Exception ex)
             {
