@@ -21,6 +21,5 @@ namespace CompanyManagement.UI.Services
         Task<string> CompanyDtl(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> CompanyList(string authorizationToken, bool bearerToken = true);
         #endregion
-
     }
 }

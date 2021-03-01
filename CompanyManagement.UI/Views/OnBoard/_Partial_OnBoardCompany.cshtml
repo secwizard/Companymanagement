@@ -1,147 +1,155 @@
-﻿<div class="table-responsive">
+﻿@using System.Data
+@model CompanyManagement.UI.Models.Response.RequestCompanyInfo
+
+
+@if(Model != null)
+{
+
+}
+<div class="table-responsive">
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Company Id</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtCompanyId" value="@Model.CompanyId" disabled>
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtName" value="@Model.Name">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Short Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtShortname" value="@Model.ShortName">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Address 1</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtAddress1" value="@Model.Address1">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Address 2</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtAddress2" value="@Model.Address2">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">PIN</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtPIN" value="@Model.PIN">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">District Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtDistrictCode" value="@Model.DistrictCode">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">State Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtStateCode" value="@Model.StateCode">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Country Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtCountryCode" value="@Model.CountryCode">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Admin Phone</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtAdminPhone" value="@Model.AdminPhone">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Service Phone</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtServicePhone" value="@Model.ServicePhone">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Business Type</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtBusinessType" value="@Model.BusinessType">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Admin Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txt" value="@Model.AdminEmail">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Service Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtServiceEmail" value="@Model.ServiceEmail">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Secondary Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtSecondaryEmail" value="@Model.SecondaryEmail">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">GST Number</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtGSTNumber" value="@Model.GSTNumber">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Pan Number</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtPanNumber" value="@Model.PanNumber">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Currency Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtCurrencyCode" value="@Model.CurrencyCode">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Image File Path</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtImageFilePath" value="@Model.ImageFilePath">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">WebSite</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtWebsite" value="@Model.Website">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Logo File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txt" value="@Model.LogoFileName">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Favicon File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtLogoFileName" value="@Model.FavIconFileName">
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Login Image File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCustomerName">
+            <input type="text" class="textboxclass" placeholder="" id="txtLoginImageFileName" value="@Model.LoginImageFileName">
         </div>
     </div>
     <div class="col-md-2">
         <div class="mb-15">
             <p class="field-label-text">&nbsp;</p>
             <label class="cus-chk-containerall">
-                <input type="checkbox" id="PinRequired">
+                <input type="checkbox" id="PinRequired" checked="@Model.PINRequired">
                 <span class="checkmarkall"></span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pin Required
             </label>
@@ -156,6 +164,10 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
             </label>
         </div>
+    </div>
+
+    <div class="mb-10 text-right">
+        <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="SaveItem()">Save</button>
     </div>
 
 </div>
