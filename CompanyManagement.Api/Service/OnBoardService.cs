@@ -96,30 +96,30 @@ namespace CompanyManagement.Api.Service
         {
             if (preData == null)
                 preData = new Company();
-            preData.Address1 = postData.Address1;
-            preData.Address2 = postData.Address2;
-            preData.AdminEmail = postData.AdminEmail;
-            preData.AdminPhone = postData.AdminPhone;
-            preData.BusinessType = postData.BusinessType;
-            preData.CountryCode = postData.CountryCode;
-            preData.CurrencyCode = postData.CurrencyCode;
-            preData.DistrictCode = postData.DistrictCode;
-            preData.FavIconFileName = postData.FavIconFileName;
-            preData.GSTNumber = postData.GSTNumber;
-            preData.ImageFilePath = postData.ImageFilePath;
-            preData.IsActive = postData.IsActive;
-            preData.LoginImageFileName = postData.LoginImageFileName;
-            preData.LogoFileName = postData.LogoFileName;
-            preData.Name = postData.Name;
-            preData.PanNumber = postData.PanNumber;
-            preData.PIN = postData.PIN;
-            preData.PINRequired = postData.PINRequired;
-            preData.SecondaryEmail = postData.SecondaryEmail;
-            preData.ServiceEmail = postData.ServiceEmail;
-            preData.ServicePhone = postData.ServicePhone;
-            preData.ShortName = postData.ShortName;
-            preData.StateCode = postData.StateCode;
-            preData.Website = postData.Website;
+            preData.Address1 = postData.Address1 == null?"" : postData.Address1;
+            preData.Address2 = postData.Address2 == null ? "" : postData.Address2;
+            preData.AdminEmail = postData.AdminEmail == null ? "" : postData.AdminEmail;
+            preData.AdminPhone = postData.AdminPhone == null ? "" : postData.AdminPhone;
+            preData.BusinessType = postData.BusinessType == null ? "" : postData.BusinessType;
+            preData.CountryCode = postData.CountryCode == null ? "" : postData.CountryCode;
+            preData.CurrencyCode = postData.CurrencyCode == null ? "" : postData.CurrencyCode;
+            preData.DistrictCode = postData.DistrictCode == null ? "" : postData.DistrictCode;
+            preData.FavIconFileName = postData.FavIconFileName == null ? "" : postData.FavIconFileName;
+            preData.GSTNumber = postData.GSTNumber == null ? "" : postData.GSTNumber;
+            preData.ImageFilePath = postData.ImageFilePath == null ? "" : postData.ImageFilePath;
+            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            preData.LoginImageFileName = postData.LoginImageFileName == null ? "" : postData.LoginImageFileName;
+            preData.LogoFileName = postData.LogoFileName == null ? "" : postData.LogoFileName;
+            preData.Name = postData.Name == null ? "" : postData.Name;
+            preData.PanNumber = postData.PanNumber == null ? "" : postData.PanNumber;
+            preData.PIN = postData.PIN == null ? "" : postData.PIN;
+            preData.PINRequired = postData.PINRequired == null ? false : postData.PINRequired;
+            preData.SecondaryEmail = postData.SecondaryEmail == null ? "" : postData.SecondaryEmail;
+            preData.ServiceEmail = postData.ServiceEmail == null ? "" : postData.ServiceEmail;
+            preData.ServicePhone = postData.ServicePhone == null ? "" : postData.ServicePhone;
+            preData.ShortName = postData.ShortName == null ? "" : postData.ShortName;
+            preData.StateCode = postData.StateCode == null ? "" : postData.StateCode;
+            preData.Website = postData.Website == null ? "" : postData.Website;
             return preData;
         }
     }

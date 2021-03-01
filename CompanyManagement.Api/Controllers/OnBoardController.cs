@@ -13,6 +13,8 @@ using CompanyManagement.Api.Service;
 
 namespace CompanyManagement.Api.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class OnBoardController : ControllerBase
     {
         private readonly CompanyDBContext _context;
