@@ -1,7 +1,7 @@
 ﻿
 function GetCompanyDetails() {
     debugger;
-    var dt = baseURL;
+    var dt = baseURL + "Company/GetCompanydetails";
     $.ajax({
         url: baseURL + "Company/GetCompanydetails",
         type: "GET",
