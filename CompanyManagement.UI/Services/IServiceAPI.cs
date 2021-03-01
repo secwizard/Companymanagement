@@ -20,6 +20,7 @@ namespace CompanyManagement.UI.Services
         #region ========== Company ==========
         Task<string> CompanyDtl(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> CompanyList(string authorizationToken, bool bearerToken = true);
+        Task<string> AddEditCompany(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
 }

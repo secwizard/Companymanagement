@@ -31,5 +31,10 @@ namespace CompanyManagement.UI.Models.Response
         public string LoginImageFileName { get; set; }
         public string Website { get; set; }
         public bool? PINRequired { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
     }
 }

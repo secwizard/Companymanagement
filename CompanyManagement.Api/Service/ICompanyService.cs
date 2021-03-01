@@ -12,5 +12,6 @@ namespace CompanyManagement.Api.Service
         Task<CompanyTheme> GetCompanyTheme(RequestBase request);
         Task<List<BranchInfo>> GetCompanyBranch(RequestBase request);
         Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request);
+        Task<Response<CompanyInfo>> AddEditCompany(CompanyInfo request);
     }
 }
