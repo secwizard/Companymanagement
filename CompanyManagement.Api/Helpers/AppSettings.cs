@@ -7,6 +7,6 @@ namespace CompanyManagement.Api.Helpers
 {
     public class AppSettings
     {
-        public string UserManagemnetAPI { get; set; }
+        public string UserManagementAPI { get; set; }
     }
 }
