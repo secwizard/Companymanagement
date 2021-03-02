@@ -17,6 +17,13 @@ namespace CompanyManagement.Api.Models
         [JsonProperty("dataText")]
         public string DataText { get; set; }
     }
+    public class RequestLookUp
+    {
+        [JsonProperty("companyid")]
+        public long CompanyId { get; set; }
+        [JsonProperty("lookuptype")]
+        public string LookUpType { get; set; }
+    }
 
 
 

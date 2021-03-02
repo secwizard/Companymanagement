@@ -45,6 +45,10 @@ namespace CompanyManagement.Api.Service
                 if(data !=null)
                 {
                     _mapper.Map(data, res);
+                    var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
+                    var lookup = GetCompanyLookUp(reqlookUp).Result;
+
+                    res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
                     return res;
                 }
                 return null;
@@ -73,6 +77,9 @@ namespace CompanyManagement.Api.Service
                     data.ModifiedDate = DateTime.Now;
                     _context.Entry(data).State = EntityState.Modified;
                     _context.SaveChanges();
+                    var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
+                    var lookup = GetCompanyLookUp(reqlookUp).Result;
+                    request.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
                     request.CompanyId = data.CompanyId;
                     retVal.Data = request;
                     retVal.Message = "OK";
@@ -118,6 +125,30 @@ namespace CompanyManagement.Api.Service
             preData.StateCode = postData.StateCode == null ? "" : postData.StateCode;
             preData.Website = postData.Website == null ? "" : postData.Website;
             return preData;
+        }
+        public async Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@LookUpType", request.LookUpType),
+                };
+
+                string sqlText = $"EXECUTE dbo.[GetLookUpType] @LookUpType";
+                var dataList = _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToList();
+
+                if (dataList?.Count > 0)
+                {
+                    return dataList;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
         }
         public async Task<List<CompanyInfo>> GetCompanyList()
         {
@@ -354,5 +385,6 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
     }
 }

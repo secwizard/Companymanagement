@@ -9,6 +9,18 @@
 <div class="table-responsive">
     <div class="col-md-4">
         <div class="mb-05">
+            <p class="field-label-text">Business Type</p>
+            <select class="customselect" id="ddlBusinessType">
+                @foreach (var item in Model.Data.LookUps)
+                {
+                <option value="@item.LookUpValue">@item.LookUpText</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
             <p class="field-label-text">Company Id</p>
             <input type="text" class="textboxclass" placeholder="" id="txtCompanyId" value="@Model.Data.CompanyId" disabled>
         </div>
@@ -73,12 +85,7 @@
             <input type="text" class="textboxclass" placeholder="" id="txtServicePhone" value="@Model.Data.ServicePhone">
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Business Type</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtBusinessType" value="@Model.Data.BusinessType">
-        </div>
-    </div>
+
     <div class="col-md-4">
         <div class="mb-05">
             <p class="field-label-text">Admin Email</p>

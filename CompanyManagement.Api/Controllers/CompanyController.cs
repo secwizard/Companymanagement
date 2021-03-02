@@ -278,7 +278,29 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-
+        [Authorize]
+        [HttpPost("GetCompanyLookUp")]
+        public async Task<IActionResult> GetCompanyLookUp(RequestLookUp request)
+        {
+            var responce = new ResponseList<GetLookUpType>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetCompanyLookUp(request);
+                }
+                responce.Status = responce.Data?.Count > 0;
+                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
     }
 }
 

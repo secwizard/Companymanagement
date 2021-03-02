@@ -49,12 +49,12 @@ function EditCompany() {
     var countryCode = $("#txtCountryCode").val();
     var adminPhone = $("#txtAdminPhone").val();
     var servicePhone = $("#txtServicePhone").val();
-    var buisnessType = $("#txtBusinessType").val();
+    var buisnessType = $("#ddlBusinessType").val();
     var adminEmail = $("#txtAdminEmail").val();
     var serviceEmail = $("#txtServiceEmail").val();
     var secondaryEmail = $("#txtSecondaryEmail").val();
     var gstNumber = $("#txtGSTNumber").val();
-    var panNumber = $("#txtPanNumber").val();
+    var panNumber = $("#txtPanNumber").val();   
     var currencyCode = $("#txtCurrencyCode").val();
     var imageFilePath = $("#txtImageFilePath").val();
     var website = $("#txtWebsite").val();
@@ -64,7 +64,7 @@ function EditCompany() {
     var isActive = $('#IsActive').is(':checked');
     var pinRequired = $('#PinRequired').is(':checked');
 
-
+    debugger;
     var companyInfo = {
         CompanyId: companyId,
         Name: name,

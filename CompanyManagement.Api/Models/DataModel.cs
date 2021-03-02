@@ -144,5 +144,18 @@ namespace CompanyManagement.Api.Models
         public Guid? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
     }
+    public class GetLookUpType
+    {
+        [Key]
+        public long LookUpId { get; set; }
+        public string LookUpType { get; set; }
+        public string LookUpValue { get; set; }
+        public string LookUpDescription { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+    }
+
 
 }

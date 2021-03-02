@@ -22,7 +22,7 @@ namespace CompanyManagement.Api.Data
         public DbSet<Theme> Theme { get; set; }
         public DbSet<CompanySettingInfo> CompanySettingInfo { get; set; }
         public DbSet<GetCompanyTemplate> GetCompanyTemplate { get; set; }
-        
+        public DbSet<GetLookUpType> GetLookUpType { get; set; }
 
 
 
