@@ -101,6 +101,9 @@ namespace CompanyManagement.Api.Models
         public string Option1 { get; set; }
         public string Option2 { get; set; }
         public string Option3 { get; set; }
+        public bool? IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
+
     }
 
     public class BranchInfo

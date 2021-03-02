@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Wizard.ImageManagement.Models.Response;
@@ -102,6 +103,43 @@ namespace CompanyManagement.UI.Controllers
                 mailInfo.CreatedBy = user.Id;
                 var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Company", result);
+        }
+        public async Task<IActionResult> GetCompanySettingsDetails()
+        {
+            ResponseList<ResponseCompanySetting> result = new ResponseList<ResponseCompanySetting>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
+                var compDtl = await _restAPI.GetCompanySettingsDetails(JsonConvert.SerializeObject(request), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanySetting>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_PartialCompanySetting", result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditCompanySetting(List<ResponseCompanySetting> companysetting)
+        {
+            Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
+            try
+            {
+                //var user = Session.Get<UserToken>("CompanyConfiguration");
+                //mailInfo.CreatedBy = user.Id;
+                //var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
+                //result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
             }
             catch (Exception ex)
             {
