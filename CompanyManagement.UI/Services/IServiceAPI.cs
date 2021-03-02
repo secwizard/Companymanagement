@@ -25,6 +25,7 @@ namespace CompanyManagement.UI.Services
         Task<string> GetMailDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditSTMPServer(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetCompanySettingsDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> EditCompanySetting(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
     

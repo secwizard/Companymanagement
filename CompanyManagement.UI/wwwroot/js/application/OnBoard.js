@@ -1,5 +1,4 @@
 ﻿function GetCompanyDetails() {
-    debugger;
     $.ajax({
         url: baseURL + "OnBoard/GetCompanydetails",
         type: "GET",
@@ -38,7 +37,6 @@ function GetBranchDetails() {
     });
 }
 function AddCompany() {
-    debugger;
     var companyId = parseInt($("#txtCompanyId").val());
     var name = $("#txtName").val();
     var shortName = $("#txtShortname").val();
@@ -93,7 +91,6 @@ function AddCompany() {
         PINRequired: pinRequired,
         IsActive: isActive
     }
-    debugger;
     $.ajax({
         url: baseURL + "OnBoard/AddCompany",
         type: "GET",

@@ -13,7 +13,6 @@
             data: PostSecurityManagerData,
             success: function (data) {
                 if (data.errorMessage == "OK") {
-                    debugger;
                     window.location = baseURL + data.returnUrl;
                     LogonHideLoader();
                 }
@@ -69,7 +68,6 @@ function LogonUser() {
             data: PostSecurityManagerData,
             success: function (data) {
                 if (data.errorMessage == "OK") {
-                    debugger;
                     window.location = baseURL + data.returnUrl;
                     LogonHideLoader();
                 }

@@ -131,23 +131,29 @@ namespace CompanyManagement.UI.Controllers
             return PartialView("_PartialCompanySetting", result);
         }
         [HttpPost]
-        public async Task<IActionResult> EditCompanySetting(List<ResponseCompanySetting> companysetting)
+        public async Task<IActionResult> EditCompanySetting(ComSetting companysetting)
         {
             Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
             try
             {
-                //var user = Session.Get<UserToken>("CompanyConfiguration");
-                //mailInfo.CreatedBy = user.Id;
-                //var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
-                //result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+                if (companysetting != null && companysetting.ListData != null && companysetting.ListData.Count > 0)
+                {
+                    var user = Session.Get<UserToken>("CompanyConfiguration");
+                    foreach (var item in companysetting.ListData)
+                    {
+                        item.CreatedBy = user.Id;
+                    }
+                    var compDtl = await _restAPI.EditCompanySetting(JsonConvert.SerializeObject(companysetting.ListData), user.token);
+                    result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+                }
             }
             catch (Exception ex)
             {
-                result.Message = "Either UserName Or Password is Incorrect";
+                result.Message = "Something Went Wrong";
                 result.Status = false;
-                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
             }
-            return PartialView("_Partial_Company", result);
+            return PartialView("_PartialCompanySetting", result);
         }
     }
     

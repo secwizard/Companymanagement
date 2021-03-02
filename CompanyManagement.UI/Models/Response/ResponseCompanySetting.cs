@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace CompanyManagement.UI.Models.Response
 {
+    public class ComSetting
+    {
+        public List<ResponseCompanySetting> ListData { get; set; }
+    }
     public class ResponseCompanySetting
     {
         public long CompanySettingId { get; set; }

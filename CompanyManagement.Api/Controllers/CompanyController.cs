@@ -6,6 +6,8 @@ using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -208,15 +210,15 @@ namespace CompanyManagement.Api.Controllers
         }
         [Authorize]
         [HttpPost("EditCompanySetting")]
-        public async Task<IActionResult> EditCompanySetting(CompanyMailServer request)
+        public async Task<IActionResult> EditCompanySetting(List<CompanySettingInfo> request)
         {
-            var responce = new Response<CompanyMailServer>();
+            var responce = new ResponseList<CompanySettingInfo>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                if (user?.CompanyId == request.FirstOrDefault().CompanyId || user?.CompanyId == -1)
                 {
-                    responce = await _companyService.EditSTMPServer(request);
+                    responce = await _companyService.EditCompanySetting(request);
                 }
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;

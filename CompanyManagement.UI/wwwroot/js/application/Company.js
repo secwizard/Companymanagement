@@ -1,6 +1,5 @@
 ﻿
 function GetCompanyDetails() {
-    debugger;
     var dt = baseURL + "Company/GetCompanydetails";
     $.ajax({
         url: baseURL + "Company/GetCompanydetails",
@@ -9,13 +8,10 @@ function GetCompanyDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
             $("#Company").html(data);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();
@@ -31,7 +27,6 @@ function GetBranchDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#Branch").html(data);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
@@ -97,7 +92,6 @@ function EditCompany() {
         PINRequired: pinRequired,
         IsActive: isActive
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/EditCompany",
         type: "GET",
@@ -105,11 +99,9 @@ function EditCompany() {
         data: companyInfo,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();
@@ -118,7 +110,6 @@ function EditCompany() {
 
 }
 function GetMailDetails() {
-    debugger;
     var dt = baseURL + "Company/GetMailDetails";
     $.ajax({
         url: baseURL + "Company/GetMailDetails",
@@ -127,13 +118,10 @@ function GetMailDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
             $("#MailServer").html(data);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();
@@ -163,7 +151,6 @@ function EditMailServer() {
         EnableSSL: enableSSL,
         IsActive: isActive
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/EditSTMPServer",
         type: "GET",
@@ -171,11 +158,9 @@ function EditMailServer() {
         data: stmpInfo,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();
@@ -184,7 +169,6 @@ function EditMailServer() {
 
 }
 function GetCompanySettingsDetails() {
-    debugger;
     var dt = baseURL + "Company/GetCompanySettingsDetails";
     $.ajax({
         url: baseURL + "Company/GetCompanySettingsDetails",
@@ -193,13 +177,10 @@ function GetCompanySettingsDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
             $("#CompanySettings").html(data);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();
@@ -207,10 +188,9 @@ function GetCompanySettingsDetails() {
     });
 }
 function EditCompanySetting() {
-    debugger;
     var postData = [];
     var rowCount = parseInt($("#hdnRowcount").val());
-    for (var i = 1; i < rowCount; i++) {
+    for (var i = 1; i <= rowCount; i++) {
         var companyId = parseInt($("#hdnCompanyId_"+i).val());
         var companySettingId = parseInt($("#hdnStmpServerId_" + i).val());
         var settingType = $("#txtSettingType_" + i).val();
@@ -233,21 +213,18 @@ function EditCompanySetting() {
             CreatedBy: null
         }
         postData.push(stmpInfo);
+        
     }
-    
-    debugger;
+    var comSetting = { ListData: postData }
     $.ajax({
         url: baseURL + "Company/EditCompanySetting",
         type: "POST",
-        dataType: "html",
-        data: postData,
-        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: comSetting,
         success: function (data) {
-            debugger;
             HideLoader();
         },
         error: function (data) {
-            debugger;
             console.log("error");
             console.log(data);
             HideLoader();

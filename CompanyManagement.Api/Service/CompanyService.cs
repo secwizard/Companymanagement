@@ -281,6 +281,54 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        
+        public async Task<ResponseList<CompanySettingInfo>> EditCompanySetting(List<CompanySettingInfo> request)
+        {
+            var retVal = new ResponseList<CompanySettingInfo>();
+            var retData = new List<CompanySettingInfo>();
+            try
+            {
+                foreach(var item in request)
+                {
+                    var data = await _context.CompanySetting
+                    .Where(c => c.CompanyId == item.CompanyId
+                    && c.CompanySettingId == item.CompanySettingId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data = MapCompanySetting(data, item);
+                        data.ModifiedBy = item.CreatedBy;
+                        data.ModifiedDate = DateTime.Now;
+                        _context.Entry(data).State = EntityState.Modified;
+                        
+                    }
+                }
+
+                _context.SaveChanges();
+                retVal.Data = request;
+                retVal.Message = "OK";
+                retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        private CompanySetting MapCompanySetting(CompanySetting preData, CompanySettingInfo postData)
+        {
+            preData.DataText = postData.DataText == null ? "" : postData.DataText;
+            preData.DataValue = postData.DataValue == null ? "" : postData.DataValue;
+            preData.Option1 = postData.Option1 == null ? "" : postData.Option1;
+            preData.Option2 = postData.Option2 == null ? "" : postData.Option2;
+            preData.Option3 = postData.Option3 == null ? "" : postData.Option3;
+            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            preData.SettingType = postData.SettingType == null ? "" : postData.SettingType;
+            return preData;
+        }
 
     }
 }
