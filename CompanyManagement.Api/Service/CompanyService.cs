@@ -330,5 +330,29 @@ namespace CompanyManagement.Api.Service
             return preData;
         }
 
+        public async Task<List<GetCompanyTemplate>> GetCompanyTemplate(RequestBase request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                };
+
+                string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
+                var dataList = _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToList();
+
+                if (dataList?.Count > 0)
+                {
+                    return dataList;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
     }
 }

@@ -155,6 +155,42 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_PartialCompanySetting", result);
         }
+        public async Task<IActionResult> GetTemplateDetails()
+        {
+            ResponseList<ResponseCompanyTemplate> result = new ResponseList<ResponseCompanyTemplate>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
+                var compDtl = await _restAPI.GetTemplateDetails(JsonConvert.SerializeObject(request), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanyTemplate>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Template", result);
+        }
+        public async Task<IActionResult> GetThemeDetails()
+        {
+            Response<ResponseThemeDetails> result = new Response<ResponseThemeDetails>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
+                var compDtl = await _restAPI.GetThemeDetails(JsonConvert.SerializeObject(request), user.token);
+                result = JsonConvert.DeserializeObject<Response<ResponseThemeDetails>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Theme", result);
+        }
     }
     
 }

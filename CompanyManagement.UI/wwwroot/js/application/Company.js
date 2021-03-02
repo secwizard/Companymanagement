@@ -232,3 +232,41 @@ function EditCompanySetting() {
     });
 
 }
+function GetTemplateDetails() {
+    $.ajax({
+        url: baseURL + "Company/GetTemplateDetails",
+        type: "GET",
+        dataType: "html",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            $("#Template").html(data);
+            HideLoader();
+        },
+        error: function (data) {
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+function GetThemeDetails() {
+    $.ajax({
+        url: baseURL + "Company/GetThemeDetails",
+        type: "GET",
+        dataType: "html",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            $("#Theme").html(data);
+            HideLoader();
+        },
+        error: function (data) {
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+
+

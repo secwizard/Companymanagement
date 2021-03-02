@@ -1,1 +1,56 @@
-﻿
+﻿@using System.Data
+@model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanyTemplate>
+
+
+
+@if (Model != null && Model.Data != null && Model.Data.Count > 0)
+{
+    var i = 1;
+    foreach (var item in Model.Data)
+    {
+        <div class="table-responsive">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">TemplateType</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtTemplateType" value="@item.TemplateType" disabled>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Name</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtName" value="@item.Name">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Title</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtTitle" value="@item.Title">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">HTMLData</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtHTMLData" value="@item.HTMLData">
+                </div>
+            </div>
+            
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="field-label-text">&nbsp;</p>
+                    <label class="cus-chk-containerall">
+                        <input type="checkbox" id="IsActive" checked="@item.IsActive" name="IsActive">
+                        <span class="checkmarkall"></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+                    </label>
+                </div>
+            </div>
+            <input type='hidden' id='hdnCompanyId' value='@item.CompanyId' />
+            <input type='hidden' id='hdnTemplateId' value='@item.TemplateId' />
+        </div>
+        i++;
+    }
+}
+<div class="mb-10 text-right">
+    <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="test()">Save</button>
+</div>
+<input type='hidden' id='hdnRowcount' value='@Model.Data.Count' />

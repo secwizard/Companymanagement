@@ -88,6 +88,8 @@ namespace CompanyManagement.Api.Models
         public int? MobileHeight { get; set; }
         public int? DesktopHeight { get; set; }
         public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class CompanySettingInfo

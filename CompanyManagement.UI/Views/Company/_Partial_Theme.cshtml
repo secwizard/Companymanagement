@@ -1,1 +1,79 @@
-﻿
+﻿@using System.Data
+@model Response<CompanyManagement.UI.Models.Response.ResponseThemeDetails>
+
+
+
+@if (Model != null && Model.Data != null)
+{
+
+    <div class="table-responsive">
+
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">Theme Name</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtDataText" value="@Model.Data.ThemeName">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">Ext Theme Name</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtDataValue" value="@Model.Data.ExtThemeName">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">ImageRatio</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtOption1" value="@Model.Data.ImageRatio">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">Colour</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtOption2" value="@Model.Data.Colour">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">NoOfHomePanels</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtOption3" value="@Model.Data.NoOfHomePanels">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">MobileHeight</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtOption3" value="@Model.Data.MobileHeight">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="field-label-text">DesktopHeight</p>
+                <input type="text" class="textboxclass" placeholder="" id="txtOption3" value="@Model.Data.DesktopHeight">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="mb-15">
+                <p class="field-label-text">&nbsp;</p>
+                <label class="cus-chk-containerall">
+                    <input type="checkbox" id="IsActive" checked="@Model.Data.IsActive" name="IsActive">
+                    <span class="checkmarkall"></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+                </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="mb-15">
+                <p class="field-label-text">&nbsp;</p>
+                <label class="cus-chk-containerall">
+                    <input type="checkbox" id="IsDefault" checked="@Model.Data.IsDefault" name="IsDefault">
+                    <span class="checkmarkall"></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Default
+                </label>
+            </div>
+        </div>
+        <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
+        <input type='hidden' id='hdnThemeId' value='@Model.Data.ThemeId' />
+    </div>
+}
+<div class="mb-10 text-right">
+    <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="test()">Save</button>
+</div>

@@ -15,5 +15,6 @@ namespace CompanyManagement.Api.Service
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
         Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request);
         Task<ResponseList<CompanySettingInfo>> EditCompanySetting(List<CompanySettingInfo> request);
+        Task<List<GetCompanyTemplate>> GetCompanyTemplate(RequestBase request);
     }
 }
