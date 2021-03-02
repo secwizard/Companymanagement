@@ -1,0 +1,67 @@
+﻿@using System.Data
+@model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanySetting>
+
+
+
+@if (Model != null && Model.Data != null && Model.Data.Count > 0)
+{
+    var i = 1;
+    foreach (var item in Model.Data)
+    {
+        <div class="table-responsive">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Type</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtSettingType_@i" value="@item.SettingType" disabled>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Data Text</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtDataText_@i" value="@item.DataText">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Data Value</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtDataValue_@i" value="@item.DataValue">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Option 1</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtOption1_@i" value="@item.Option1">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Option 2</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtOption2_@i" value="@item.Option2">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="field-label-text">Option 3</p>
+                    <input type="text" class="textboxclass" placeholder="" id="txtOption3_@i" value="@item.Option3">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="field-label-text">&nbsp;</p>
+                    <label class="cus-chk-containerall">
+                        <input type="checkbox" id="IsActive_@i" checked="@item.IsActive" name="IsActive">
+                        <span class="checkmarkall"></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+                    </label>
+                </div>
+            </div>
+            <input type='hidden' id='hdnCompanyId_@i' value='@item.CompanyId' />
+            <input type='hidden' id='hdnStmpServerId_@i' value='@item.CompanySettingId' />
+        </div>
+        i++;
+    }
+}
+<div class="mb-10 text-right">
+    <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="EditCompanySetting()">Save</button>
+</div>
+<input type='hidden' id='hdnRowcount' value='@Model.Data.Count' />

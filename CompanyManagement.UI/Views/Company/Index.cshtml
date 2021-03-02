@@ -1,0 +1,136 @@
+﻿@using CompanyManagement.UI.Helpers;
+@using Microsoft.Extensions.Options;
+@inject IOptions<AppSettings> Settings
+@{
+    ViewData["Title"] = "On-Board";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/application/Company.js?v=@Settings.Value.JSVersion"></script>
+<link href="~/css/application/datepicker.css" rel="stylesheet" />
+<link href="~/css/application/bootstrap-clockpicker.min.css" rel="stylesheet" />
+<script src="~/js/application/timepicki.js"></script>
+<link rel="stylesheet" type="text/css" href="~/css/application/datepicker.css" media="all" />
+<link type="text/css" rel="stylesheet" href="~/css/application/jQuery-ui.css?v==@Settings.Value.JSVersion" media="all" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js">
+</script>
+
+
+<title>Company On-Boarding</title>
+
+<div class="container mainpannel">
+</div>
+
+<div class="container">
+    <div class="panel-group" id="accordion">
+        <div id="divPanelList">
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_1" onclick="GetCompanyDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_1" aria-expanded="true">Company</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_1" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="Company">
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2" onclick="GetBranchDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_2" aria-expanded="true">Branches</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_2" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="Branch">
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_3" onclick="GetMailDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_3" aria-expanded="true">MailServer</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_3" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="MailServer">
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_4" onclick="GetCompanySettingsDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_4" aria-expanded="true">Company Settings</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_4" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="CompanySettings">
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_5" onclick="GetTemplateDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_5" aria-expanded="true">Template</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_5" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="Template">
+
+                    </div>
+                </div>
+            </div>
+            @*<div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2" onclick="GetBranchDetails()">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_2" aria-expanded="true">Branches</a>
+                            </div>
+
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_2" class="panel-collapse collapse" style="">
+                    <div class="panel-body" id="Branch">
+
+                    </div>
+                </div>
+            </div>*@
+
+        </div>
+
+    </div>
+</div>

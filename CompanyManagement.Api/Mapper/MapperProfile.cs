@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
 using CompanyManagement.Api.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CompanyManagement.Api.Mapper
 {
@@ -13,6 +9,12 @@ namespace CompanyManagement.Api.Mapper
         {
             this.CreateMap<CompanyInfo, Company>(MemberList.None);
             this.CreateMap<Company, CompanyInfo>(MemberList.None);
+            this.CreateMap<CompanyMailServer, MailServer>(MemberList.None);
+            this.CreateMap<MailServer, CompanyMailServer>(MemberList.None);
+            this.CreateMap<CompanyTheme, Theme>(MemberList.None);
+            this.CreateMap<Theme, CompanyTheme>(MemberList.None);
+            this.CreateMap<BranchInfo, Branch>(MemberList.None);
+            this.CreateMap<Branch, BranchInfo>(MemberList.None);
         }
     }
 }

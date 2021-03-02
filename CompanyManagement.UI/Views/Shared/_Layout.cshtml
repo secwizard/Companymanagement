@@ -1,48 +1,125 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using CompanyManagement.UI.Helpers;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.Extensions.Options;
+@inject IOptions<AppSettings> Settings
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CompanyManagement.UI</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <title>@ViewData["Title"] - Wizard.ImageManagement</title>
+    <link href="~/css/application/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/application/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/application/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <script src="~/js/application/jquery-1.10.2.min.js"></script>
+    <script src="~/js/application/jquery-ui-1.11.4.min.js"></script>
+
+    <script src="~/js/application/AlertMessage.js?v=@Settings.Value.JSVersion"></script>
+    <script src="~/js/application/GenericScript.js?v=@Settings.Value.JSVersion"></script>
+    <script type="text/javascript">
+        var baseURL = '@Settings.Value.BaseUrl';
+        @*var imageURL = '@Settings.Value.ImageBasePath';*@
+    </script>
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CompanyManagement.UI</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                @{
+                    var link = @Settings.Value.BaseUrl + "Image/SerachImage/";
+                    // var imagepath = @Settings.Value.ImageBasePath + @Settings.Value.ImageBasePath + "logo/Naumy.gif";
+                }
+                @{
+                    var logo = (@HttpContextAccessor.HttpContext.Session.Get<UserToken>("CompanyConfiguration"));
+                    var fullpath = logo.ImageFilePath + logo.Logo;
+                }
+                <a class="navbar-brand" href="#" target="_blank" style="padding: 5px 0;">
+                    <img class="logo" src="@fullpath" alt="Brand Logo" style="width:100px;height:40px;" />
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("On Board", "Index", "OnBoard")</li>
+                    <li>@Html.ActionLink("Company", "Index", "Company")</li>
+                    <li><a href="https://usermanagement.wizardcomm.in/">User</a></li>
+                    <li><a href="https://imagemanagement.wizardcomm.in/">Image</a></li>
+
+                </ul>
+                <div class="float-right padding-controltop-bottom">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="min-width:120px">
+                            @Html.Raw((@HttpContextAccessor.HttpContext.Session.Get<UserToken>("CompanyConfiguration")).FirstName + " " + (@HttpContextAccessor.HttpContext.Session.Get<UserToken>("CompanyConfiguration")).LastName)
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Log Out", "LogOut", "Login")</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2021 - CompanyManagement.UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p class="text-center">
+                <span style="color: red;"><b>v1.1.3</b></span> © 2020 <strong>
+                    <a href="http://wizardcomm.net">WizardComm</a> - <a href="http://uvanij.com">uVanij.com</a>
+                </strong>
+            </p>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    @*---------------------------page loader------------------*@
+    <div class="page-loaderdiv" style="display:none" id="divloader">
+        <div class="page-loader">
+            <i class="fa fa-cog fa-5x fa-spin" aria-hidden="true"></i>
+        </div>
+    </div>
+    @*-----------------------page loader End----------------------------*@
+
+    @*---------------------------Message Popup------------------*@
+    <div class="user-editable-modal">
+        <div class="modal fade" id="popUpAlerts" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content alert-modalcontent">
+                    <div class="modal-header alt-modalheader bordernone text-right">
+                    </div>
+                    <div class="modal-body bordernone">
+                        <div class="">
+                            <div class="">
+                                <div id="pMessageShow">
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="mt-10 text-right" id="dvButtonShow">
+                                </div>
+                                <div class="mt-10 text-center" id="dvButtonShowok">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*---------------------------Message Popup End------------------*@
+
+    <script src="~/js/application/bootstrap.js"></script>
+
 </body>
 </html>

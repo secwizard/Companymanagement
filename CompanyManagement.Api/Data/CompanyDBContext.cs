@@ -20,5 +20,9 @@ namespace CompanyManagement.Api.Data
         public DbSet<MailServer> MailServer { get; set; }
         public DbSet<Template> Template { get; set; }
         public DbSet<Theme> Theme { get; set; }
+        public DbSet<CompanySettingInfo> CompanySettingInfo { get; set; }
+
+
+        
     }
 }

@@ -1,0 +1,173 @@
+﻿@using System.Data
+@model CompanyManagement.UI.Models.Response.RequestCompanyInfo
+
+
+@if(Model != null)
+{
+
+}
+<div class="table-responsive">
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Company Id</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtCompanyId">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtName">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Short Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtShortname">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Address 1</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtAddress1"">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Address 2</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtAddress2">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">PIN</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtPIN">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">District Code</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtDistrictCode">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">State Code</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtStateCode">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Country Code</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtCountryCode">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Admin Phone</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtAdminPhone">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Service Phone</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtServicePhone">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Business Type</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtBusinessType">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Admin Email</p>
+            <input type="text" class="textboxclass" placeholder="" id="txt">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Service Email</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtServiceEmail">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Secondary Email</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtSecondaryEmail">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">GST Number</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtGSTNumber">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Pan Number</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtPanNumber">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Currency Code</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtCurrencyCode">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Image File Path</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtImageFilePath">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">WebSite</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtWebsite">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Logo File Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txt">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Favicon File Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtLogoFileName">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Login Image File Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtLoginImageFileName">
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="mb-15">
+            <p class="field-label-text">&nbsp;</p>
+            <label class="cus-chk-containerall">
+                <input type="checkbox" id="PinRequired">
+                <span class="checkmarkall"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pin Required
+            </label>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="mb-15">
+            <p class="field-label-text">&nbsp;</p>
+            <label class="cus-chk-containerall">
+                <input type="checkbox" id="IsActive">
+                <span class="checkmarkall"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-10 text-right">
+        <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="AddCompany()">Save</button>
+    </div>
+
+</div>

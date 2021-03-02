@@ -1,16 +1,23 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CompanyManagement.Api.Models
 {
     public class RequestBase
     {
         [JsonProperty("companyid")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
     }
 
-    
+    public class RequestCompanySetting
+    {
+        [JsonProperty("companyid")]
+        public long CompanyId { get; set; }
+        [JsonProperty("settingType")]
+        public string SettingType { get; set; }
+        [JsonProperty("dataText")]
+        public string DataText { get; set; }
+    }
+
+
+
 }
