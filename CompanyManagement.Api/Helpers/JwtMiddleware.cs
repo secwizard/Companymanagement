@@ -27,7 +27,8 @@ namespace CompanyManagement.Api.Helpers
             _appSettings = appSettings.Value;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context,
+            IOptions<AppSettings> appSettings)
         {
             var token = context.Request.Headers["Authorization"]
                 .FirstOrDefault()?.Split(" ").Last();
@@ -58,8 +59,8 @@ namespace CompanyManagement.Api.Helpers
             try
             {
                 string jsonString = string.Empty;
-                var apihost = _appSettings.UserManagemnetAPI;
-                string url = $"{apihost}/api/users/validate";
+                var apihost = _appSettings.UserManagementAPI;
+                string url = $"{apihost}/users/validate";
                 Uri requestUri = new Uri(url);
                 HttpWebRequest req = WebRequest.Create(requestUri) as HttpWebRequest;
                 req.Headers["Authorization"] = "Bearer " + bearerToken;
