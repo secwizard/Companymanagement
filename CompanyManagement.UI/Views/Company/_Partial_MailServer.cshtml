@@ -1,1 +1,61 @@
-﻿
+﻿@using System.Data
+@model Response<CompanyManagement.UI.Models.Response.ResponseMailServerDetails>
+
+<div class="table-responsive">
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">STMP Server</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" disabled>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">STMP Port</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">From EmailDisplay Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">From Email Id</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">From Email Id Pwd</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd">
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="mb-15">
+            <p class="field-label-text">&nbsp;</p>
+            <label class="cus-chk-containerall">
+                <input type="checkbox" id="EnableSSL" checked="@Model.Data.EnableSSL" name="EnableSSL">
+                <span class="checkmarkall"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable SSL
+            </label>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="mb-15">
+            <p class="field-label-text">&nbsp;</p>
+            <label class="cus-chk-containerall">
+                <input type="checkbox" id="IsActive" checked="@Model.Data.IsActive" name="IsActive">
+                <span class="checkmarkall"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+            </label>
+        </div>
+    </div>
+    <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
+    <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
+    <div class="mb-10 text-right">
+        <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="EditMailServer()">Save</button>
+    </div>
+
+</div>

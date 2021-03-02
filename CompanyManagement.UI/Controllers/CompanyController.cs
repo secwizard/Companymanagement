@@ -75,6 +75,43 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_Partial_Company", result);
         }
+        public async Task<IActionResult> GetMailDetails()
+        {
+            Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
+                var compDtl = await _restAPI.GetMailDetails(JsonConvert.SerializeObject(request), user.token);
+                result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_MailServer",result);
+        }
+        public async Task<IActionResult> EditSTMPServer(ResponseMailServerDetails mailInfo)
+        {
+            Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                mailInfo.CreatedBy = user.Id;
+                var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
+                result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Company", result);
+        }
     }
     
 }
+

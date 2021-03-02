@@ -22,6 +22,9 @@ namespace CompanyManagement.UI.Services
         Task<string> CompanyList(string authorizationToken, bool bearerToken = true);
         Task<string> AddCompany(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditCompany(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> GetMailDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> EditSTMPServer(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
+    
 }

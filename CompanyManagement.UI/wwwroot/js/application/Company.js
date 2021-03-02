@@ -117,3 +117,69 @@ function EditCompany() {
     });
 
 }
+function GetMailDetails() {
+    debugger;
+    var dt = baseURL + "Company/GetMailDetails";
+    $.ajax({
+        url: baseURL + "Company/GetMailDetails",
+        type: "GET",
+        dataType: "html",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            debugger;
+            $("#MailServer").html(data);
+            //$("#summerydata").html(data);
+            HideLoader();
+        },
+        error: function (data) {
+            debugger;
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+function EditMailServer() {
+    var companyId = parseInt($("#hdnCompanyId").val());
+    var stmpServerId = parseInt($("#hdnStmpServerId").val());
+    var stmpServer = $("#txtSTMPServer").val();
+    var stmpPort = $("#txtSTMPPort").val();
+    var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
+    var fromEmailId = $("#txtFromEmailId").val();
+    var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
+    var isActive = $('#IsActive').is(':checked');
+    var enableSSL = $('#EnableSSL').is(':checked');
+
+
+    var stmpInfo = {
+        CompanyId: companyId,
+        MailServerId: stmpServerId,
+        SMTPServer: stmpServer,
+        SMTPPort: stmpPort,
+        FromEmailDisplayName: fromEmailDisplayName,
+        FromEmailId: fromEmailId,
+        FromEmailPwd: fromEmailIdPwd,
+        EnableSSL: enableSSL,
+        IsActive: isActive
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/EditSTMPServer",
+        type: "GET",
+        dataType: "html",
+        data: stmpInfo,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            debugger;
+            HideLoader();
+        },
+        error: function (data) {
+            debugger;
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+
+}

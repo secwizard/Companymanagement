@@ -13,5 +13,6 @@ namespace CompanyManagement.Api.Service
         Task<List<BranchInfo>> GetCompanyBranch(RequestBase request);
         Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request);
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
+        Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request);
     }
 }

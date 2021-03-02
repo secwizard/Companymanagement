@@ -72,6 +72,8 @@ namespace CompanyManagement.Api.Models
         public string FromEmailDisplayName { get; set; }
         public string FromEmailId { get; set; }
         public string FromEmailPwd { get; set; }
+        public bool? IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class CompanyTheme
