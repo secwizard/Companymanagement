@@ -38,7 +38,6 @@ function GetBranchDetails() {
 }
 
 function EditCompany() {
-    debugger;
     if ($("#txtName").val() == '') {
         MessageShow('', 'Name is blank', 'error');
     }
@@ -80,8 +79,6 @@ function EditCompany() {
         var loginImageFileName = $("#txtLoginImageFileName").val();
         var isActive = $('#IsActive').is(':checked');
         var pinRequired = $('#PinRequired').is(':checked');
-
-        debugger;
         var companyInfo = {
             CompanyId: companyId,
             Name: name,
@@ -115,7 +112,6 @@ function EditCompany() {
             dataType: "html",
             data: companyInfo,
             success: function (data) {
-                debugger;
                 if (data == "NO") {
                     MessageShow('', 'Not Saved', 'error');
                 }
@@ -191,7 +187,6 @@ function EditMailServer() {
             dataType: "html",
             data: stmpInfo,
             success: function (data) {
-                debugger;
                 if (data == "NO") {
                     MessageShow('', 'Not Saved', 'error');
                 }
@@ -201,7 +196,6 @@ function EditMailServer() {
                 HideLoader();
             },
             error: function (data) {
-                debugger;
                 MessageShow('', 'Something Went Wrong', 'error');
                 console.log("error");
                 console.log(data);
@@ -230,13 +224,11 @@ function GetCompanySettingsDetails() {
     });
 }
 function AddCompanySetting() {
-    debugger;
     $("#addCompanySetting").css("display", "none");
     $("#newCompanySetting").css("display", "block");
 
 }
 function CancelCompanySetting() {
-    debugger;
     $("#txtSettingType").val('');
     $("#txtDataText").val('');
     $("#txtDataValue").val('');
@@ -265,7 +257,6 @@ function EditCompanySetting(e) {
     $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
 }
 function AddEditCompanySetting() {
-    debugger;
     if ($("#txtSettingType").val() == '') {
         MessageShow('', 'SettingType is blank', 'error');
     }
@@ -296,8 +287,6 @@ function AddEditCompanySetting() {
             IsActive: isActive,
             CreatedBy: null
         }
-
-        debugger;
         $.ajax({
             url: baseURL + "Company/EditCompanySetting",
             type: "POST",
@@ -342,13 +331,11 @@ function GetTemplateDetails() {
     });
 }
 function AddTemplate() {
-    debugger;
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
 
 }
 function CancelTemplate() {
-    debugger;
     $("#txtTemplateType").val('');
     $("#txtName").val('');
     $("#txtTitle").val('');
@@ -359,7 +346,6 @@ function CancelTemplate() {
 
 }
 function EditTemplate(e) {
-    debugger;
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
     $("#txtTemplateType").val($("#txtTemplateType_" + e).val());
@@ -403,8 +389,6 @@ function AddEditTemplate() {
             IsActive: isActive,
             CreatedBy: null
         }
-
-        debugger;
         $.ajax({
             url: baseURL + "Company/EditTemplate",
             type: "POST",
@@ -449,13 +433,11 @@ function GetThemeDetails() {
     });
 }
 function AddTheme() {
-    debugger;
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
 
 }
 function CancelTheme() {
-    debugger;
     $("#txtThemeName").val('');
     $("#txtExtThemeName").val('');
     $("#txtImageRatio").val('');
@@ -469,7 +451,6 @@ function CancelTheme() {
 
 }
 function EditTheme(e) {
-    debugger;
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
     $("#txtThemeName").val($("#txtThemeName_" + e).val());
@@ -494,9 +475,6 @@ function EditTheme(e) {
 function AddEditTheme() {
     if ($("#txtThemeName").val() == '') {
         MessageShow('', 'ThemeName is blank', 'error');
-    }
-    else if ($("#txtExtThemeName").val() == '') {
-        MessageShow('', 'ExtThemeName is blank', 'error');
     }
     else if ($("#txtImageRatio").val() == '') {
         MessageShow('', 'ImageRatio is blank', 'error');
@@ -529,8 +507,6 @@ function AddEditTheme() {
             IsDefault: IsDefault,
             CreatedBy: null
         }
-
-        debugger;
         $.ajax({
             url: baseURL + "Company/EditTheme",
             type: "POST",

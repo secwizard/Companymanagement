@@ -59,7 +59,6 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
@@ -127,6 +126,7 @@ namespace CompanyManagement.Api.Service
             preData.Website = postData.Website == null ? "" : postData.Website;
             return preData;
         }
+
         public async Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request)
         {
             try
@@ -196,7 +196,6 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-
         public async Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request)
         {
             var retVal = new Response<CompanyMailServer>();
@@ -241,6 +240,7 @@ namespace CompanyManagement.Api.Service
             preData.EnableSSL = postData.EnableSSL == null ? false : postData.EnableSSL;
             return preData;
         }
+
         public async Task<List<GetCompanyTheme>> GetCompanyTheme(RequestBase request)
         {
             try
@@ -279,6 +279,7 @@ namespace CompanyManagement.Api.Service
                     && c.IsActive == true).FirstOrDefaultAsync();
                     if (data != null)
                     {
+
                         data = MapTheme(data, request);
                         data.ModifiedBy = request.CreatedBy;
                         data.ModifiedDate = DateTime.Now;
@@ -288,7 +289,10 @@ namespace CompanyManagement.Api.Service
                 }
                 else
                 {
-                    _context.Theme.Add(MapTheme(new Theme(), request));
+                    var data = MapTheme(new Theme(), request);
+                    data.CreatedBy = request.CreatedBy;
+                    data.CreatedDate = DateTime.Now;
+                    _context.Theme.Add(data);
                 }
                 _context.SaveChanges();
                 RequestBase req = new RequestBase();
@@ -322,6 +326,7 @@ namespace CompanyManagement.Api.Service
             preData.IsDefault = postData.IsDefault == null ? false : postData.IsDefault;
             return preData;
         }
+
         public async Task<List<BranchInfo>> GetCompanyBranch(RequestBase request)
         {
             try
@@ -345,6 +350,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
         public async Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request)
         {
             try
@@ -371,7 +377,6 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        
         public async Task<ResponseList<CompanySettingInfo>> EditCompanySetting(CompanySettingInfo request)
         {
             var retVal = new ResponseList<CompanySettingInfo>();
@@ -395,7 +400,10 @@ namespace CompanyManagement.Api.Service
                 }
                 else
                 {
-                   _context.CompanySetting.Add(MapCompanySetting(new CompanySetting(), request));
+                    var data = MapCompanySetting(new CompanySetting(), request);
+                    data.CreatedDate = DateTime.Now;
+                    data.CreatedBy = request.CreatedBy;
+                   _context.CompanySetting.Add(data);
                 }
                 _context.SaveChanges();
                 RequestCompanySetting req = new RequestCompanySetting();
@@ -476,7 +484,10 @@ namespace CompanyManagement.Api.Service
                 }
                 else
                 {
-                    _context.Template.Add(MapTemplate(new Template(), request));
+                    var data = MapTemplate(new Template(), request);
+                    data.CreatedDate = DateTime.Now;
+                    data.CreatedBy = request.CreatedBy;
+                    _context.Template.Add(data);
                 }
                 _context.SaveChanges();
                 RequestBase req = new RequestBase();
