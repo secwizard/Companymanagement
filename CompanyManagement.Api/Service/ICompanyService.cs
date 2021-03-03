@@ -10,6 +10,7 @@ namespace CompanyManagement.Api.Service
         Task<List<CompanyInfo>> GetCompanyList();
         Task<CompanyMailServer> GetCompanySmtp(RequestBase request);
         Task<List<GetCompanyTheme>> GetCompanyTheme(RequestBase request);
+        Task<ResponseList<GetCompanyTemplate>> EditTheme(Template request);
         Task<List<BranchInfo>> GetCompanyBranch(RequestBase request);
         Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request);
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);

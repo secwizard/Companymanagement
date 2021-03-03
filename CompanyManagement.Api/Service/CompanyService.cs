@@ -265,6 +265,61 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<ResponseList<GetCompanyTemplate>> EditTemplate(GetCompanyTheme request)
+        {
+            var retVal = new ResponseList<GetCompanyTemplate>();
+            var retData = new List<CompanySettingInfo>();
+            try
+            {
+                if (request != null && request.ThemeId > 0)
+                {
+                    var data = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.ThemeId == request.ThemeId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data = MapTheme(data, request);
+                        data.ModifiedBy = request.CreatedBy;
+                        data.ModifiedDate = DateTime.Now;
+                        _context.Entry(data).State = EntityState.Modified;
+
+                    }
+                }
+                else
+                {
+                    _context.Theme.Add(MapTheme(new Theme(), request));
+                }
+                _context.SaveChanges();
+                RequestBase req = new RequestBase();
+                req.CompanyId = request.CompanyId;
+
+                retVal.Data = GetCompanyTemplate(req).Result;
+                retVal.Message = "OK";
+                retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        private Theme MapTheme(Theme preData, GetCompanyTheme postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.DesktopHeight = postData.DesktopHeight == null ? 0 : postData.DesktopHeight;
+            preData.ExtThemeName = postData.ExtThemeName == null ? "" : postData.ExtThemeName;
+            preData.ImageRatio = postData.ImageRatio == null ? 0 : postData.ImageRatio;
+            preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
+            preData.NoOfHomePanels = postData.NoOfHomePanels == null ? 0 : postData.NoOfHomePanels;
+            preData.ThemeName = postData.ThemeName == null ? "" : postData.ThemeName;
+            preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
+            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            return preData;
+        }
         public async Task<List<BranchInfo>> GetCompanyBranch(RequestBase request)
         {
             try
