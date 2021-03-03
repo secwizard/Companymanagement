@@ -60,6 +60,8 @@ namespace CompanyManagement.Api.Models
         public Guid? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
+        public List<LookUpInfo> LookUps { get; set; }
+        public LookUpInfo SelectedLookUp { get; set; }
     }
 
     public class CompanyMailServer
@@ -88,6 +90,8 @@ namespace CompanyManagement.Api.Models
         public int? MobileHeight { get; set; }
         public int? DesktopHeight { get; set; }
         public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class CompanySettingInfo
@@ -125,5 +129,13 @@ namespace CompanyManagement.Api.Models
     public class ResponseCompanyId
     {
         public long CompanyId { get; set; }
+    }
+}
+    public class LookUpInfo
+    {
+        public string LookUpValue { get; set; }
+        public string LookUpText { get; set; }
+
+
     }
 }

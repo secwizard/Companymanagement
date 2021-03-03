@@ -1,1 +1,100 @@
-﻿
+﻿@using System.Data
+@model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanyTemplate>
+
+<div class="mb-10 text-left">
+    <button class="primary-type-button input-height-button" id="addTemplate" onclick="AddTemplate()">+ ADD</button>
+</div>
+<div class="table-responsive" style="display:none" id="newTemplate">
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">TemplateType</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtTemplateType" >
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Name</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtName">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">Title</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtTitle">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="mb-05">
+            <p class="field-label-text">HTMLData</p>
+            <input type="text" class="textboxclass" placeholder="" id="txtHTMLData">
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="mb-15">
+            <p class="field-label-text">&nbsp;</p>
+            <label class="cus-chk-containerall">
+                <input type="checkbox" id="IsActive" name="IsActive">
+                <span class="checkmarkall"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+            </label>
+        </div>
+    </div>
+    <div class="mb-10 text-right col-md-12">
+        <button class="primary-type-button input-height-button" id="cancelTemplate" onclick="CancelTemplate()">Cancel</button>
+        <button class="primary-type-button input-height-button" id="addTemplate" onclick="AddEditTemplate()">Save</button>
+    </div>
+    <input type='hidden' id='hdnTemplateId' value='0' />
+</div>
+<div class="scrollsetting">
+    @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+    {
+        var i = 1;
+        foreach (var item in Model.Data)
+        {
+            <div class="table-responsive seperate">
+                <div class="col-md-4">
+                    <div class="mb-05">
+                        <p class="field-label-text">TemplateType</p>
+                        <input type="text" class="textboxclass" placeholder="" id="txtTemplateType_@i" value="@item.TemplateType" disabled>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-05">
+                        <p class="field-label-text">Name</p>
+                        <input type="text" class="textboxclass" placeholder="" id="txtName_@i" value="@item.Name">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-05">
+                        <p class="field-label-text">Title</p>
+                        <input type="text" class="textboxclass" placeholder="" id="txtTitle_@i" value="@item.Title">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-05">
+                        <p class="field-label-text">HTMLData</p>
+                        <input type="text" class="textboxclass" placeholder="" id="txtHTMLData_@i" value="@item.HTMLData">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="mb-15">
+                        <p class="field-label-text">&nbsp;</p>
+                        <label class="cus-chk-containerall">
+                            <input type="checkbox" id="IsActive_@i" checked="@item.IsActive" name="IsActive">
+                            <span class="checkmarkall"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-10 text-right col-md-12">
+                    <button class="primary-type-button input-height-button" id="cancelTemplate" onclick="EditTemplate(@i)">Edit</button>
+                    <button class="primary-type-button input-height-button" id="addTemplate" onclick="DeleteTemplate(@i)">Delete</button>
+                </div>
+                <input type='hidden' id='hdnTemplateId_@i' value='@item.TemplateId' />
+            </div>
+            i++;
+        }
+    }
+</div>

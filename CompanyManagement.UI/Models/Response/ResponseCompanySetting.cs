@@ -24,4 +24,10 @@ namespace CompanyManagement.UI.Models.Response
         public Guid? CreatedBy { get; set; }
 
     }
+    public class DeleteCompanySettings
+    {
+        public long CompanySettingsId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
 }

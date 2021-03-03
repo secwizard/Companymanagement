@@ -36,78 +36,100 @@ function GetBranchDetails() {
         }
     });
 }
-
 function EditCompany() {
-    var companyId = parseInt($("#txtCompanyId").val());
-    var name = $("#txtName").val();
-    var shortName = $("#txtShortname").val();
-    var address1 = $("#txtAddress1").val();
-    var address2 = $("#txtAddress2").val();
-    var pin = $("#txtPIN").val();
-    var districtCode = $("#txtDistrictCode").val();
-    var stateCode = $("#txtStateCode").val();
-    var countryCode = $("#txtCountryCode").val();
-    var adminPhone = $("#txtAdminPhone").val();
-    var servicePhone = $("#txtServicePhone").val();
-    var buisnessType = $("#txtBusinessType").val();
-    var adminEmail = $("#txtAdminEmail").val();
-    var serviceEmail = $("#txtServiceEmail").val();
-    var secondaryEmail = $("#txtSecondaryEmail").val();
-    var gstNumber = $("#txtGSTNumber").val();
-    var panNumber = $("#txtPanNumber").val();
-    var currencyCode = $("#txtCurrencyCode").val();
-    var imageFilePath = $("#txtImageFilePath").val();
-    var website = $("#txtWebsite").val();
-    var logoFileName = $("#txtLogoFileName").val();
-    var fabiconFileName = $("#txtFabiconFileName").val();
-    var loginImageFileName = $("#txtLoginImageFileName").val();
-    var isActive = $('#IsActive').is(':checked');
-    var pinRequired = $('#PinRequired').is(':checked');
-
-
-    var companyInfo = {
-        CompanyId: companyId,
-        Name: name,
-        ShortName: shortName,
-        Address1: address1,
-        Address2: address2,
-        PIN: pin,
-        DistrictCode: districtCode,
-        StateCode: stateCode,
-        CountryCode: countryCode,
-        AdminPhone: adminPhone,
-        ServicePhone: servicePhone,
-        AdminEmail: adminEmail,
-        ServiceEmail: serviceEmail,
-        SecondaryEmail: secondaryEmail,
-        GSTNumber: gstNumber,
-        PanNumber: panNumber,
-        BusinessType: buisnessType,
-        CurrencyCode: currencyCode,
-        ImageFilePath: imageFilePath,
-        LogoFileName: logoFileName,
-        FavIconFileName: fabiconFileName,
-        LoginImageFileName: loginImageFileName,
-        Website: website,
-        PINRequired: pinRequired,
-        IsActive: isActive
+    if ($("#txtName").val() == '') {
+        MessageShow('', 'Name is blank', 'error');
     }
-    $.ajax({
-        url: baseURL + "Company/EditCompany",
-        type: "GET",
-        dataType: "html",
-        data: companyInfo,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            HideLoader();
-        },
-        error: function (data) {
-            console.log("error");
-            console.log(data);
-            HideLoader();
+    else if ($("#txtAdminPhone").val() == '') {
+        MessageShow('', 'Admin Phone is blank', 'error');
+    }
+    else if ($("#txtAdminEmail").val() == '') {
+        MessageShow('', 'Admin Email is blank', 'error');
+    }
+    else if ($("#txtCurrencyCode").val() == '') {
+        MessageShow('', 'Currency Code is blank', 'error');
+    }
+    else if ($("#txtImageFilePath").val() == '') {
+        MessageShow('', 'txtImageFilePath is blank', 'error');
+    }
+    else if ($("#txtShortname").val() == '') {
+        MessageShow('', 'Short Name is Blank', 'error');
+    }
+    else {
+        var companyId = parseInt($("#txtCompanyId").val());
+        var name = $("#txtName").val();
+        var shortName = $("#txtShortname").val();
+        var address1 = $("#txtAddress1").val();
+        var address2 = $("#txtAddress2").val();
+        var pin = $("#txtPIN").val();
+        var districtCode = $("#txtDistrictCode").val();
+        var stateCode = $("#txtStateCode").val();
+        var countryCode = $("#txtCountryCode").val();
+        var adminPhone = $("#txtAdminPhone").val();
+        var servicePhone = $("#txtServicePhone").val();
+        var buisnessType = $("#ddlBusinessType").val();
+        var adminEmail = $("#txtAdminEmail").val();
+        var serviceEmail = $("#txtServiceEmail").val();
+        var secondaryEmail = $("#txtSecondaryEmail").val();
+        var gstNumber = $("#txtGSTNumber").val();
+        var panNumber = $("#txtPanNumber").val();
+        var currencyCode = $("#txtCurrencyCode").val();
+        var imageFilePath = $("#txtImageFilePath").val();
+        var website = $("#txtWebsite").val();
+        var logoFileName = $("#txtLogoFileName").val();
+        var fabiconFileName = $("#txtFabiconFileName").val();
+        var loginImageFileName = $("#txtLoginImageFileName").val();
+        var isActive = $('#IsActive').is(':checked');
+        var pinRequired = $('#PinRequired').is(':checked');
+        var companyInfo = {
+            CompanyId: companyId,
+            Name: name,
+            ShortName: shortName,
+            Address1: address1,
+            Address2: address2,
+            PIN: pin,
+            DistrictCode: districtCode,
+            StateCode: stateCode,
+            CountryCode: countryCode,
+            AdminPhone: adminPhone,
+            ServicePhone: servicePhone,
+            AdminEmail: adminEmail,
+            ServiceEmail: serviceEmail,
+            SecondaryEmail: secondaryEmail,
+            GSTNumber: gstNumber,
+            PanNumber: panNumber,
+            BusinessType: buisnessType,
+            CurrencyCode: currencyCode,
+            ImageFilePath: imageFilePath,
+            LogoFileName: logoFileName,
+            FavIconFileName: fabiconFileName,
+            LoginImageFileName: loginImageFileName,
+            Website: website,
+            PINRequired: pinRequired,
+            IsActive: isActive
         }
-    });
-
+        $.ajax({
+            url: baseURL + "Company/EditCompany",
+            type: "POST",
+            dataType: "html",
+            data: companyInfo,
+            success: function (data) {
+                if (data == "NO") {
+                    MessageShow('', 'Not Saved', 'error');
+                }
+                else {
+                    MessageShow('', 'Company Saved', 'success');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
 }
 function GetMailDetails() {
     var dt = baseURL + "Company/GetMailDetails";
@@ -129,44 +151,60 @@ function GetMailDetails() {
     });
 }
 function EditMailServer() {
-    var companyId = parseInt($("#hdnCompanyId").val());
-    var stmpServerId = parseInt($("#hdnStmpServerId").val());
-    var stmpServer = $("#txtSTMPServer").val();
-    var stmpPort = $("#txtSTMPPort").val();
-    var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
-    var fromEmailId = $("#txtFromEmailId").val();
-    var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
-    var isActive = $('#IsActive').is(':checked');
-    var enableSSL = $('#EnableSSL').is(':checked');
-
-
-    var stmpInfo = {
-        CompanyId: companyId,
-        MailServerId: stmpServerId,
-        SMTPServer: stmpServer,
-        SMTPPort: stmpPort,
-        FromEmailDisplayName: fromEmailDisplayName,
-        FromEmailId: fromEmailId,
-        FromEmailPwd: fromEmailIdPwd,
-        EnableSSL: enableSSL,
-        IsActive: isActive
+    if ($("#txtSTMPServer").val() == '') {
+        MessageShow('', 'STMPServer is blank', 'error');
     }
-    $.ajax({
-        url: baseURL + "Company/EditSTMPServer",
-        type: "GET",
-        dataType: "html",
-        data: stmpInfo,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            HideLoader();
-        },
-        error: function (data) {
-            console.log("error");
-            console.log(data);
-            HideLoader();
-        }
-    });
+    else if ($("#txtSTMPPort").val() == '') {
+        MessageShow('', 'STMPPort is blank', 'error');
+    }
+    else if ($("#fromEmailDisplayName").val() == '') {
+        MessageShow('', 'fromEmailDisplayName is blank', 'error');
+    }
+    else {
+        var companyId = parseInt($("#hdnCompanyId").val());
+        var stmpServerId = parseInt($("#hdnStmpServerId").val());
+        var stmpServer = $("#txtSTMPServer").val();
+        var stmpPort = $("#txtSTMPPort").val();
+        var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
+        var fromEmailId = $("#txtFromEmailId").val();
+        var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
+        var isActive = $('#IsActive').is(':checked');
+        var enableSSL = $('#EnableSSL').is(':checked');
 
+
+        var stmpInfo = {
+            CompanyId: companyId,
+            MailServerId: stmpServerId,
+            SMTPServer: stmpServer,
+            SMTPPort: stmpPort,
+            FromEmailDisplayName: fromEmailDisplayName,
+            FromEmailId: fromEmailId,
+            FromEmailPwd: fromEmailIdPwd,
+            EnableSSL: enableSSL,
+            IsActive: isActive
+        }
+        $.ajax({
+            url: baseURL + "Company/EditSTMPServer",
+            type: "POST",
+            dataType: "html",
+            data: stmpInfo,
+            success: function (data) {
+                if (data == "NO") {
+                    MessageShow('', 'Not Saved', 'error');
+                }
+                else {
+                    MessageShow('', 'SMTP Saved', 'success');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
 }
 function GetCompanySettingsDetails() {
     var dt = baseURL + "Company/GetCompanySettingsDetails";
@@ -187,21 +225,60 @@ function GetCompanySettingsDetails() {
         }
     });
 }
-function EditCompanySetting() {
-    var postData = [];
-    var rowCount = parseInt($("#hdnRowcount").val());
-    for (var i = 1; i <= rowCount; i++) {
-        var companyId = parseInt($("#hdnCompanyId_"+i).val());
-        var companySettingId = parseInt($("#hdnStmpServerId_" + i).val());
-        var settingType = $("#txtSettingType_" + i).val();
-        var dataText = $("#txtDataText_" + i).val();
-        var dataValue = $("#txtDataValue_" + i).val();
-        var option1 = $("#txtOption1_" + i).val();
-        var option2 = $("#txtOption2_" + i).val();
-        var option3 = $("#txtOption3_" + i).val();
-        var isActive = $('#IsActive_' + i).is(':checked');
-        var stmpInfo = {
-            CompanyId: companyId,
+function AddCompanySetting() {
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
+
+}
+function CancelCompanySetting() {
+    $("#txtSettingType").val('');
+    $("#txtDataText").val('');
+    $("#txtDataValue").val('');
+    $("#txtOption1").val('');
+    $("#txtOption2").val('');
+    $("#txtOption3").val('');
+    $("#hdnCompanySettingId").val(0);
+    $("#addCompanySetting").css("display", "block");
+    $("#newCompanySetting").css("display", "none");
+
+}
+function EditCompanySetting(e) {
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
+    $("#txtSettingType").val($("#txtSettingType_" + e).val());
+    $("#txtDataText").val($("#txtDataText_" + e).val());
+    $("#txtDataValue").val($("#txtDataValue_" + e).val());
+    $("#txtOption1").val($("#txtOption1_" + e).val());
+    $("#txtOption2").val($("#txtOption2_" + e).val());
+    $("#txtOption3").val($("#txtOption3_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
+    }
+    $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
+}
+function AddEditCompanySetting() {
+    if ($("#txtSettingType").val() == '') {
+        MessageShow('', 'SettingType is blank', 'error');
+    }
+    else if ($("#txtDataText").val() == '') {
+        MessageShow('', 'DataText is blank', 'error');
+    }
+    else if ($("#txtDataValue").val() == '') {
+        MessageShow('', 'DataValue is blank', 'error');
+    }
+    else {
+        var companySettingId = parseInt($("#hdnCompanySettingId").val());
+        var settingType = $("#txtSettingType").val();
+        var dataText = $("#txtDataText").val();
+        var dataValue = $("#txtDataValue").val();
+        var option1 = $("#txtOption1").val();
+        var option2 = $("#txtOption2").val();
+        var option3 = $("#txtOption3").val();
+        var isActive = $('#IsActive').is(':checked');
+        var companySettingInfo = {
+            CompanyId: 0,
             CompanySettingId: companySettingId,
             SettingType: settingType,
             DataText: dataText,
@@ -212,16 +289,72 @@ function EditCompanySetting() {
             IsActive: isActive,
             CreatedBy: null
         }
-        postData.push(stmpInfo);
-        
+        $.ajax({
+            url: baseURL + "Company/EditCompanySetting",
+            type: "POST",
+            dataType: "html",
+            data: companySettingInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelCompanySetting()
+                    $("#CompanySettings").html(data);
+                    MessageShow('', 'Company Setting saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Company Setting is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
     }
-    var comSetting = { ListData: postData }
+}
+function DeleteCompanysetting(e) {
+    var CompanySettingsId = $("#hdnCompanySettingId_" + e).val();
+    deleteCompanySetting = {
+        CompanySettingsId: CompanySettingsId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
     $.ajax({
-        url: baseURL + "Company/EditCompanySetting",
+        url: baseURL + "Company/DeleteCompanySetting",
         type: "POST",
-        dataType: "json",
-        data: comSetting,
+        dataType: "html",
+        data: deleteCompanySetting,
         success: function (data) {
+            debugger;
+            if (data !== "NO") {
+                $("#CompanySettings").html(data);
+                MessageShow('', 'Company Setting saved', 'success');
+            }
+            else {
+                MessageShow('', 'Company Setting is not saved', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+function GetTemplateDetails() {
+    $.ajax({
+        url: baseURL + "Company/GetTemplateDetails",
+        type: "GET",
+        dataType: "html",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            $("#Template").html(data);
             HideLoader();
         },
         error: function (data) {
@@ -230,5 +363,274 @@ function EditCompanySetting() {
             HideLoader();
         }
     });
+}
+function AddTemplate() {
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
 
 }
+function CancelTemplate() {
+    $("#txtTemplateType").val('');
+    $("#txtName").val('');
+    $("#txtTitle").val('');
+    $("#txtHTMLData").val('');
+    $("#hdnTemplateId").val(0);
+    $("#addTemplate").css("display", "block");
+    $("#newTemplate").css("display", "none");
+
+}
+function EditTemplate(e) {
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
+    $("#txtTemplateType").val($("#txtTemplateType_" + e).val());
+    $("#txtName").val($("#txtName_" + e).val());
+    $("#txtTitle").val($("#txtTitle_" + e).val());
+    $("#txtHTMLData").val($("#txtHTMLData_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
+    }
+    $("#hdnTemplateId").val($("#hdnTemplateId_" + e).val());
+}
+function AddEditTemplate() {
+    if ($("#txtTemplateType").val() == '') {
+        MessageShow('', 'TemplateType is blank', 'error');
+    }
+    else if ($("#txtName").val() == '') {
+        MessageShow('', 'Name is blank', 'error');
+    }
+    else if ($("#txtTitle").val() == '') {
+        MessageShow('', 'Title is blank', 'error');
+    }
+    else if ($("#txtHTMLData").val() == '') {
+        MessageShow('', 'HTMLData is blank', 'error');
+    }
+    else {
+        var TemplateId = parseInt($("#hdnTemplateId").val());
+        var TemplateType = $("#txtTemplateType").val();
+        var Name = $("#txtName").val();
+        var Title = $("#txtTitle").val();
+        var HTMLData = $("#txtHTMLData").val();
+        var isActive = $('#IsActive').is(':checked');
+        var templateInfo = {
+            CompanyId: 0,
+            TemplateId: TemplateId,
+            TemplateType: TemplateType,
+            Name: Name,
+            Title: Title,
+            HTMLData: HTMLData,
+            IsActive: isActive,
+            CreatedBy: null
+        }
+        $.ajax({
+            url: baseURL + "Company/EditTemplate",
+            type: "POST",
+            dataType: "html",
+            data: templateInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelCompanySetting();
+                    $("#Template").html(data);
+                    MessageShow('', 'Template saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Template is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
+}
+function DeleteTemplate(e){
+    var TemplateId = $("#hdnTemplateId_" + e).val();
+    deleteTemplate = {
+        TemplateId: TemplateId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteTemplate",
+        type: "POST",
+        dataType: "html",
+        data: deleteTemplate,
+        success: function (data) {
+
+            debugger;
+            if (data !== "NO") {
+                $("#Template").html(data);
+                MessageShow('', 'Template saved', 'success');
+            }
+            else {
+                MessageShow('', 'Template is not saved', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+function GetThemeDetails() {
+    $.ajax({
+        url: baseURL + "Company/GetThemeDetails",
+        type: "GET",
+        dataType: "html",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            $("#Theme").html(data);
+            HideLoader();
+        },
+        error: function (data) {
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+function AddTheme() {
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+
+}
+function CancelTheme() {
+    $("#txtThemeName").val('');
+    $("#txtExtThemeName").val('');
+    $("#txtImageRatio").val('');
+    $("#txtColour").val('');
+    $("#txtNoOfHomePanels").val('');
+    $("#txtMobileHeight").val('');
+    $("#txtDesktopHeight").val('');
+    $("#hdnThemeId").val(0);
+    $("#addTheme").css("display", "block");
+    $("#newTheme").css("display", "none");
+
+}
+function EditTheme(e) {
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+    $("#txtThemeName").val($("#txtThemeName_" + e).val());
+    $("#txtExtThemeName").val($("#txtExtThemeName_" + e).val());
+    $("#txtImageRatio").val($("#txtImageRatio_" + e).val());
+    $("#txtColour").val($("#txtColour_" + e).val());
+    $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).val());
+    $("#txtMobileHeight").val($("#txtMobileHeight_" + e).val());
+    $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
+    }
+    if ($("#IsDefault_" + e).prop("checked")) {
+        $("#IsDefault").prop("checked", true);
+    } else {
+        $("#IsDefault").prop("checked", false);
+    }
+    $("#hdnThemeId").val($("#hdnThemeId_" + e).val());
+}
+function AddEditTheme() {
+    if ($("#txtThemeName").val() == '') {
+        MessageShow('', 'ThemeName is blank', 'error');
+    }
+    else if ($("#txtImageRatio").val() == '') {
+        MessageShow('', 'ImageRatio is blank', 'error');
+    }
+    else if ($("#txtColour").val() == '') {
+        MessageShow('', 'Colour is blank', 'error');
+    }
+    else {
+        var ThemeId = parseInt($("#hdnThemeId").val());
+        var ThemeName = $("#txtThemeName").val();
+        var ExtThemeName = $("#txtExtThemeName").val();
+        var ImageRatio = $("#txtImageRatio").val();
+        var NoOfHomePanels = $("#txtNoOfHomePanels").val();
+        var Colour = $("#txtColour").val();
+        var MobileHeight = $("#txtMobileHeight").val();
+        var DesktopHeight = $("#txtDesktopHeight").val();
+        var IsDefault = $('#IsDefault').is(':checked');
+        var IsActive = $('#IsActive').is(':checked');
+        var themeInfo = {
+            CompanyId: 0,
+            ThemeId: ThemeId,
+            ThemeName: ThemeName,
+            ExtThemeName: ExtThemeName,
+            ImageRatio: ImageRatio,
+            NoOfHomePanels: NoOfHomePanels,
+            Colour: Colour,
+            MobileHeight: MobileHeight,
+            DesktopHeight: DesktopHeight,
+            IsActive: IsActive,
+            IsDefault: IsDefault,
+            CreatedBy: null
+        }
+        $.ajax({
+            url: baseURL + "Company/EditTheme",
+            type: "POST",
+            dataType: "html",
+            data: themeInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelTheme();
+                    $("#Theme").html(data);
+                    MessageShow('', 'Theme saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Theme is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
+}
+function DeleteTheme(e) {
+    var ThemeId = $("#hdnThemeId_" + e).val();
+    deleteTheme = {
+        ThemeId: ThemeId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteTheme",
+        type: "POST",
+        dataType: "html",
+        data: deleteTheme,
+        success: function (data) {
+            debugger;
+            if (data !== "NO") {
+                $("#Theme").html(data);
+                MessageShow('', 'Theme Deleted', 'success');
+            }
+            else {
+                MessageShow('', 'Theme is not Deleted', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+
+
+

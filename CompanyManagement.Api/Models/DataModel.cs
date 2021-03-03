@@ -131,4 +131,52 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class GetCompanyTemplate
+    {
+        [Key]
+        public long TemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public string TemplateType { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public string HTMLData { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class GetLookUpType
+    {
+        [Key]
+        public long LookUpId { get; set; }
+        public string LookUpType { get; set; }
+        public string LookUpValue { get; set; }
+        public string LookUpDescription { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+    }
+
+    public class GetCompanyTheme
+    {
+        [Key]
+        public long ThemeId { get; set; }
+        public long CompanyId { get; set; }
+        public string ThemeName { get; set; }
+        public string ExtThemeName { get; set; }
+        public decimal? ImageRatio { get; set; }
+        public int? NoOfHomePanels { get; set; }
+        public string Colour { get; set; }
+        public int? MobileHeight { get; set; }
+        public int? DesktopHeight { get; set; }
+        public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
 }

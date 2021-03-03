@@ -971,3 +971,18 @@ body {
 .text-decnone{
     text-decoration:none!important;
 }
+.scrollsetting {
+    max-height: 500px;
+    border:2px solid;
+    overflow: auto;
+}
+.seperate {
+    width:98%;
+    margin:20px auto;
+    border: 2px solid #dadada;
+    margin-bottom:20px;
+    padding-top:10px;
+}
+    .seperate :last-child {
+        margin-bottom: 5px;
+    }
