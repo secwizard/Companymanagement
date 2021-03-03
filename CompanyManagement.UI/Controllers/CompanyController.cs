@@ -257,7 +257,7 @@ namespace CompanyManagement.UI.Controllers
                 result = JsonConvert.DeserializeObject<ResponseList<ResponseThemeDetails>>(compDtl);
                 if (result != null && result.Status)
                 {
-                    return PartialView("_Partial_Template", result);
+                    return PartialView("_Partial_Theme", result);
                 }
                 else
                 {

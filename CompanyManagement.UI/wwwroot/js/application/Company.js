@@ -509,8 +509,8 @@ function AddEditTheme() {
         var ThemeName = $("#txtThemeName").val();
         var ExtThemeName = $("#txtExtThemeName").val();
         var ImageRatio = $("#txtImageRatio").val();
-        var NoOfHomePanels = $("#txtColour").val();
-        var Colour = $("#txtNoOfHomePanels").val();
+        var NoOfHomePanels = $("#txtNoOfHomePanels").val();
+        var Colour = $("#txtColour").val();
         var MobileHeight = $("#txtMobileHeight").val();
         var DesktopHeight = $("#txtDesktopHeight").val();
         var IsDefault = $('#IsDefault').is(':checked');
@@ -539,11 +539,11 @@ function AddEditTheme() {
             success: function (data) {
                 if (data !== "NO") {
                     CancelTheme();
-                    $("#Template").html(data);
-                    MessageShow('', 'Template saved', 'success');
+                    $("#Theme").html(data);
+                    MessageShow('', 'Theme saved', 'success');
                 }
                 else {
-                    MessageShow('', 'Template is not saved', 'error');
+                    MessageShow('', 'Theme is not saved', 'error');
                 }
                 HideLoader();
             },

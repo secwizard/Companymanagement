@@ -316,6 +316,7 @@ namespace CompanyManagement.Api.Service
             preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
             preData.NoOfHomePanels = postData.NoOfHomePanels == null ? 0 : postData.NoOfHomePanels;
             preData.ThemeName = postData.ThemeName == null ? "" : postData.ThemeName;
+            preData.Colour = postData.Colour == null ? "" : postData.Colour;
             preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
             preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
             preData.IsDefault = postData.IsDefault == null ? false : postData.IsDefault;
