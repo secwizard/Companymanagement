@@ -40,6 +40,28 @@ namespace CompanyManagement.Api.Controllers
             return Ok("Company API connected.");
         }
 
+
+        [HttpPost("GetCompanyIdFromUrl")]
+        public async Task<IActionResult> GetCompanyIdFromUrl(RequestCompanyUrl request)
+        {
+            var responce = new Response<ResponseCompanyId>();
+            try
+            {
+
+                responce.Data = await _companyService.GetCompanyIdFromUrl(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+
         [Authorize]
         [HttpPost("GetCompany")]
         public async Task<IActionResult> GetCompany(RequestBase request)
@@ -65,25 +87,6 @@ namespace CompanyManagement.Api.Controllers
         }
 
 
-        [HttpPost("GetCompanyIdFromUrl")]
-        public async Task<IActionResult> GetCompanyIdFromUrl(RequestCompanyUrl request)
-        {
-            var responce = new Response<ResponseCompanyId>();
-            try
-            {
-               
-                    responce.Data = await _companyService.GetCompanyIdFromUrl(request);
-                responce.Status = responce.Data != null;
-                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
-            }
-            catch (Exception ex)
-            {
-                responce.Status = false;
-                responce.Message = ex.Message;
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-            }
-            return Ok(responce);
-        }
 
         [Authorize]
         [HttpPost("EditCompany")]
