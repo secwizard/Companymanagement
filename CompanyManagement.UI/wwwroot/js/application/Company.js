@@ -1,4 +1,14 @@
-﻿
+﻿$(document).ready(function () {
+    GetCompanyDetails();
+});
+function hideall() {
+    $("#companyDetails").hide();
+    $("#branch").hide();
+    $("#mailServerinfo").hide();
+    $("#settings").hide();
+    $("#templates").hide();
+    $("#themes").hide();
+}
 function GetCompanyDetails() {
     var dt = baseURL + "Company/GetCompanydetails";
     $.ajax({
@@ -9,6 +19,8 @@ function GetCompanyDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#Company").html(data);
+            hideall();
+            $("#companyDetails").show();
             HideLoader();
         },
         error: function (data) {
@@ -27,6 +39,9 @@ function GetBranchDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#Branch").html(data);
+            hideall();
+            $("#branch").show();
+
             HideLoader();
         },
         error: function (data) {
@@ -141,6 +156,9 @@ function GetMailDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#MailServer").html(data);
+            hideall();
+            $("#mailServerinfo").show();
+
             HideLoader();
         },
         error: function (data) {
@@ -216,6 +234,9 @@ function GetCompanySettingsDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#CompanySettings").html(data);
+            hideall();
+            $("#settings").show();
+
             HideLoader();
         },
         error: function (data) {
@@ -355,6 +376,9 @@ function GetTemplateDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#Template").html(data);
+            hideall();
+            $("#templates").show();
+
             HideLoader();
         },
         error: function (data) {
@@ -490,6 +514,9 @@ function GetThemeDetails() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             $("#Theme").html(data);
+            hideall();
+            $("#themes").show();
+
             HideLoader();
         },
         error: function (data) {

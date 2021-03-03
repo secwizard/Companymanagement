@@ -130,7 +130,7 @@ namespace CompanyManagement.Api.Models
     {
         public long CompanyId { get; set; }
     }
-}
+
     public class LookUpInfo
     {
         public string LookUpValue { get; set; }
