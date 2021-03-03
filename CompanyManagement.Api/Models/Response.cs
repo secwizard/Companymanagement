@@ -122,5 +122,8 @@ namespace CompanyManagement.Api.Models
         public string Phone { get; set; }
         public string Email { get; set; }
     }
-
+    public class ResponseCompanyId
+    {
+        public long CompanyId { get; set; }
+    }
 }

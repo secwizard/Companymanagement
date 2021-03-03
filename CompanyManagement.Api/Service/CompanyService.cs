@@ -55,7 +55,30 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        
+        public async Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request)
+        {
+            try
+            {
+                var res = new CompanyInfo();
+
+                var data = await _context.Company
+                    .Where(c => c.Website == request.CompanyUrl
+                    && c.IsActive == true).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+                    ResponseCompanyId retVal = new ResponseCompanyId();
+                    retVal.CompanyId = data.CompanyId;
+                    return retVal;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();

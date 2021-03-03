@@ -7,6 +7,7 @@ namespace CompanyManagement.Api.Service
     public interface ICompanyService
     {
         Task<CompanyInfo> GetCompany(RequestBase request);
+        Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();
         Task<CompanyMailServer> GetCompanySmtp(RequestBase request);
         Task<CompanyTheme> GetCompanyTheme(RequestBase request);
