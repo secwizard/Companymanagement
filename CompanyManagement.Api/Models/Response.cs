@@ -61,6 +61,7 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public List<LookUpInfo> LookUps { get; set; }
+        public LookUpInfo SelectedLookUp { get; set; }
     }
 
     public class CompanyMailServer

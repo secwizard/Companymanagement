@@ -41,7 +41,6 @@ namespace CompanyManagement.Api.Service
                 var data = await _context.Company
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
-
                 if(data !=null)
                 {
                     _mapper.Map(data, res);
@@ -49,6 +48,7 @@ namespace CompanyManagement.Api.Service
                     var lookup = GetCompanyLookUp(reqlookUp).Result;
 
                     res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
+                    res.SelectedLookUp = (from lk in lookup where lk.LookUpValue.ToLower() == data.BusinessType.ToLower() select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
                     return res;
                 }
                 return null;
@@ -80,6 +80,7 @@ namespace CompanyManagement.Api.Service
                     var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
                     var lookup = GetCompanyLookUp(reqlookUp).Result;
                     request.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
+                    request.SelectedLookUp = (from lk in lookup where lk.LookUpValue.ToLower() == data.BusinessType.ToLower() select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
                     request.CompanyId = data.CompanyId;
                     retVal.Data = request;
                     retVal.Message = "OK";

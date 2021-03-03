@@ -57,7 +57,7 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_Partial_Company", result);
         }
-        
+        [HttpPost]
         public async Task<IActionResult> EditCompany(RequestCompanyInfo companyInfo)
         {
             Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
@@ -67,14 +67,23 @@ namespace CompanyManagement.UI.Controllers
                 companyInfo.CreatedBy = user.Id;
                 var compDtl = await _restAPI.EditCompany(JsonConvert.SerializeObject(companyInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
+                if (result != null && result.Data != null && result.Status)
+                {
+                    return PartialView("_Partial_Company", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
             }
             catch (Exception ex)
             {
                 result.Message = "Either UserName Or Password is Incorrect";
                 result.Status = false;
                 log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
             }
-            return PartialView("_Partial_Company", result);
+            
         }
         public async Task<IActionResult> GetMailDetails()
         {
@@ -94,6 +103,7 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_Partial_MailServer",result);
         }
+        [HttpPost]
         public async Task<IActionResult> EditSTMPServer(ResponseMailServerDetails mailInfo)
         {
             Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
@@ -103,14 +113,23 @@ namespace CompanyManagement.UI.Controllers
                 mailInfo.CreatedBy = user.Id;
                 var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
+                if(result != null && result.Data != null && result.Status)
+                {
+                    return PartialView("_Partial_MailServer", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
             }
             catch (Exception ex)
             {
                 result.Message = "Either UserName Or Password is Incorrect";
                 result.Status = false;
                 log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
             }
-            return PartialView("_Partial_Company", result);
+            
         }
         public async Task<IActionResult> GetCompanySettingsDetails()
         {

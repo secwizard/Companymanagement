@@ -2,10 +2,8 @@
 @model Response<CompanyManagement.UI.Models.Response.RequestCompanyInfo>
 
 
-@if(Model != null)
+@if (Model != null)
 {
-
-}
 <div class="table-responsive">
     <div class="col-md-4">
         <div class="mb-05">
@@ -13,7 +11,15 @@
             <select class="customselect" id="ddlBusinessType">
                 @foreach (var item in Model.Data.LookUps)
                 {
-                <option value="@item.LookUpValue">@item.LookUpText</option>
+                    if (item.LookUpValue.ToLower() == Model.Data.SelectedLookUp.LookUpValue.ToLower())
+                    {
+                        <option value="@item.LookUpValue" selected>@item.LookUpText</option>
+                    }
+                    else
+                    {
+                        <option value="@item.LookUpValue">@item.LookUpText</option>
+                    }
+
                 }
 
             </select>
@@ -178,3 +184,4 @@
     </div>
 
 </div>
+}
