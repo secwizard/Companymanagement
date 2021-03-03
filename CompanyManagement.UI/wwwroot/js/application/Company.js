@@ -49,6 +49,9 @@ function EditCompany() {
     else if ($("#txtCurrencyCode").val() == '') {
         MessageShow('', 'Currency Code is blank', 'error');
     }
+    else if ($("#txtImageFilePath").val() == '') {
+        MessageShow('', 'txtImageFilePath is blank', 'error');
+    }
     else if ($("#txtShortname").val() == '') {
         MessageShow('', 'Short Name is Blank', 'error');
     }

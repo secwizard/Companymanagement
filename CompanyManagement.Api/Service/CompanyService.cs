@@ -100,30 +100,30 @@ namespace CompanyManagement.Api.Service
         {
             if (preData == null)
                 preData = new Company();
-            preData.Address1 = postData.Address1 == null ? "" : postData.Address1;
-            preData.Address2 = postData.Address2 == null ? "" : postData.Address2;
-            preData.AdminEmail = postData.AdminEmail == null ? "" : postData.AdminEmail;
-            preData.AdminPhone = postData.AdminPhone == null ? "" : postData.AdminPhone;
-            preData.BusinessType = postData.BusinessType == null ? "" : postData.BusinessType;
-            preData.CountryCode = postData.CountryCode == null ? "" : postData.CountryCode;
-            preData.CurrencyCode = postData.CurrencyCode == null ? "" : postData.CurrencyCode;
-            preData.DistrictCode = postData.DistrictCode == null ? "" : postData.DistrictCode;
-            preData.FavIconFileName = postData.FavIconFileName == null ? "" : postData.FavIconFileName;
-            preData.GSTNumber = postData.GSTNumber == null ? "" : postData.GSTNumber;
-            preData.ImageFilePath = postData.ImageFilePath == null ? "" : postData.ImageFilePath;
-            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
-            preData.LoginImageFileName = postData.LoginImageFileName == null ? "" : postData.LoginImageFileName;
-            preData.LogoFileName = postData.LogoFileName == null ? "" : postData.LogoFileName;
-            preData.Name = postData.Name == null ? "" : postData.Name;
-            preData.PanNumber = postData.PanNumber == null ? "" : postData.PanNumber;
-            preData.PIN = postData.PIN == null ? "" : postData.PIN;
-            preData.PINRequired = postData.PINRequired == null ? false : postData.PINRequired;
-            preData.SecondaryEmail = postData.SecondaryEmail == null ? "" : postData.SecondaryEmail;
-            preData.ServiceEmail = postData.ServiceEmail == null ? "" : postData.ServiceEmail;
-            preData.ServicePhone = postData.ServicePhone == null ? "" : postData.ServicePhone;
-            preData.ShortName = postData.ShortName == null ? "" : postData.ShortName;
-            preData.StateCode = postData.StateCode == null ? "" : postData.StateCode;
-            preData.Website = postData.Website == null ? "" : postData.Website;
+            preData.Address1 = postData.Address1;
+            preData.Address2 = postData.Address2;
+            preData.AdminEmail = postData.AdminEmail;
+            preData.AdminPhone = postData.AdminPhone;
+            preData.BusinessType = postData.BusinessType;
+            preData.CountryCode = postData.CountryCode;
+            preData.CurrencyCode = postData.CurrencyCode;
+            preData.DistrictCode = postData.DistrictCode;
+            preData.FavIconFileName = postData.FavIconFileName;
+            preData.GSTNumber = postData.GSTNumber;
+            preData.ImageFilePath = postData.ImageFilePath;
+            preData.IsActive = postData.IsActive;
+            preData.LoginImageFileName = postData.LoginImageFileName;
+            preData.LogoFileName = postData.LogoFileName;
+            preData.Name = postData.Name;
+            preData.PanNumber = postData.PanNumber;
+            preData.PIN = postData.PIN;
+            preData.PINRequired = postData.PINRequired;
+            preData.SecondaryEmail = postData.SecondaryEmail;
+            preData.ServiceEmail = postData.ServiceEmail;
+            preData.ServicePhone = postData.ServicePhone;
+            preData.ShortName = postData.ShortName;
+            preData.StateCode = postData.StateCode;
+            preData.Website = postData.Website;
             return preData;
         }
 
@@ -359,16 +359,16 @@ namespace CompanyManagement.Api.Service
         private Theme MapTheme(Theme preData, GetCompanyTheme postData)
         {
             preData.CompanyId = postData.CompanyId;
-            preData.DesktopHeight = postData.DesktopHeight == null ? 0 : postData.DesktopHeight;
-            preData.ExtThemeName = postData.ExtThemeName == null ? "" : postData.ExtThemeName;
-            preData.ImageRatio = postData.ImageRatio == null ? 0 : postData.ImageRatio;
-            preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
-            preData.NoOfHomePanels = postData.NoOfHomePanels == null ? 0 : postData.NoOfHomePanels;
-            preData.ThemeName = postData.ThemeName == null ? "" : postData.ThemeName;
-            preData.Colour = postData.Colour == null ? "" : postData.Colour;
-            preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
-            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
-            preData.IsDefault = postData.IsDefault == null ? false : postData.IsDefault;
+            preData.DesktopHeight = postData.DesktopHeight;
+            preData.ExtThemeName = postData.ExtThemeName;
+            preData.ImageRatio = postData.ImageRatio;
+            preData.MobileHeight = postData.MobileHeight;
+            preData.NoOfHomePanels = postData.NoOfHomePanels;
+            preData.ThemeName = postData.ThemeName;
+            preData.Colour = postData.Colour;
+            preData.MobileHeight = postData.MobileHeight;
+            preData.IsActive = postData.IsActive;
+            preData.IsDefault = postData.IsDefault;
             return preData;
         }
 
@@ -521,13 +521,13 @@ namespace CompanyManagement.Api.Service
         private CompanySetting MapCompanySetting(CompanySetting preData, CompanySettingInfo postData)
         {
             preData.CompanyId = postData.CompanyId;
-            preData.DataText = postData.DataText == null ? "" : postData.DataText;
-            preData.DataValue = postData.DataValue == null ? "" : postData.DataValue;
-            preData.Option1 = postData.Option1 == null ? "" : postData.Option1;
-            preData.Option2 = postData.Option2 == null ? "" : postData.Option2;
-            preData.Option3 = postData.Option3 == null ? "" : postData.Option3;
-            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
-            preData.SettingType = postData.SettingType == null ? "" : postData.SettingType;
+            preData.DataText = postData.DataText;
+            preData.DataValue = postData.DataValue;
+            preData.Option1 = postData.Option1;
+            preData.Option2 = postData.Option2;
+            preData.Option3 = postData.Option3;
+            preData.IsActive = postData.IsActive;
+            preData.SettingType = postData.SettingType;
             return preData;
         }
 
@@ -650,11 +650,11 @@ namespace CompanyManagement.Api.Service
         private Template MapTemplate(Template preData, Template postData)
         {
             preData.CompanyId = postData.CompanyId;
-            preData.HTMLData = postData.HTMLData == null ? "" : postData.HTMLData;
-            preData.Name = postData.Name == null ? "" : postData.Name;
-            preData.Title = postData.Title == null ? "" : postData.Title;
-            preData.TemplateType = postData.TemplateType == null ? "" : postData.TemplateType;
-            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            preData.HTMLData = postData.HTMLData;
+            preData.Name = postData.Name;
+            preData.Title = postData.Title;
+            preData.TemplateType = postData.TemplateType;
+            preData.IsActive = postData.IsActive;
             return preData;
         }
 
