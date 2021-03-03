@@ -150,29 +150,34 @@ namespace CompanyManagement.UI.Controllers
             return PartialView("_PartialCompanySetting", result);
         }
         [HttpPost]
-        public async Task<IActionResult> EditCompanySetting(ComSetting companysetting)
+        public async Task<IActionResult> EditCompanySetting(ResponseCompanySetting companysetting)
         {
-            Response<ResponseMailServerDetails> result = new Response<ResponseMailServerDetails>();
+            ResponseList<ResponseCompanySetting> result = new ResponseList<ResponseCompanySetting>();
             try
             {
-                if (companysetting != null && companysetting.ListData != null && companysetting.ListData.Count > 0)
-                {
+                
                     var user = Session.Get<UserToken>("CompanyConfiguration");
-                    foreach (var item in companysetting.ListData)
+                    companysetting.CreatedBy = user.Id;
+                    companysetting.CompanyId = user.CompanyId;
+                    var compDtl = await _restAPI.EditCompanySetting(JsonConvert.SerializeObject(companysetting), user.token);
+                    result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanySetting>>(compDtl);
+                    if(result != null && result.Status)
                     {
-                        item.CreatedBy = user.Id;
+                        return PartialView("_PartialCompanySetting", result);
                     }
-                    var compDtl = await _restAPI.EditCompanySetting(JsonConvert.SerializeObject(companysetting.ListData), user.token);
-                    result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
-                }
+                    else
+                    {
+                        return Json("NO");
+                    }
             }
             catch (Exception ex)
             {
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
             }
-            return PartialView("_PartialCompanySetting", result);
+            
         }
         public async Task<IActionResult> GetTemplateDetails()
         {

@@ -210,13 +210,13 @@ namespace CompanyManagement.Api.Controllers
         }
         [Authorize]
         [HttpPost("EditCompanySetting")]
-        public async Task<IActionResult> EditCompanySetting(List<CompanySettingInfo> request)
+        public async Task<IActionResult> EditCompanySetting(CompanySettingInfo request)
         {
             var responce = new ResponseList<CompanySettingInfo>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.FirstOrDefault().CompanyId || user?.CompanyId == -1)
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce = await _companyService.EditCompanySetting(request);
                 }

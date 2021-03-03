@@ -314,30 +314,38 @@ namespace CompanyManagement.Api.Service
             }
         }
         
-        public async Task<ResponseList<CompanySettingInfo>> EditCompanySetting(List<CompanySettingInfo> request)
+        public async Task<ResponseList<CompanySettingInfo>> EditCompanySetting(CompanySettingInfo request)
         {
             var retVal = new ResponseList<CompanySettingInfo>();
             var retData = new List<CompanySettingInfo>();
             try
             {
-                foreach(var item in request)
+                if (request != null && request.CompanySettingId > 0)
                 {
                     var data = await _context.CompanySetting
-                    .Where(c => c.CompanyId == item.CompanyId
-                    && c.CompanySettingId == item.CompanySettingId
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.CompanySettingId == request.CompanySettingId
                     && c.IsActive == true).FirstOrDefaultAsync();
                     if (data != null)
                     {
-                        data = MapCompanySetting(data, item);
-                        data.ModifiedBy = item.CreatedBy;
+                        data = MapCompanySetting(data, request);
+                        data.ModifiedBy = request.CreatedBy;
                         data.ModifiedDate = DateTime.Now;
                         _context.Entry(data).State = EntityState.Modified;
-                        
+
                     }
                 }
-
+                else
+                {
+                   _context.CompanySetting.Add(MapCompanySetting(new CompanySetting(), request));
+                }
                 _context.SaveChanges();
-                retVal.Data = request;
+                RequestCompanySetting req = new RequestCompanySetting();
+                req.CompanyId = request.CompanyId;
+                req.DataText = "";
+                req.SettingType = "";
+
+                retVal.Data = GetCompanySetting(req).Result;
                 retVal.Message = "OK";
                 retVal.Status = true;
             }
@@ -352,6 +360,7 @@ namespace CompanyManagement.Api.Service
         }
         private CompanySetting MapCompanySetting(CompanySetting preData, CompanySettingInfo postData)
         {
+            preData.CompanyId = postData.CompanyId;
             preData.DataText = postData.DataText == null ? "" : postData.DataText;
             preData.DataValue = postData.DataValue == null ? "" : postData.DataValue;
             preData.Option1 = postData.Option1 == null ? "" : postData.Option1;

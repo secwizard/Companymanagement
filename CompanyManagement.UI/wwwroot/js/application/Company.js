@@ -229,44 +229,82 @@ function GetCompanySettingsDetails() {
         }
     });
 }
-function EditCompanySetting() {
-    var postData = [];
-    var rowCount = parseInt($("#hdnRowcount").val());
-    for (var i = 1; i <= rowCount; i++) {
-        var companyId = parseInt($("#hdnCompanyId_" + i).val());
-        var companySettingId = parseInt($("#hdnStmpServerId_" + i).val());
-        var settingType = $("#txtSettingType_" + i).val();
-        var dataText = $("#txtDataText_" + i).val();
-        var dataValue = $("#txtDataValue_" + i).val();
-        var option1 = $("#txtOption1_" + i).val();
-        var option2 = $("#txtOption2_" + i).val();
-        var option3 = $("#txtOption3_" + i).val();
-        var isActive = $('#IsActive_' + i).is(':checked');
-        var stmpInfo = {
-            CompanyId: companyId,
-            CompanySettingId: companySettingId,
-            SettingType: settingType,
-            DataText: dataText,
-            DataValue: dataValue,
-            Option1: option1,
-            Option2: option2,
-            Option3: option3,
-            IsActive: isActive,
-            CreatedBy: null
-        }
-        postData.push(stmpInfo);
+function AddCompanySetting() {
+    debugger;
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
 
+}
+function CancelCompanySetting() {
+    debugger;
+    $("#txtSettingType").val('');
+    $("#txtDataText").val('');
+    $("#txtDataValue").val('');
+    $("#txtOption1").val('');
+    $("#txtOption2").val('');
+    $("#txtOption3").val('');
+    $("#hdnCompanySettingId").val(0);
+    $("#addCompanySetting").css("display", "block");
+    $("#newCompanySetting").css("display", "none");
+
+}
+function EditCompanySetting(e) {
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
+    $("#txtSettingType").val($("#txtSettingType_" + e).val());
+    $("#txtDataText").val($("#txtDataText_" + e).val());
+    $("#txtDataValue").val($("#txtDataValue_" + e).val());
+    $("#txtOption1").val($("#txtOption1_" + e).val());
+    $("#txtOption2").val($("#txtOption2_" + e).val());
+    $("#txtOption3").val($("#txtOption3_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
     }
-    var comSetting = { ListData: postData }
+    $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
+}
+function AddEditCompanySetting() {
+    var companySettingId = parseInt($("#hdnCompanySettingId").val());
+    var settingType = $("#txtSettingType").val();
+    var dataText = $("#txtDataText").val();
+    var dataValue = $("#txtDataValue").val();
+    var option1 = $("#txtOption1").val();
+    var option2 = $("#txtOption2").val();
+    var option3 = $("#txtOption3").val();
+    var isActive = $('#IsActive').is(':checked');
+        var stmpInfo = {
+        CompanyId: 0,
+        CompanySettingId: companySettingId,
+        SettingType: settingType,
+        DataText: dataText,
+        DataValue: dataValue,
+        Option1: option1,
+        Option2: option2,
+        Option3: option3,
+        IsActive: isActive,
+        CreatedBy: null
+    }
+
+    debugger;
     $.ajax({
         url: baseURL + "Company/EditCompanySetting",
         type: "POST",
-        dataType: "json",
-        data: comSetting,
+        dataType: "html",
+        data: stmpInfo,
         success: function (data) {
+            if (data !== "NO") {
+                CancelCompanySetting()
+                $("#CompanySettings").html(data);
+                MessageShow('', 'Company Setting saved', 'success');
+            }
+            else {
+                MessageShow('', 'Company Setting is not saved', 'error');
+            }
             HideLoader();
         },
         error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
             console.log("error");
             console.log(data);
             HideLoader();
@@ -310,5 +348,6 @@ function GetThemeDetails() {
         }
     });
 }
+
 
 
