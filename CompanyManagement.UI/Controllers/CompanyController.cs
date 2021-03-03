@@ -179,6 +179,35 @@ namespace CompanyManagement.UI.Controllers
             }
             
         }
+        public async Task<IActionResult> EditTemplate(ResponseCompanyTemplate companysetting)
+        {
+            ResponseList<ResponseCompanyTemplate> result = new ResponseList<ResponseCompanyTemplate>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.CreatedBy = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.EditTemplate(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanyTemplate>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Template", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
         public async Task<IActionResult> GetTemplateDetails()
         {
             ResponseList<ResponseCompanyTemplate> result = new ResponseList<ResponseCompanyTemplate>();
@@ -199,13 +228,13 @@ namespace CompanyManagement.UI.Controllers
         }
         public async Task<IActionResult> GetThemeDetails()
         {
-            Response<ResponseThemeDetails> result = new Response<ResponseThemeDetails>();
+            ResponseList<ResponseThemeDetails> result = new ResponseList<ResponseThemeDetails>();
             try
             {
                 var user = Session.Get<UserToken>("CompanyConfiguration");
                 var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
                 var compDtl = await _restAPI.GetThemeDetails(JsonConvert.SerializeObject(request), user.token);
-                result = JsonConvert.DeserializeObject<Response<ResponseThemeDetails>>(compDtl);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseThemeDetails>>(compDtl);
             }
             catch (Exception ex)
             {
@@ -214,6 +243,35 @@ namespace CompanyManagement.UI.Controllers
                 log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
             }
             return PartialView("_Partial_Theme", result);
+        }
+        public async Task<IActionResult> EditTheme(ResponseThemeDetails companysetting)
+        {
+            ResponseList<ResponseThemeDetails> result = new ResponseList<ResponseThemeDetails>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.CreatedBy = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.EditTheme(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseThemeDetails>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Template", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
         }
     }
     

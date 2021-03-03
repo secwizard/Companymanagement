@@ -27,7 +27,9 @@ namespace CompanyManagement.UI.Services
         Task<string> GetCompanySettingsDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditCompanySetting(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetTemplateDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> EditTemplate(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetThemeDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> EditTheme(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
     

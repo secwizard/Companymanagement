@@ -241,20 +241,21 @@ namespace CompanyManagement.Api.Service
             preData.EnableSSL = postData.EnableSSL == null ? false : postData.EnableSSL;
             return preData;
         }
-        public async Task<CompanyTheme> GetCompanyTheme(RequestBase request)
+        public async Task<List<GetCompanyTheme>> GetCompanyTheme(RequestBase request)
         {
             try
             {
-                var res = new CompanyTheme();
+                var parms = new SqlParameter[]
+                 {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                 };
 
-                var data = await _context.Theme
-                    .Where(c => c.CompanyId == request.CompanyId
-                    && c.IsActive == true).FirstOrDefaultAsync();
+                string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
+                var dataList = _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToList();
 
-                if (data != null)
+                if (dataList?.Count > 0)
                 {
-                    _mapper.Map(data, res);
-                    return res;
+                    return dataList;
                 }
                 return null;
             }
@@ -394,6 +395,58 @@ namespace CompanyManagement.Api.Service
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
                 throw;
             }
+        }
+        public async Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request)
+        {
+            var retVal = new ResponseList<GetCompanyTemplate>();
+            var retData = new List<CompanySettingInfo>();
+            try
+            {
+                if (request != null && request.TemplateId > 0)
+                {
+                    var data = await _context.Template
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.TemplateId == request.TemplateId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data = MapTemplate(data, request);
+                        data.ModifiedBy = request.CreatedBy;
+                        data.ModifiedDate = DateTime.Now;
+                        _context.Entry(data).State = EntityState.Modified;
+
+                    }
+                }
+                else
+                {
+                    _context.Template.Add(MapTemplate(new Template(), request));
+                }
+                _context.SaveChanges();
+                RequestBase req = new RequestBase();
+                req.CompanyId = request.CompanyId;
+
+                retVal.Data = GetCompanyTemplate(req).Result;
+                retVal.Message = "OK";
+                retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        private Template MapTemplate(Template preData, Template postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.HTMLData = postData.HTMLData == null ? "" : postData.HTMLData;
+            preData.Name = postData.Name == null ? "" : postData.Name;
+            preData.Title = postData.Title == null ? "" : postData.Title;
+            preData.TemplateType = postData.TemplateType == null ? "" : postData.TemplateType;
+            preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            return preData;
         }
 
     }

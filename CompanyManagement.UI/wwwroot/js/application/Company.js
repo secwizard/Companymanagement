@@ -265,52 +265,63 @@ function EditCompanySetting(e) {
     $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
 }
 function AddEditCompanySetting() {
-    var companySettingId = parseInt($("#hdnCompanySettingId").val());
-    var settingType = $("#txtSettingType").val();
-    var dataText = $("#txtDataText").val();
-    var dataValue = $("#txtDataValue").val();
-    var option1 = $("#txtOption1").val();
-    var option2 = $("#txtOption2").val();
-    var option3 = $("#txtOption3").val();
-    var isActive = $('#IsActive').is(':checked');
-        var stmpInfo = {
-        CompanyId: 0,
-        CompanySettingId: companySettingId,
-        SettingType: settingType,
-        DataText: dataText,
-        DataValue: dataValue,
-        Option1: option1,
-        Option2: option2,
-        Option3: option3,
-        IsActive: isActive,
-        CreatedBy: null
-    }
-
     debugger;
-    $.ajax({
-        url: baseURL + "Company/EditCompanySetting",
-        type: "POST",
-        dataType: "html",
-        data: stmpInfo,
-        success: function (data) {
-            if (data !== "NO") {
-                CancelCompanySetting()
-                $("#CompanySettings").html(data);
-                MessageShow('', 'Company Setting saved', 'success');
-            }
-            else {
-                MessageShow('', 'Company Setting is not saved', 'error');
-            }
-            HideLoader();
-        },
-        error: function (data) {
-            MessageShow('', 'Something Went Wrong', 'error');
-            console.log("error");
-            console.log(data);
-            HideLoader();
+    if ($("#txtSettingType").val() == '') {
+        MessageShow('', 'SettingType is blank', 'error');
+    }
+    else if ($("#txtDataText").val() == '') {
+        MessageShow('', 'DataText is blank', 'error');
+    }
+    else if ($("#txtDataValue").val() == '') {
+        MessageShow('', 'DataValue is blank', 'error');
+    }
+    else {
+        var companySettingId = parseInt($("#hdnCompanySettingId").val());
+        var settingType = $("#txtSettingType").val();
+        var dataText = $("#txtDataText").val();
+        var dataValue = $("#txtDataValue").val();
+        var option1 = $("#txtOption1").val();
+        var option2 = $("#txtOption2").val();
+        var option3 = $("#txtOption3").val();
+        var isActive = $('#IsActive').is(':checked');
+        var stmpInfo = {
+            CompanyId: 0,
+            CompanySettingId: companySettingId,
+            SettingType: settingType,
+            DataText: dataText,
+            DataValue: dataValue,
+            Option1: option1,
+            Option2: option2,
+            Option3: option3,
+            IsActive: isActive,
+            CreatedBy: null
         }
-    });
 
+        debugger;
+        $.ajax({
+            url: baseURL + "Company/EditCompanySetting",
+            type: "POST",
+            dataType: "html",
+            data: stmpInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelCompanySetting()
+                    $("#CompanySettings").html(data);
+                    MessageShow('', 'Company Setting saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Company Setting is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
 }
 function GetTemplateDetails() {
     $.ajax({
@@ -330,6 +341,95 @@ function GetTemplateDetails() {
         }
     });
 }
+function AddTemplate() {
+    debugger;
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
+
+}
+function CancelTemplate() {
+    debugger;
+    $("#txtTemplateType").val('');
+    $("#txtName").val('');
+    $("#txtTitle").val('');
+    $("#txtHTMLData").val('');
+    $("#hdnTemplateId").val(0);
+    $("#addTemplate").css("display", "block");
+    $("#newTemplate").css("display", "none");
+
+}
+function EditTemplate(e) {
+    debugger;
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
+    $("#txtTemplateType").val($("#txtTemplateType_" + e).val());
+    $("#txtName").val($("#txtName_" + e).val());
+    $("#txtTitle").val($("#txtTitle_" + e).val());
+    $("#txtHTMLData").val($("#txtHTMLData_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
+    }
+    $("#hdnTemplateId").val($("#hdnTemplateId_" + e).val());
+}
+function AddEditTemplate() {
+    if ($("#txtTemplateType").val() == '') {
+        MessageShow('', 'TemplateType is blank', 'error');
+    }
+    else if ($("#txtName").val() == '') {
+        MessageShow('', 'Name is blank', 'error');
+    }
+    else if ($("#txtTitle").val() == '') {
+        MessageShow('', 'Title is blank', 'error');
+    }
+    else if ($("#txtHTMLData").val() == '') {
+        MessageShow('', 'HTMLData is blank', 'error');
+    }
+    else {
+        var TemplateId = parseInt($("#hdnTemplateId").val());
+        var TemplateType = $("#txtTemplateType").val();
+        var Name = $("#txtName").val();
+        var Title = $("#txtTitle").val();
+        var HTMLData = $("#txtHTMLData").val();
+        var isActive = $('#IsActive').is(':checked');
+        var stmpInfo = {
+            CompanyId: 0,
+            TemplateId: TemplateId,
+            TemplateType: TemplateType,
+            Name: Name,
+            Title: Title,
+            HTMLData: HTMLData,
+            IsActive: isActive,
+            CreatedBy: null
+        }
+
+        debugger;
+        $.ajax({
+            url: baseURL + "Company/EditTemplate",
+            type: "POST",
+            dataType: "html",
+            data: stmpInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelCompanySetting();
+                    $("#Template").html(data);
+                    MessageShow('', 'Template saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Template is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
+}
 function GetThemeDetails() {
     $.ajax({
         url: baseURL + "Company/GetThemeDetails",
@@ -347,6 +447,114 @@ function GetThemeDetails() {
             HideLoader();
         }
     });
+}
+function AddTheme() {
+    debugger;
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+
+}
+function CancelTheme() {
+    debugger;
+    $("#txtThemeName").val('');
+    $("#txtExtThemeName").val('');
+    $("#txtImageRatio").val('');
+    $("#txtColour").val('');
+    $("#txtNoOfHomePanels").val('');
+    $("#txtMobileHeight").val('');
+    $("#txtDesktopHeight").val('');
+    $("#hdnThemeId").val(0);
+    $("#addTheme").css("display", "block");
+    $("#newTheme").css("display", "none");
+
+}
+function EditTheme(e) {
+    debugger;
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+    $("#txtThemeName").val($("#txtThemeName_" + e).val());
+    $("#txtExtThemeName").val($("#txtExtThemeName_" + e).val());
+    $("#txtImageRatio").val($("#txtImageRatio_" + e).val());
+    $("#txtColour").val($("#txtColour_" + e).val());
+    $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).val());
+    $("#txtMobileHeight").val($("#txtMobileHeight_" + e).val());
+    $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).val());
+    if ($("#IsActive_" + e).prop("checked")) {
+        $("#IsActive").prop("checked", true);
+    } else {
+        $("#IsActive").prop("checked", false);
+    }
+    if ($("#IsDefault_" + e).prop("checked")) {
+        $("#IsDefault").prop("checked", true);
+    } else {
+        $("#IsDefault").prop("checked", false);
+    }
+    $("#hdnThemeId").val($("#hdnThemeId" + e).val());
+}
+function AddEditTheme() {
+    if ($("#txtThemeName").val() == '') {
+        MessageShow('', 'ThemeName is blank', 'error');
+    }
+    else if ($("#txtExtThemeName").val() == '') {
+        MessageShow('', 'ExtThemeName is blank', 'error');
+    }
+    else if ($("#txtImageRatio").val() == '') {
+        MessageShow('', 'ImageRatio is blank', 'error');
+    }
+    else if ($("#txtColour").val() == '') {
+        MessageShow('', 'Colour is blank', 'error');
+    }
+    else {
+        var ThemeId = parseInt($("#txtThemeName").val());
+        var ThemeName = $("#txtThemeName").val();
+        var ExtThemeName = $("#txtExtThemeName").val();
+        var ImageRatio = $("#txtImageRatio").val();
+        var NoOfHomePanels = $("#txtColour").val();
+        var Colour = $("#txtNoOfHomePanels").val();
+        var MobileHeight = $("#txtMobileHeight").val();
+        var DesktopHeight = $("#txtDesktopHeight").val();
+        var IsDefault = $('#IsDefault').is(':checked');
+        var IsActive = $('#IsActive').is(':checked');
+        var stmpInfo = {
+            CompanyId: 0,
+            ThemeId: ThemeId,
+            ThemeName: ThemeName,
+            ExtThemeName: ExtThemeName,
+            ImageRatio: ImageRatio,
+            NoOfHomePanels: NoOfHomePanels,
+            Colour: Colour,
+            MobileHeight: MobileHeight,
+            DesktopHeight: DesktopHeight,
+            IsActive: IsActive,
+            IsDefault: IsDefault,
+            CreatedBy: null
+        }
+
+        debugger;
+        $.ajax({
+            url: baseURL + "Company/EditTheme",
+            type: "POST",
+            dataType: "html",
+            data: stmpInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelTheme();
+                    $("#Template").html(data);
+                    MessageShow('', 'Template saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Template is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
 }
 
 

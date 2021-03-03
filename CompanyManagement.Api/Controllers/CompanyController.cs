@@ -165,7 +165,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyTheme")]
         public async Task<IActionResult> GetCompanyTheme(RequestBase request)
         {
-            var responce = new Response<CompanyTheme>();
+            var responce = new ResponseList<GetCompanyTheme>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
@@ -184,7 +184,29 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-
+        //[Authorize]
+        //[HttpPost("EditThemeSetting")]
+        //public async Task<IActionResult> EditThemeSetting(Theme request)
+        //{
+        //    var responce = new ResponseList<>();
+        //    try
+        //    {
+        //        var user = (UserInfo)HttpContext.Items["User"];
+        //        if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+        //        {
+        //            responce = await _companyService.EditTemplate(request);
+        //        }
+        //        responce.Status = responce.Data != null;
+        //        responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        responce.Status = false;
+        //        responce.Message = ex.Message;
+        //        log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+        //    }
+        //    return Ok(responce);
+        //}
         [Authorize]
         [HttpPost("GetCompanySetting")]
         public async Task<IActionResult> GetCompanySetting(RequestCompanySetting request)
@@ -269,6 +291,30 @@ namespace CompanyManagement.Api.Controllers
                 }
                 responce.Status = responce.Data?.Count > 0;
                 responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [Authorize]
+        [HttpPost("EditTemplateSetting")]
+        public async Task<IActionResult> EditTemplateSetting(Template request)
+        {
+            var responce = new ResponseList<GetCompanyTemplate>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.EditTemplate(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {

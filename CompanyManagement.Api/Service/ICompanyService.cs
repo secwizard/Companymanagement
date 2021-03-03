@@ -9,13 +9,14 @@ namespace CompanyManagement.Api.Service
         Task<CompanyInfo> GetCompany(RequestBase request);
         Task<List<CompanyInfo>> GetCompanyList();
         Task<CompanyMailServer> GetCompanySmtp(RequestBase request);
-        Task<CompanyTheme> GetCompanyTheme(RequestBase request);
+        Task<List<GetCompanyTheme>> GetCompanyTheme(RequestBase request);
         Task<List<BranchInfo>> GetCompanyBranch(RequestBase request);
         Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request);
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
         Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request);
         Task<ResponseList<CompanySettingInfo>> EditCompanySetting(CompanySettingInfo request);
         Task<List<GetCompanyTemplate>> GetCompanyTemplate(RequestBase request);
+        Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request);
         Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request);
     }
 }
