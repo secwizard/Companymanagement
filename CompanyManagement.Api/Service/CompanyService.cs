@@ -62,7 +62,7 @@ namespace CompanyManagement.Api.Service
                 var res = new CompanyInfo();
 
                 var data = await _context.Company
-                    .Where(c => c.Website == request.CompanyUrl
+                    .Where(c => c.CompanySiteUrl == request.CompanyUrl
                     && c.IsActive == true).FirstOrDefaultAsync();
 
                 if (data != null)
