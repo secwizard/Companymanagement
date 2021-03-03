@@ -131,6 +131,7 @@ namespace CompanyManagement.UI.Controllers
             }
             
         }
+
         public async Task<IActionResult> GetCompanySettingsDetails()
         {
             ResponseList<ResponseCompanySetting> result = new ResponseList<ResponseCompanySetting>();
@@ -179,6 +180,37 @@ namespace CompanyManagement.UI.Controllers
             }
             
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteCompanySetting(DeleteCompanySettings companysetting)
+        {
+            ResponseList<ResponseCompanySetting> result = new ResponseList<ResponseCompanySetting>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.UserId = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.DeleteCompanySetting(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanySetting>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_PartialCompanySetting", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
+        [HttpPost]
         public async Task<IActionResult> EditTemplate(ResponseCompanyTemplate companysetting)
         {
             ResponseList<ResponseCompanyTemplate> result = new ResponseList<ResponseCompanyTemplate>();
@@ -189,6 +221,36 @@ namespace CompanyManagement.UI.Controllers
                 companysetting.CreatedBy = user.Id;
                 companysetting.CompanyId = user.CompanyId;
                 var compDtl = await _restAPI.EditTemplate(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanyTemplate>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Template", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteTemplate(DeleteCompanyTemplate companysetting)
+        {
+            ResponseList<ResponseCompanyTemplate> result = new ResponseList<ResponseCompanyTemplate>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.UserId = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.DeleteTemplate(JsonConvert.SerializeObject(companysetting), user.token);
                 result = JsonConvert.DeserializeObject<ResponseList<ResponseCompanyTemplate>>(compDtl);
                 if (result != null && result.Status)
                 {
@@ -244,6 +306,7 @@ namespace CompanyManagement.UI.Controllers
             }
             return PartialView("_Partial_Theme", result);
         }
+        [HttpPost]
         public async Task<IActionResult> EditTheme(ResponseThemeDetails companysetting)
         {
             ResponseList<ResponseThemeDetails> result = new ResponseList<ResponseThemeDetails>();
@@ -254,6 +317,36 @@ namespace CompanyManagement.UI.Controllers
                 companysetting.CreatedBy = user.Id;
                 companysetting.CompanyId = user.CompanyId;
                 var compDtl = await _restAPI.EditTheme(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseThemeDetails>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Theme", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteTheme(DeleteCompanyTheme companysetting)
+        {
+            ResponseList<ResponseThemeDetails> result = new ResponseList<ResponseThemeDetails>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.UserId = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.DeleteTheme(JsonConvert.SerializeObject(companysetting), user.token);
                 result = JsonConvert.DeserializeObject<ResponseList<ResponseThemeDetails>>(compDtl);
                 if (result != null && result.Status)
                 {

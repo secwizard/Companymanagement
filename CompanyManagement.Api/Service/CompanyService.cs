@@ -41,7 +41,7 @@ namespace CompanyManagement.Api.Service
                 var data = await _context.Company
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
-                if(data !=null)
+                if (data != null)
                 {
                     _mapper.Map(data, res);
                     var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
@@ -208,7 +208,7 @@ namespace CompanyManagement.Api.Service
 
                 if (data != null)
                 {
-                    data = MapMailServer(data,request);
+                    data = MapMailServer(data, request);
                     data.ModifiedBy = request.CreatedBy;
                     data.ModifiedDate = DateTime.Now;
                     _context.Entry(data).State = EntityState.Modified;
@@ -311,6 +311,51 @@ namespace CompanyManagement.Api.Service
 
             return retVal;
         }
+        public async Task<ResponseList<GetCompanyTheme>> DeleteTheme(DeleteCompanyTheme request)
+        {
+            var retVal = new ResponseList<GetCompanyTheme>();
+            try
+            {
+                if (request != null && request.ThemeId > 0)
+                {
+                    var data = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.ThemeId == request.ThemeId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data.IsActive = false;
+                        data.ModifiedBy = request.UserId;
+                        data.ModifiedDate = DateTime.Now;
+                        _context.Entry(data).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        RequestBase req = new RequestBase();
+                        req.CompanyId = request.CompanyId;
+
+                        retVal.Data = GetCompanyTheme(req).Result;
+                        retVal.Message = "OK";
+                        retVal.Status = true;
+                    }
+                    else
+                    {
+                        retVal.Status = false;
+                    }
+
+                }
+                else
+                {
+                    retVal.Status = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
         private Theme MapTheme(Theme preData, GetCompanyTheme postData)
         {
             preData.CompanyId = postData.CompanyId;
@@ -355,7 +400,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var parms = new SqlParameter[] 
+                var parms = new SqlParameter[]
                 {
                     new SqlParameter("@CompanyId", request.CompanyId),
                     new SqlParameter("@SettingType", request.SettingType??""),
@@ -403,7 +448,7 @@ namespace CompanyManagement.Api.Service
                     var data = MapCompanySetting(new CompanySetting(), request);
                     data.CreatedDate = DateTime.Now;
                     data.CreatedBy = request.CreatedBy;
-                   _context.CompanySetting.Add(data);
+                    _context.CompanySetting.Add(data);
                 }
                 _context.SaveChanges();
                 RequestCompanySetting req = new RequestCompanySetting();
@@ -414,6 +459,55 @@ namespace CompanyManagement.Api.Service
                 retVal.Data = GetCompanySetting(req).Result;
                 retVal.Message = "OK";
                 retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        public async Task<ResponseList<CompanySettingInfo>> DeleteCompanySetting(DeleteCompanySettings request)
+        {
+            var retVal = new ResponseList<CompanySettingInfo>();
+            var retData = new List<CompanySettingInfo>();
+            try
+            {
+                if (request != null && request.CompanySettingsId > 0)
+                {
+                    var data = await _context.CompanySetting
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.CompanySettingId == request.CompanySettingsId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data.ModifiedBy = request.UserId;
+                        data.ModifiedDate = DateTime.Now;
+                        data.IsActive = false;
+                        _context.Entry(data).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        RequestCompanySetting req = new RequestCompanySetting();
+                        req.CompanyId = request.CompanyId;
+                        req.DataText = "";
+                        req.SettingType = "";
+
+                        retVal.Data = GetCompanySetting(req).Result;
+                        retVal.Message = "OK";
+                        retVal.Status = true;
+                    }
+                    else
+                    {
+                        retVal.Status = false;
+                    }
+                }
+                else
+                {
+                    retVal.Status = false;
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -496,6 +590,53 @@ namespace CompanyManagement.Api.Service
                 retVal.Data = GetCompanyTemplate(req).Result;
                 retVal.Message = "OK";
                 retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        public async Task<ResponseList<GetCompanyTemplate>> DeleteTemplate(DeleteCompanyTemplate request)
+        {
+            var retVal = new ResponseList<GetCompanyTemplate>();
+            var retData = new List<CompanySettingInfo>();
+            try
+            {
+                if (request != null && request.TemplateId > 0)
+                {
+                    var data = await _context.Template
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.TemplateId == request.TemplateId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data.ModifiedBy = request.UserId;
+                        data.ModifiedDate = DateTime.Now;
+                        data.IsActive = false;
+                        _context.Entry(data).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        RequestBase req = new RequestBase();
+                        req.CompanyId = request.CompanyId;
+
+                        retVal.Data = GetCompanyTemplate(req).Result;
+                        retVal.Message = "OK";
+                        retVal.Status = true;
+
+                    }
+                    else
+                    {
+                        retVal.Status = false;
+                    }
+                }
+                else
+                {
+                    retVal.Status = false;
+                }
+
             }
             catch (Exception ex)
             {

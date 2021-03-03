@@ -36,7 +36,6 @@ function GetBranchDetails() {
         }
     });
 }
-
 function EditCompany() {
     if ($("#txtName").val() == '') {
         MessageShow('', 'Name is blank', 'error');
@@ -275,7 +274,7 @@ function AddEditCompanySetting() {
         var option2 = $("#txtOption2").val();
         var option3 = $("#txtOption3").val();
         var isActive = $('#IsActive').is(':checked');
-        var stmpInfo = {
+        var companySettingInfo = {
             CompanyId: 0,
             CompanySettingId: companySettingId,
             SettingType: settingType,
@@ -291,7 +290,7 @@ function AddEditCompanySetting() {
             url: baseURL + "Company/EditCompanySetting",
             type: "POST",
             dataType: "html",
-            data: stmpInfo,
+            data: companySettingInfo,
             success: function (data) {
                 if (data !== "NO") {
                     CancelCompanySetting()
@@ -311,6 +310,38 @@ function AddEditCompanySetting() {
             }
         });
     }
+}
+function DeleteCompanysetting(e) {
+    var CompanySettingsId = $("#hdnCompanySettingId_" + e).val();
+    deleteCompanySetting = {
+        CompanySettingsId: CompanySettingsId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteCompanySetting",
+        type: "POST",
+        dataType: "html",
+        data: deleteCompanySetting,
+        success: function (data) {
+            debugger;
+            if (data !== "NO") {
+                $("#CompanySettings").html(data);
+                MessageShow('', 'Company Setting saved', 'success');
+            }
+            else {
+                MessageShow('', 'Company Setting is not saved', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
 }
 function GetTemplateDetails() {
     $.ajax({
@@ -379,7 +410,7 @@ function AddEditTemplate() {
         var Title = $("#txtTitle").val();
         var HTMLData = $("#txtHTMLData").val();
         var isActive = $('#IsActive').is(':checked');
-        var stmpInfo = {
+        var templateInfo = {
             CompanyId: 0,
             TemplateId: TemplateId,
             TemplateType: TemplateType,
@@ -393,7 +424,7 @@ function AddEditTemplate() {
             url: baseURL + "Company/EditTemplate",
             type: "POST",
             dataType: "html",
-            data: stmpInfo,
+            data: templateInfo,
             success: function (data) {
                 if (data !== "NO") {
                     CancelCompanySetting();
@@ -413,6 +444,39 @@ function AddEditTemplate() {
             }
         });
     }
+}
+function DeleteTemplate(e){
+    var TemplateId = $("#hdnTemplateId_" + e).val();
+    deleteTemplate = {
+        TemplateId: TemplateId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteTemplate",
+        type: "POST",
+        dataType: "html",
+        data: deleteTemplate,
+        success: function (data) {
+
+            debugger;
+            if (data !== "NO") {
+                $("#Template").html(data);
+                MessageShow('', 'Template saved', 'success');
+            }
+            else {
+                MessageShow('', 'Template is not saved', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
 }
 function GetThemeDetails() {
     $.ajax({
@@ -493,7 +557,7 @@ function AddEditTheme() {
         var DesktopHeight = $("#txtDesktopHeight").val();
         var IsDefault = $('#IsDefault').is(':checked');
         var IsActive = $('#IsActive').is(':checked');
-        var stmpInfo = {
+        var themeInfo = {
             CompanyId: 0,
             ThemeId: ThemeId,
             ThemeName: ThemeName,
@@ -511,7 +575,7 @@ function AddEditTheme() {
             url: baseURL + "Company/EditTheme",
             type: "POST",
             dataType: "html",
-            data: stmpInfo,
+            data: themeInfo,
             success: function (data) {
                 if (data !== "NO") {
                     CancelTheme();
@@ -531,6 +595,38 @@ function AddEditTheme() {
             }
         });
     }
+}
+function DeleteTheme(e) {
+    var ThemeId = $("#hdnThemeId_" + e).val();
+    deleteTheme = {
+        ThemeId: ThemeId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteTheme",
+        type: "POST",
+        dataType: "html",
+        data: deleteTheme,
+        success: function (data) {
+            debugger;
+            if (data !== "NO") {
+                $("#Theme").html(data);
+                MessageShow('', 'Theme Deleted', 'success');
+            }
+            else {
+                MessageShow('', 'Theme is not Deleted', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
 }
 
 

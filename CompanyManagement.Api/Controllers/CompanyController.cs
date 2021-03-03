@@ -208,6 +208,29 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
         [Authorize]
+        [HttpPost("DeleteThemeSetting")]
+        public async Task<IActionResult> DeleteThemeSetting(DeleteCompanyTheme request)
+        {
+            var responce = new ResponseList<GetCompanyTheme>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.DeleteTheme(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        [Authorize]
         [HttpPost("GetCompanySetting")]
         public async Task<IActionResult> GetCompanySetting(RequestCompanySetting request)
         {
@@ -241,6 +264,29 @@ namespace CompanyManagement.Api.Controllers
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce = await _companyService.EditCompanySetting(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        [Authorize]
+        [HttpPost("DeleteCompanySetting")]
+        public async Task<IActionResult> DeleteCompanySetting(DeleteCompanySettings request)
+        {
+            var responce = new ResponseList<CompanySettingInfo>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.DeleteCompanySetting(request);
                 }
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
@@ -312,6 +358,29 @@ namespace CompanyManagement.Api.Controllers
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce = await _companyService.EditTemplate(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        [Authorize]
+        [HttpPost("DeleteTemplateSetting")]
+        public async Task<IActionResult> DeleteTemplateSetting(DeleteCompanyTemplate request)
+        {
+            var responce = new ResponseList<GetCompanyTemplate>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.DeleteTemplate(request);
                 }
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;

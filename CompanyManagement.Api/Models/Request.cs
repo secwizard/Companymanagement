@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace CompanyManagement.Api.Models
 {
@@ -25,6 +26,23 @@ namespace CompanyManagement.Api.Models
         public string LookUpType { get; set; }
     }
 
-
+    public class DeleteCompanyTemplate
+    {
+        public long TemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
+    public class DeleteCompanyTheme
+    {
+        public long ThemeId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
+    public class DeleteCompanySettings
+    {
+        public long CompanySettingsId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
 
 }

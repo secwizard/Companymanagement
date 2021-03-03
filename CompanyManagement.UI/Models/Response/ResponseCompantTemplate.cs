@@ -19,4 +19,10 @@ namespace CompanyManagement.UI.Models.Response
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class DeleteCompanyTemplate
+    {
+        public long TemplateId { get;set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
 }

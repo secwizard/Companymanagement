@@ -11,7 +11,7 @@ namespace CompanyManagement.UI.Services
         string ProcessRequest(string endPoint, string authorizationToken, bool bearerToken = true);
         string ProcessRequest(string endPoint);
 
-        string ProcessPostRequest(string url, string postdata, string authorizationToken, bool bearerToken=true);
+        string ProcessPostRequest(string url, string postdata, string authorizationToken, bool bearerToken = true);
         string ProcessPostRequest(string url, string postdata);
 
         #region ========== Login ==========
@@ -25,12 +25,15 @@ namespace CompanyManagement.UI.Services
         Task<string> GetMailDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditSTMPServer(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetCompanySettingsDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> DeleteCompanySetting(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditCompanySetting(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetTemplateDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditTemplate(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> DeleteTemplate(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetThemeDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditTheme(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> DeleteTheme(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
-    
+
 }
