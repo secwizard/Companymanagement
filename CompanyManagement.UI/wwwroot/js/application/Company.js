@@ -489,7 +489,7 @@ function EditTheme(e) {
     } else {
         $("#IsDefault").prop("checked", false);
     }
-    $("#hdnThemeId").val($("#hdnThemeId" + e).val());
+    $("#hdnThemeId").val($("#hdnThemeId_" + e).val());
 }
 function AddEditTheme() {
     if ($("#txtThemeName").val() == '') {
@@ -505,7 +505,7 @@ function AddEditTheme() {
         MessageShow('', 'Colour is blank', 'error');
     }
     else {
-        var ThemeId = parseInt($("#txtThemeName").val());
+        var ThemeId = parseInt($("#hdnThemeId").val());
         var ThemeName = $("#txtThemeName").val();
         var ExtThemeName = $("#txtExtThemeName").val();
         var ImageRatio = $("#txtImageRatio").val();

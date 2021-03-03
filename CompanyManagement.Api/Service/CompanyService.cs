@@ -265,10 +265,10 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        public async Task<ResponseList<GetCompanyTemplate>> EditTemplate(GetCompanyTheme request)
+        public async Task<ResponseList<GetCompanyTheme>> EditTheme(GetCompanyTheme request)
         {
-            var retVal = new ResponseList<GetCompanyTemplate>();
-            var retData = new List<CompanySettingInfo>();
+            var retVal = new ResponseList<GetCompanyTheme>();
+            var retData = new List<GetCompanyTheme>();
             try
             {
                 if (request != null && request.ThemeId > 0)
@@ -294,7 +294,7 @@ namespace CompanyManagement.Api.Service
                 RequestBase req = new RequestBase();
                 req.CompanyId = request.CompanyId;
 
-                retVal.Data = GetCompanyTemplate(req).Result;
+                retVal.Data = GetCompanyTheme(req).Result;
                 retVal.Message = "OK";
                 retVal.Status = true;
             }
@@ -318,6 +318,7 @@ namespace CompanyManagement.Api.Service
             preData.ThemeName = postData.ThemeName == null ? "" : postData.ThemeName;
             preData.MobileHeight = postData.MobileHeight == null ? 0 : postData.MobileHeight;
             preData.IsActive = postData.IsActive == null ? false : postData.IsActive;
+            preData.IsDefault = postData.IsDefault == null ? false : postData.IsDefault;
             return preData;
         }
         public async Task<List<BranchInfo>> GetCompanyBranch(RequestBase request)

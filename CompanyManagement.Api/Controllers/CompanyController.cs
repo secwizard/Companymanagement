@@ -186,15 +186,15 @@ namespace CompanyManagement.Api.Controllers
         }
         [Authorize]
         [HttpPost("EditThemeSetting")]
-        public async Task<IActionResult> EditThemeSetting(Theme request)
+        public async Task<IActionResult> EditThemeSetting(GetCompanyTheme request)
         {
-            var responce = new ResponseList<>();
+            var responce = new ResponseList<GetCompanyTheme>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
-                    responce = await _companyService.EditTemplate(request);
+                    responce = await _companyService.EditTheme(request);
                 }
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
