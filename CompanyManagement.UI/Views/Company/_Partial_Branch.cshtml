@@ -9,28 +9,29 @@
     <div class="row">
         <div class="col-md-3">
             <div class="mb-12">
-                <p class="all-textlabel">Name<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtNameBranch">
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="mb-12">
-                <p class="all-textlabel">Code<span style="color:red">*</span></p>
+                <p class="all-textlabel">Branch Code<span style="color:red">*</span></p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtCode">
             </div>
         </div>
         <div class="col-md-3">
             <div class="mb-12">
-                <p class="all-textlabel">Postal Code</p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPostalCode">
+                <p class="all-textlabel">Name<span style="color:red">*</span></p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtNameBranch">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="mb-12">
-                <p class="all-textlabel">Country</p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountry">
+                <p class="all-textlabel">Phone<span style="color:red">*</span></p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPhone">
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Email<span style="color:red">*</span></p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtEmail">
+            </div>
+        </div>
+
 
     </div>
     <div class="row">
@@ -53,10 +54,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="mb-12">
-                <p class="all-textlabel">District</p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrict">
+                <p class="all-textlabel">Pin / Zip</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPostalCode">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Country</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountry">
             </div>
         </div>
         <div class="col-md-2">
@@ -67,14 +74,8 @@
         </div>
         <div class="col-md-2">
             <div class="mb-12">
-                <p class="all-textlabel">Phone<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPhone">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="mb-12">
-                <p class="all-textlabel">Email<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtEmail">
+                <p class="all-textlabel">District</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrict">
             </div>
         </div>
         <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
@@ -98,13 +99,13 @@
                 <table class="table table-responsive table-bordered border-0 mb-3">
                     <thead class="custom-table-thead">
                         <tr class="text-leftt-thtd">
-                            <th style="width:20%"><p class="table-blankp mb-0">Name</p></th>
-                            <th style="width:20%"><p class="table-blankp mb-0">Code</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> PostalCode</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> District</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> State</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> Phone</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> Email</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Branch Code</p></th>
+                            <th style="width:20%"><p class="table-blankp mb-0"> Name</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Email</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Phone</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> PostalCode</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> District</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> State</p></th>
 
                             <th style="width:20%" class="text-center">Action</th>
                         </tr>
@@ -115,24 +116,24 @@
                             var i = 1;
                             foreach (var item in Model.Data)
                             {
-                                <tr>
-                                    <td style="width:20%" id='txtNameBranch_@i'>@item.Name</td>
-                                    <td style="width:20%" id='txtCode_@i'>@item.Code</td>
-                                    <td style="width:30%" id='txtPostalCode_@i'>@item.PostalCode</td>
-                                    <td style="width:20%" id='txtDistrict_@i'>@item.District</td>
-                                    <td style="width:20%" id='txtState_@i'>@item.State</td>
-                                    <td style="width:30%" id='txtPhone_@i'>@item.Phone</td>
-                                    <td style="width:30%" id='txtEmail_@i'>@item.Email</td>
-                                    <td style="width:20%" class="text-center">
-                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch(@i)"></i>
-                                    </td>
-                                    <td style="width:0%" class="text-center">
-                                        <input type='hidden' id='hdnBranchId_@i' value='@item.BranchId' />
-                                        <input type='hidden' id='txtCountry_@i' value='@item.Country' />
-                                        <input type='hidden' id='txtAddress1Branch_@i' value='@item.Address1' />
-                                        <input type='hidden' id='txtAddress2Branch_@i' value='@item.Address2' />
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td style="width:10%" id='txtCode_@i'>@item.Code</td>
+                            <td style="width:20%" id='txtNameBranch_@i'>@item.Name</td>
+                            <td style="width:10%" id='txtEmail_@i'>@item.Email</td>
+                            <td style="width:10%" id='txtPhone_@i'>@item.Phone</td>
+                            <td style="width:10%" id='txtPostalCode_@i'>@item.PostalCode</td>
+                            <td style="width:10%" id='txtDistrict_@i'>@item.District</td>
+                            <td style="width:10%" id='txtState_@i'>@item.State</td>
+                            <td style="width:20%" class="text-center">
+                                <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch(@i)"></i>
+                            </td>
+                            <td style="width:0%" class="text-center">
+                                <input type='hidden' id='hdnBranchId_@i' value='@item.BranchId' />
+                                <input type='hidden' id='txtCountry_@i' value='@item.Country' />
+                                <input type='hidden' id='txtAddress1Branch_@i' value='@item.Address1' />
+                                <input type='hidden' id='txtAddress2Branch_@i' value='@item.Address2' />
+                            </td>
+                        </tr>
                                 i++;
                             }
                         }
