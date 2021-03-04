@@ -14,7 +14,9 @@
     margin-left: 0;
     margin-right: 0;
 }
-
+a {
+    color: #2cb7ee;
+}
 body {
     //background-color: #f2f2f2;
     font-size: 10px;
@@ -697,6 +699,153 @@ button, input {
     font-size: 16px;
     padding: 0.5rem;
     line-height: 33px;
+}
+
+
+
+.fullpage-message-div {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+
+.main-msg-body {
+    width: 570px;
+    min-height: 130px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 70px);
+    box-shadow: 0 0 5px #848484;
+    border-radius: 2px;
+    border-top: 5px solid #7a7a7a;
+    padding: 0 15px 15px 15px;
+    left: 0;
+}
+
+.msg-close {
+    color: red;
+    opacity: 1;
+    outline: none;
+    border: none;
+    background: none;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 0;
+    line-height: initial;
+}
+
+.info-sm-bg {
+    background: #c4d9e8;
+}
+
+.info-msg {
+    background: #dde9f1;
+}
+
+.alert-icons-label i {
+    padding: 15px 10px;
+    font-size: 16px;
+}
+
+.info-fa-color {
+    color: #0d55a3;
+}
+
+.warning-msg {
+    background: #fbeee7;
+}
+
+.warning-sm-bg {
+    background: #f7e1d5;
+}
+
+.warning-fa-color {
+    color: #c23d11;
+}
+
+.sucess-msg {
+    background-color: #e0f2e5;
+}
+
+.alert-icons-label {
+    height: 45px;
+    position: absolute;
+    top: 0;
+    margin-bottom: 0;
+    background: #dadada;
+    left: 0;
+    width: 35px;
+}
+
+.success-fa-color {
+    color: #007823;
+}
+
+.padding-control-withmsgdivstyle {
+    padding: 13px 15px 13px 45px;
+    height: 45px;
+    position: relative;
+    font-weight: 600;
+    font-size: 12px;
+    color: #6d6d6d;
+}
+
+.error-msg {
+    background-color: #fbebeb;
+}
+
+.alert-icons-label {
+    height: 45px;
+    position: absolute;
+    top: 0;
+    margin-bottom: 0;
+    background: #dadada;
+    left: 0;
+    width: 35px;
+}
+
+.error-fa-color {
+    color: #ca1013;
+}
+
+.alert-modalcontent {
+    border-radius: 0;
+    border-top: 5px solid #7a7a7a;
+}
+
+.alt-modalheader {
+    padding: 2px 15px;
+}
+
+.success-sm-bg {
+    background: #b7ebc6;
+}
+
+.error-sm-bg {
+    background: #f7d8d8;
+}
+
+.info-sm-bg {
+    background: #c4d9e8;
+}
+
+.warning-sm-bg {
+    background: #f7e1d5;
+}
+.primary-type-button {
+    padding: 7px 8px;
+    min-width: 85px;
+    background: #7a7a7a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    outline: none;
 }
 
 .custom-text-capitalize {
