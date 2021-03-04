@@ -1,123 +1,117 @@
 ﻿@using System.Data
 @model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanySetting>
 
+
 <div class="mb-10 text-left">
-    <button class="primary-type-button input-height-button" id="addCompanySetting" onclick="AddCompanySetting()">+ ADD</button>
+    <button class="primary-button min-w-80px" id="addCompanySetting" onclick="AddCompanySetting()">+ Add</button>
 </div>
 <div class="table-responsive" style="display:none" id="newCompanySetting">
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Type</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtSettingType">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Type</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSettingType">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Data Text</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDataText">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Data Value</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDataValue">
+            </div>
+        </div>
+        <div class="col-md-3 text-right pr-0 pl-0-pr-0-mob">
+            <p class="all-textlabel">&nbsp;</p>
+            <input type="button" class="secondary-button mr-2 min-w-80px" value="Cancel" onclick="CancelCompanySetting();" />
+            <input type="button" class="primary-button min-w-80px" value="Save" onclick="AddEditCompanySetting()" />
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Data Text</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtDataText">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Option 1</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtOption1">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Data Value</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtDataValue">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Option 2</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtOption2">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Option 1</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtOption1">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Option 3</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtOption3">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Option 2</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtOption2">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Option 3</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtOption3">
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="IsActive" name="IsActive">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+            <p class="all-textlabel"> </p>
+            <br />
+            <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                <input class="permissionCheckbox" type="checkbox" id="IsActiveCompanySetting" />Is Active
+                <span class="checkmark"></span>
             </label>
         </div>
     </div>
-    <div class="mb-10 text-right col-md-12">
-        <button class="primary-type-button input-height-button" id="cancelCompanySetting" onclick="CancelCompanySetting()">Cancel</button>
-        <button class="primary-type-button input-height-button" id="addCompanySetting" onclick="AddEditCompanySetting()">Save</button>
-    </div>
-    <input type="hidden" id="hdnCompanySettingId" value="0" />
+    <input type='hidden' id='hdnCompanySettingId' value='0' />
+
 </div>
+
 <div class="scrollsetting">
-    @if (Model != null && Model.Data != null && Model.Data.Count > 0)
-    {
-        var i = 1;
-        foreach (var item in Model.Data)
-        {
-            <div class="table-responsive seperate">
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Type</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtSettingType_@i" value="@item.SettingType" disabled>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Data Text</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtDataText_@i" value="@item.DataText">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Data Value</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtDataValue_@i" value="@item.DataValue">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Option 1</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtOption1_@i" value="@item.Option1">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Option 2</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtOption2_@i" value="@item.Option2">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-05">
-                        <p class="field-label-text">Option 3</p>
-                        <input type="text" class="textboxclass" placeholder="" id="txtOption3_@i" value="@item.Option3">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="mb-15">
-                        <p class="field-label-text">&nbsp;</p>
-                        <label class="cus-chk-containerall">
-                            <input type="checkbox" id="IsActive_@i" checked="@item.IsActive" name="IsActive">
-                            <span class="checkmarkall"></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-10 text-right col-md-12">
-                    <button class="primary-type-button input-height-button" id="addCompanySetting" onclick="EditCompanySetting(@i)">Edit</button>
-                    <button class="primary-type-button input-height-button" id="addCompanySetting" onclick="DeleteCompanysetting(@i)">Delete</button>
-                </div>
-                <input type='hidden' id='hdnCompanySettingId_@i' value='@item.CompanySettingId' />
+    <div class="row">
+        <div class="col p-0">
+            <div class="custom-table mt-3">
+                <table class="table table-responsive table-bordered border-0 mb-3">
+                    <thead class="custom-table-thead">
+                        <tr class="text-leftt-thtd">
+                            <th style="width:20%"><p class="table-blankp mb-0">Type</p></th>
+                            <th style="width:20%"><p class="table-blankp mb-0"> Data Text</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Data Value</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Option 1</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Option 2</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Option 3</p></th>
+
+                            <th style="width:20%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                        @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+                        {
+                            var i = 1;
+                            foreach (var item in Model.Data)
+                            {
+                                <tr>
+                                    <td style="width:20%" id='txtSettingType_@i'>@item.SettingType</td>
+                                    <td style="width:20%" id='txtDataText_@i'>@item.DataText</td>
+                                    <td style="width:30%" id='txtDataValue_@i'>@item.DataValue</td>
+                                    <td style="width:20%" id='txtOption1_@i'>@item.Option1</td>
+                                    <td style="width:20%" id='txtOption2_@i'>@item.Option2</td>
+                                    <td style="width:30%" id='txtOption3_@i'>@item.Option3</td>
+                                    <td style="width:20%" class="text-center">
+                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditCompanySetting(@i, '@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteCompanysetting(@i)"></i>
+                                    </td>
+                                    <td style="width:0%" class="text-center">
+                                        <input type='hidden' id='hdnCompanySettingId_@i' value='@item.CompanySettingId' />
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
-            i++;
-        }
-    }
+        </div>
+    </div>
 </div>
+
+
+
+
 

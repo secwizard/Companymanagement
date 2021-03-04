@@ -249,9 +249,10 @@ function GetCompanySettingsDetails() {
 function AddCompanySetting() {
     $("#addCompanySetting").css("display", "none");
     $("#newCompanySetting").css("display", "block");
-
+    $("#IsActiveCompanySetting").prop("checked", false);
 }
 function CancelCompanySetting() {
+    debugger;
     $("#txtSettingType").val('');
     $("#txtDataText").val('');
     $("#txtDataValue").val('');
@@ -263,19 +264,20 @@ function CancelCompanySetting() {
     $("#newCompanySetting").css("display", "none");
 
 }
-function EditCompanySetting(e) {
+function EditCompanySetting(e,i) {
+    debugger;
     $("#addCompanySetting").css("display", "none");
     $("#newCompanySetting").css("display", "block");
-    $("#txtSettingType").val($("#txtSettingType_" + e).val());
-    $("#txtDataText").val($("#txtDataText_" + e).val());
-    $("#txtDataValue").val($("#txtDataValue_" + e).val());
-    $("#txtOption1").val($("#txtOption1_" + e).val());
-    $("#txtOption2").val($("#txtOption2_" + e).val());
-    $("#txtOption3").val($("#txtOption3_" + e).val());
-    if ($("#IsActive_" + e).prop("checked")) {
-        $("#IsActive").prop("checked", true);
+    $("#txtSettingType").val($("#txtSettingType_" + e).text());
+    $("#txtDataText").val($("#txtDataText_" + e).text());
+    $("#txtDataValue").val($("#txtDataValue_" + e).text());
+    $("#txtOption1").val($("#txtOption1_" + e).text());
+    $("#txtOption2").val($("#txtOption2_" + e).text());
+    $("#txtOption3").val($("#txtOption3_" + e).text());
+    if (i == "True") {
+        $("#IsActiveCompanySetting").prop("checked", true);
     } else {
-        $("#IsActive").prop("checked", false);
+        $("#IsActiveCompanySetting").prop("checked", false);
     }
     $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
 }
@@ -297,7 +299,7 @@ function AddEditCompanySetting() {
         var option1 = $("#txtOption1").val();
         var option2 = $("#txtOption2").val();
         var option3 = $("#txtOption3").val();
-        var isActive = $('#IsActive').is(':checked');
+        var isActive = $('#IsActiveCompanySetting').is(':checked');
         var companySettingInfo = {
             CompanyId: 0,
             CompanySettingId: companySettingId,
