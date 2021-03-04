@@ -583,7 +583,7 @@ function AddEditTemplate() {
     else {
         var TemplateId = parseInt($("#hdnTemplateId").val());
         var TemplateType = $("#txtTemplateType").val();
-        var Name = $("#txtName").val();
+        var Name = $("#txtNameTemplate").val();
         var Title = $("#txtTitle").val();
         var HTMLData = $("#txtHTMLData").val();
         var isActive = $('#IsActiveTemplate').is(':checked');
