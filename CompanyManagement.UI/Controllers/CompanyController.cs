@@ -73,7 +73,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Either UserName Or Password is Incorrect";
                 result.Status = false;
                 log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
             
         }
@@ -119,7 +119,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -127,7 +127,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Either UserName Or Password is Incorrect";
                 result.Status = false;
                 log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
             
         }
@@ -167,16 +167,16 @@ namespace CompanyManagement.UI.Controllers
                         return PartialView("_PartialCompanySetting", result);
                     }
                     else
-                    {
-                        return Json("NO");
-                    }
+                {
+                    return Ok("NO");
+                }
             }
             catch (Exception ex)
             {
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
             
         }
@@ -198,7 +198,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -206,7 +206,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -228,7 +228,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -258,7 +258,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -266,7 +266,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -324,7 +324,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -332,7 +332,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -354,7 +354,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -362,7 +362,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -403,7 +403,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -411,7 +411,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }
@@ -433,7 +433,7 @@ namespace CompanyManagement.UI.Controllers
                 }
                 else
                 {
-                    return Json("NO");
+                    return Ok("NO");
                 }
             }
             catch (Exception ex)
@@ -441,7 +441,7 @@ namespace CompanyManagement.UI.Controllers
                 result.Message = "Something Went Wrong";
                 result.Status = false;
                 log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
-                return Json("NO");
+                return Ok("NO");
             }
 
         }

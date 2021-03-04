@@ -145,17 +145,23 @@ function AddEditBranch() {
             dataType: "html",
             data: branchInfo,
             success: function (data) {
+                debugger;
+
                 if (data !== "NO") {
                     CancelBranch()
                     $("#Branch").html(data);
                     MessageShow('', 'Branch saved', 'success');
                 }
                 else {
+                    debugger;
+
                     MessageShow('', 'Branch is not saved', 'error');
                 }
                 HideLoader();
             },
             error: function (data) {
+                debugger;
+
                 MessageShow('', 'Something Went Wrong', 'error');
                 console.log("error");
                 console.log(data);
@@ -751,17 +757,20 @@ function AddEditTheme() {
             dataType: "html",
             data: themeInfo,
             success: function (data) {
+                debugger;
                 if (data !== "NO") {
                     CancelTheme();
                     $("#Theme").html(data);
                     MessageShow('', 'Theme saved', 'success');
                 }
                 else {
+                    debugger;
                     MessageShow('', 'Theme is not saved', 'error');
                 }
                 HideLoader();
             },
             error: function (data) {
+                debugger;
                 MessageShow('', 'Something Went Wrong', 'error');
                 console.log("error");
                 console.log(data);
