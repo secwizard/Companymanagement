@@ -807,11 +807,21 @@ button, input {
     left: 0;
     width: 35px;
 }
+.width100 {
+    width: 100%;
+}
 
+.bordccc {
+    border: 1px solid #cccccc;
+}
 .error-fa-color {
     color: #ca1013;
 }
-
+.richText .richText-editor {
+    height: 100px !important;
+    border-top: 1px solid #ccc !important;
+    border-bottom: 1px solid #ccc !important;
+}
 .alert-modalcontent {
     border-radius: 0;
     border-top: 5px solid #7a7a7a;

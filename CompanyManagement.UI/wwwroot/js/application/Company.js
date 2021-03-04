@@ -581,6 +581,7 @@ function AddEditTemplate() {
     }
 
     else {
+        debugger;
         var TemplateId = parseInt($("#hdnTemplateId").val());
         var TemplateType = $("#txtTemplateType").val();
         var Name = $("#txtNameTemplate").val();

@@ -1,6 +1,9 @@
 ﻿@using System.Data
 @model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanyTemplate>
 
+    <script src="~/js/application/jquery.richtext.min.js"></script>
+    <script src="~/js/application/jquery.richtext.js"></script>
+    <link href="~/css/application/richtext-min.css" rel="stylesheet" />
     <div class="mb-10 text-left">
         <button class="primary-button min-w-80px" id="addTemplate" onclick="AddTemplate()">+ Add</button>
     </div>
@@ -31,10 +34,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
-                <div class="mb-12">
-                    <p class="all-textlabel">HTMLData</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtHTMLData">
+            <div class="col-md-10">
+                <div class="mb-15">
+                    <p class="all-textlabel">HTML Data</p>
+                    <textarea class="content width100 bordccc" name="Description" id="txtHTMLData"></textarea>
                 </div>
             </div>
             <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
@@ -49,44 +52,49 @@
         </div>
         <input type='hidden' id='hdnTemplateId' value='0' />
     </div>
-        
-        <div class="scrollsetting">
-            <div class="row">
-                <div class="col p-0">
-                    <div class="custom-table mt-3">
-                        <table class="table table-responsive table-bordered border-0 mb-3">
-                            <thead class="custom-table-thead">
-                                <tr class="text-leftt-thtd">
-                                    <th style="width:20%"><p class="table-blankp mb-0">Template Type</p></th>
-                                    <th style="width:20%"><p class="table-blankp mb-0"> Name</p></th>
-                                    <th style="width:30%"><p class="table-blankp mb-0"> Title</p></th>
-                                    <th style="width:10%" class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+
+    <div class="scrollsetting">
+        <div class="row">
+            <div class="col p-0">
+                <div class="custom-table mt-3">
+                    <table class="table table-responsive table-bordered border-0 mb-3">
+                        <thead class="custom-table-thead">
+                            <tr class="text-leftt-thtd">
+                                <th style="width:20%"><p class="table-blankp mb-0">Template Type</p></th>
+                                <th style="width:20%"><p class="table-blankp mb-0"> Name</p></th>
+                                <th style="width:30%"><p class="table-blankp mb-0"> Title</p></th>
+                                <th style="width:10%" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
                             @if (Model != null && Model.Data != null && Model.Data.Count > 0)
                             {
                                 var i = 1;
                                 foreach (var item in Model.Data)
                                 {
-                                <tr>
-                                    <td style="width:20%" id='txtTemplateType_@i' >@item.TemplateType</td>
-                                    <td style="width:20%" id='txtName_@i'>@item.Name</td>
-                                    <td style="width:30%" id='txtTitle_@i'>@item.Title</td>
-                                    <td style="width:10%" class="text-center">
-                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTemplate(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTemplate(@i)"></i>
-                                    </td>
-                                    <td style="width:0%" class="text-center">
-                                        <input type='hidden' id='hdnTemplateId_@i' value='@item.TemplateId' />
-                                        <input type='hidden' id='txtHTMLData_@i' value='@item.HTMLData' />
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td style="width:20%" id='txtTemplateType_@i'>@item.TemplateType</td>
+                                        <td style="width:20%" id='txtName_@i'>@item.Name</td>
+                                        <td style="width:30%" id='txtTitle_@i'>@item.Title</td>
+                                        <td style="width:10%" class="text-center">
+                                            <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTemplate(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTemplate(@i)"></i>
+                                        </td>
+                                        <td style="width:0%" class="text-center">
+                                            <input type='hidden' id='hdnTemplateId_@i' value='@item.TemplateId' />
+                                            <input type='hidden' id='txtHTMLData_@i' value='@item.HTMLData' />
+                                        </td>
+                                    </tr>
                                     i++;
                                 }
                             }
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
+    <script>
+        $('.content').richText();
+
+
+    </script>
