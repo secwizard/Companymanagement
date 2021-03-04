@@ -573,9 +573,7 @@ function AddEditTemplate() {
     else if ($("#txtTitle").val() == '') {
         MessageShow('', 'Title is blank', 'error');
     }
-    else if ($("#txtHTMLData").val() == '') {
-        MessageShow('', 'HTMLData is blank', 'error');
-    }
+
     else {
         var TemplateId = parseInt($("#hdnTemplateId").val());
         var TemplateType = $("#txtTemplateType").val();
