@@ -1,64 +1,68 @@
 ﻿@using System.Data
 @model Response<CompanyManagement.UI.Models.Response.ResponseMailServerDetails>
 
-    <div class="table-responsive">
+<div class="table-responsive">
+    <div class="row">
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="field-label-text">SMTP Server</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" disabled>
+                <p class="all-textlabel">SMTP Server</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" >
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="field-label-text">SMTP Port</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort">
+                <p class="all-textlabel">SMTP Port</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort">
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="field-label-text">From EmailDisplay Name</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName">
+                <p class="all-textlabel">From EmailDisplay Name</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-05">
+                <p class="all-textlabel">From Email Id</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId">
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="field-label-text">From Email Id</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">From Email Id Pwd</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd">
+                <p class="all-textlabel">From Email Id Pwd</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd">
             </div>
         </div>
         <div class="col-md-2">
             <div class="mb-15">
-                <p class="field-label-text">&nbsp;</p>
-                <label class="cus-chk-containerall">
-                    <input type="checkbox" id="EnableSSL" checked="@Model.Data.EnableSSL" name="EnableSSL">
-                    <span class="checkmarkall"></span>
+                <p class="all-textlabel">&nbsp;</p>
+                <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                    <input class="permissionCheckbox" type="checkbox" id="EnableSSL" checked="@Model.Data.EnableSSL" name="EnableSSL">
+                    <span class="checkmark"></span>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable SSL
                 </label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="mb-15">
-                <p class="field-label-text">&nbsp;</p>
-                <label class="cus-chk-containerall">
-                    <input type="checkbox" id="IsActive" checked="@Model.Data.IsActive" name="IsActive">
-                    <span class="checkmarkall"></span>
+                <p class="all-textlabel">&nbsp;</p>
+                <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                    <input class="permissionCheckbox" type="checkbox" id="IsActive" checked="@Model.Data.IsActive" name="IsActive">
+                    <span class="checkmark"></span>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
                 </label>
             </div>
         </div>
-        <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
-        <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
-        <div class="row text-right mt-3">
-            <div class="col p-0">
-                <button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>
-                <button class="primary-button min-w-80px" onclick="EditMailServer()">Save</button>
-            </div>
-        </div>
-
     </div>
+    <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
+    <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
+    <div class="row text-right mt-3">
+        <div class="col p-0">
+            <button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>
+            <button class="primary-button min-w-80px" onclick="EditMailServer()">Save</button>
+        </div>
+    </div>
+
+</div>
