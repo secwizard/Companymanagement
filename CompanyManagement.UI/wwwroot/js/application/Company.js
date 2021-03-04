@@ -214,28 +214,46 @@ function DeleteBranch(e) {
         }
     });
 }
+function CompanyOnFocus() {
+    $("#companyDetailsError").text("");
+}
+function BranchOnFocus() {
+    $("#branchDetailsError").text("");
+}
+function MailOnFocus() {
+    $("#companymailDetailsError").text("");
+}
+function SettingOnFocus() {
+    $("#companySettingsDetailsError").text("");
+}
+function TemplateOnFocus() {
+    $("#companyTemplateDetailsError").text("");
+}
+function ThemesOnFocus() {
+    $("#companyThemesDetailsError").text("");
+}
 function EditCompany() {
     if ($("#txtName").val() == '') {
-        MessageShow('', 'Name is Not Correct', 'error');
+        $("#companyDetailsError").text("* Company Name is Not Correct");
     }
     else if (!phonenumber($("#txtAdminPhone").val())) {
-        MessageShow('', 'Admin Phone is Not Correct', 'error');
+        $("#companyDetailsError").text("* Admin Phone is Not Correct");
     }
     else if (!IsEmail($("#txtAdminEmail").val())) {
-        MessageShow('', 'Admin Email is Not Correct', 'error');
+        $("#companyDetailsError").text("* Admin Email is Not Correct");
     }
     else if ($("#txtCurrencyCode").val() == '') {
-        MessageShow('', 'Currency Code is Not Correct', 'error');
+        $("#companyDetailsError").text("* Currency Code is Not Correct");
     }
     else if ($("#txtImageFilePath").val() == '') {
-        MessageShow('', 'Image File Path is Not Correct', 'error');
+        $("#companyDetailsError").text("* Image File Path is Not Correct");
     }
     else if ($("#txtShortname").val() == '') {
-        MessageShow('', 'Short Name is Not Correct', 'error');
+        $("#companyDetailsError").text("* Company Short Name is Not Correct");
     }
     else if ($("#txtGSTNumber").val() != '' && !IsGST($("#txtGSTNumber").val())) {
 
-        MessageShow('', 'GST Number is Not Correct', 'error');
+        $("#companyDetailsError").text("* GST is Not Correct");
     }
 
     else {
@@ -341,13 +359,13 @@ function GetMailDetails() {
 }
 function EditMailServer() {
     if ($("#txtSTMPServer").val() == '') {
-        MessageShow('', 'STMPServer is blank', 'error');
+        $("#companymailDetailsError").text("* SMTP Server is Not Correct");
     }
     else if ($("#txtSTMPPort").val() == '') {
-        MessageShow('', 'STMPPort is blank', 'error');
+        $("#companymailDetailsError").text("* SMTP Port is Not Correct");
     }
-    else if ($("#fromEmailDisplayName").val() == '') {
-        MessageShow('', 'fromEmailDisplayName is blank', 'error');
+    else if ($("#txtFromEmailDisplayName").val() == '') {
+        $("#companymailDetailsError").text("* from Email Display Name  is Not Correct");
     }
     else {
         var companyId = parseInt($("#hdnCompanyId").val());

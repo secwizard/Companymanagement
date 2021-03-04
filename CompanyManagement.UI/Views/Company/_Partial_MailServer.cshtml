@@ -6,19 +6,19 @@
         <div class="col-md-4">
             <div class="mb-05">
                 <p class="all-textlabel">SMTP Server<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" >
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" onfocus="MailOnFocus()">
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
                 <p class="all-textlabel">SMTP Port<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort">
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort" onfocus="MailOnFocus()">
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
                 <p class="all-textlabel">Display Email Name<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName">
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName" onfocus="MailOnFocus()">
             </div>
         </div>
     </div>
