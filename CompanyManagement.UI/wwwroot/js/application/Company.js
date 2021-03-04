@@ -391,7 +391,7 @@ function GetTemplateDetails() {
 function AddTemplate() {
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
-
+    $("#IsActiveTemplate").prop("checked", false);
 }
 function CancelTemplate() {
     $("#txtTemplateType").val('');
@@ -403,25 +403,29 @@ function CancelTemplate() {
     $("#newTemplate").css("display", "none");
 
 }
-function EditTemplate(e) {
+function EditTemplate(e,i) {
+    debugger;
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
-    $("#txtTemplateType").val($("#txtTemplateType_" + e).val());
-    $("#txtName").val($("#txtName_" + e).val());
-    $("#txtTitle").val($("#txtTitle_" + e).val());
+    $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
+    var dd = $("#txtName_" + e).text();
+    $("#txtNameTemplate").val($("#txtName_" + e).text());
+    $("#txtTitle").val($("#txtTitle_" + e).text());
     $("#txtHTMLData").val($("#txtHTMLData_" + e).val());
-    if ($("#IsActive_" + e).prop("checked")) {
-        $("#IsActive").prop("checked", true);
+    var d = $("#IsActive_" + e).val();
+    if (i == "True") {
+        $("#IsActiveTemplate").prop("checked", true);
     } else {
-        $("#IsActive").prop("checked", false);
+        $("#IsActiveTemplate").prop("checked", false);
     }
     $("#hdnTemplateId").val($("#hdnTemplateId_" + e).val());
 }
 function AddEditTemplate() {
+    debugger;
     if ($("#txtTemplateType").val() == '') {
         MessageShow('', 'TemplateType is blank', 'error');
     }
-    else if ($("#txtName").val() == '') {
+    else if ($("#txtNameTemplate").val() == '') {
         MessageShow('', 'Name is blank', 'error');
     }
     else if ($("#txtTitle").val() == '') {
@@ -436,7 +440,7 @@ function AddEditTemplate() {
         var Name = $("#txtName").val();
         var Title = $("#txtTitle").val();
         var HTMLData = $("#txtHTMLData").val();
-        var isActive = $('#IsActive').is(':checked');
+        var isActive = $('#IsActiveTemplate').is(':checked');
         var templateInfo = {
             CompanyId: 0,
             TemplateId: TemplateId,
@@ -472,7 +476,8 @@ function AddEditTemplate() {
         });
     }
 }
-function DeleteTemplate(e){
+function DeleteTemplate(e) {
+
     var TemplateId = $("#hdnTemplateId_" + e).val();
     deleteTemplate = {
         TemplateId: TemplateId,
@@ -529,7 +534,8 @@ function GetThemeDetails() {
 function AddTheme() {
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
-
+    $("#IsActiveTheme").prop("checked", false);
+    $("#IsDefault").prop("checked", false);
 }
 function CancelTheme() {
     $("#txtThemeName").val('');
@@ -544,22 +550,23 @@ function CancelTheme() {
     $("#newTheme").css("display", "none");
 
 }
-function EditTheme(e) {
+function EditTheme(e, i, j) {
+    debugger;
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
-    $("#txtThemeName").val($("#txtThemeName_" + e).val());
-    $("#txtExtThemeName").val($("#txtExtThemeName_" + e).val());
-    $("#txtImageRatio").val($("#txtImageRatio_" + e).val());
-    $("#txtColour").val($("#txtColour_" + e).val());
-    $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).val());
-    $("#txtMobileHeight").val($("#txtMobileHeight_" + e).val());
-    $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).val());
-    if ($("#IsActive_" + e).prop("checked")) {
-        $("#IsActive").prop("checked", true);
+    $("#txtThemeName").val($("#txtThemeName_" + e).text());
+    $("#txtExtThemeName").val($("#txtExtThemeName_" + e).text());
+    $("#txtImageRatio").val($("#txtImageRatio_" + e).text());
+    $("#txtColour").val($("#txtColour_" + e).text());
+    $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).text());
+    $("#txtMobileHeight").val($("#txtMobileHeight_" + e).text());
+    $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).text());
+    if (i == "True") {
+        $("#IsActiveTheme").prop("checked", true);
     } else {
-        $("#IsActive").prop("checked", false);
+        $("#IsActiveTheme").prop("checked", false);
     }
-    if ($("#IsDefault_" + e).prop("checked")) {
+    if (j == "True") {
         $("#IsDefault").prop("checked", true);
     } else {
         $("#IsDefault").prop("checked", false);
@@ -586,7 +593,7 @@ function AddEditTheme() {
         var MobileHeight = $("#txtMobileHeight").val();
         var DesktopHeight = $("#txtDesktopHeight").val();
         var IsDefault = $('#IsDefault').is(':checked');
-        var IsActive = $('#IsActive').is(':checked');
+        var IsActive = $('#IsActiveTheme').is(':checked');
         var themeInfo = {
             CompanyId: 0,
             ThemeId: ThemeId,

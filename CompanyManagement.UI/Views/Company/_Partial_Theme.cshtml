@@ -2,155 +2,129 @@
 @model ResponseList<CompanyManagement.UI.Models.Response.ResponseThemeDetails>
 
 <div class="mb-10 text-left">
-    <button class="primary-type-button input-height-button" id="addTheme" onclick="AddTheme()">+ ADD</button>
+    <button class="primary-button min-w-80px" id="addTheme" onclick="AddTheme()">+ Add</button>
 </div>
 <div class="table-responsive" style="display:none" id="newTheme">
 
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Theme Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtThemeName">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Theme Name</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtThemeName">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Ext Theme Name</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtExtThemeName">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">ImageRatio</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageRatio">
+            </div>
+        </div>
+        <div class="col-md-3 text-right pr-0 pl-0-pr-0-mob">
+            <p class="all-textlabel">&nbsp;</p>
+            <input type="button" class="secondary-button mr-2 min-w-80px" value="Cancel" onclick="CancelTheme();" />
+            <input type="button" class="primary-button min-w-80px" value="Save" onclick="AddEditTheme()" />
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Ext Theme Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtExtThemeName">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Colour</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtColour">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">ImageRatio</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtImageRatio">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">NoOfHomePanels</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtNoOfHomePanels">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Colour</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtColour">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">MobileHeight</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtMobileHeight">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">NoOfHomePanels</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtNoOfHomePanels">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">DesktopHeight</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDesktopHeight">
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">MobileHeight</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtMobileHeight">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">DesktopHeight</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtDesktopHeight">
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="IsActive" name="IsActive">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
+        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+            <p class="all-textlabel"> </p>
+            <br />
+            <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                <input class="permissionCheckbox" type="checkbox" id="IsActiveTheme" />Is Active
+                <span class="checkmark"></span>
             </label>
         </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="IsDefault" name="IsDefault">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Default
+        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+            <p class="all-textlabel"> </p>
+            <br />
+            <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                <input class="permissionCheckbox" type="checkbox" id="IsDefault" />Is Default
+                <span class="checkmark"></span>
             </label>
         </div>
-    </div>
-    <div class="mb-10 text-right col-md-12">
-        <button class="primary-type-button input-height-button" id="cancelTemplate" onclick="CancelTheme()">Cancel</button>
-        <button class="primary-type-button input-height-button" id="addTemplate" onclick="AddEditTheme()">Save</button>
+
     </div>
     <input type='hidden' id='hdnThemeId' value='0' />
-</div>
-<div class="scrollsetting">
-    @if (Model != null && Model.Data != null && Model.Data.Count > 0)
-    {
-        var i = 1;
-        foreach (var item in Model.Data)
-        {
-    <div class="table-responsive seperate">
 
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">Theme Name</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtThemeName_@i" value="@item.ThemeName">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">Ext Theme Name</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtExtThemeName_@i" value="@item.ExtThemeName">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">ImageRatio</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtImageRatio_@i" value="@item.ImageRatio">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">Colour</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtColour_@i" value="@item.Colour">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">NoOfHomePanels</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtNoOfHomePanels_@i" value="@item.NoOfHomePanels">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">MobileHeight</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtMobileHeight_@i" value="@item.MobileHeight">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-05">
-                <p class="field-label-text">DesktopHeight</p>
-                <input type="text" class="textboxclass" placeholder="" id="txtDesktopHeight_@i" value="@item.DesktopHeight">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="mb-15">
-                <p class="field-label-text">&nbsp;</p>
-                <label class="cus-chk-containerall">
-                    <input type="checkbox" id="IsActive_@i" checked="@item.IsActive" name="IsActive">
-                    <span class="checkmarkall"></span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
-                </label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="mb-15">
-                <p class="field-label-text">&nbsp;</p>
-                <label class="cus-chk-containerall">
-                    <input type="checkbox" id="IsDefault_@i" checked="@item.IsDefault" name="IsDefault">
-                    <span class="checkmarkall"></span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Default
-                </label>
-            </div>
-        </div>
-        <div class="mb-10 text-right col-md-12">
-            <button class="primary-type-button input-height-button" id="cancelTemplate" onclick="EditTheme(@i)">Edit</button>
-            <button class="primary-type-button input-height-button" id="addTemplate" onclick="DeleteTheme(@i)">Delete</button>
-        </div>
-        <input type='hidden' id='hdnThemeId_@i' value='@item.ThemeId' />
-    </div>
-            i++;
-        }
-    }
 </div>
+
+<div class="scrollsetting">
+    <div class="row">
+        <div class="col p-0">
+            <div class="custom-table mt-3">
+                <table class="table table-responsive table-bordered border-0 mb-3">
+                    <thead class="custom-table-thead">
+                        <tr class="text-leftt-thtd">
+                            <th style="width:20%"><p class="table-blankp mb-0">Theme Name</p></th>
+                            <th style="width:20%"><p class="table-blankp mb-0"> ExtThemeName</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> ImageRatio</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Colour</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> NoOfHomePanels</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> MobileHeight</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> DesktopHeight</p></th>
+
+                            <th style="width:20%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                        @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+                        {
+                            var i = 1;
+                            foreach (var item in Model.Data)
+                            {
+                                <tr>
+                                    <td style="width:20%" id='txtThemeName_@i'>@item.ThemeName</td>
+                                    <td style="width:20%" id='txtExtThemeName_@i'>@item.ExtThemeName</td>
+                                    <td style="width:30%" id='txtImageRatio_@i'>@item.ImageRatio</td>
+                                    <td style="width:20%" id='txtColour_@i'>@item.Colour</td>
+                                    <td style="width:20%" id='txtNoOfHomePanels_@i'>@item.NoOfHomePanels</td>
+                                    <td style="width:30%" id='txtMobileHeight_@i'>@item.MobileHeight</td>
+                                    <td style="width:30%" id='txtDesktopHeight_@i'>@item.DesktopHeight</td>
+                                    <td style="width:20%" class="text-center">
+                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme(@i, '@item.IsActive', '@item.IsDefault')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme(@i)"></i>
+                                    </td>
+                                    <td style="width:0%" class="text-center">
+                                        <input type='hidden' id='hdnThemeId_@i' value='@item.ThemeId' />
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
