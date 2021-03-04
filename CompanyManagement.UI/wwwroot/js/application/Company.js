@@ -31,7 +31,6 @@ function GetCompanyDetails() {
     });
 }
 function GetBranchDetails() {
-    debugger;
     $.ajax({
         url: baseURL + "Company/GetBranchdetails",
         type: "GET",
@@ -52,7 +51,6 @@ function GetBranchDetails() {
         }
     });
 }
-
 function AddBranch() {
     $("#addBranch").css("display", "none");
     $("#newBranch").css("display", "block");
@@ -72,7 +70,6 @@ function CancelBranch() {
     $("#hdnBranchId").val(0);
     $("#addBranch").css("display", "block");
     $("#newBranch").css("display", "none");
-
 }
 function EditBranch(e, i) {
     $("#addBranch").css("display", "none");
@@ -95,7 +92,6 @@ function EditBranch(e, i) {
     $("#hdnBranchId").val($("#hdnBranchId_" + e).val());
 }
 function AddEditBranch() {
-    debugger;
     if ($("#txtNameBranch").val() == '') {
         MessageShow('', 'Name is blank', 'error');
     }
@@ -168,7 +164,6 @@ function AddEditBranch() {
         });
     }
 }
-
 function DeleteBranch(e) {
 
     var TemplateId = $("#hdnBranchId_" + e).val();
@@ -177,7 +172,6 @@ function DeleteBranch(e) {
         CompanyId: 0,
         UserId: null
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/DeleteBranch",
         type: "POST",
@@ -185,7 +179,6 @@ function DeleteBranch(e) {
         data: deleteBranch,
         success: function (data) {
 
-            debugger;
             if (data !== "NO") {
                 CancelBranch()
                 $("#Branch").html(data);
@@ -204,19 +197,6 @@ function DeleteBranch(e) {
         }
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 function EditCompany() {
     if ($("#txtName").val() == '') {
         MessageShow('', 'Name is blank', 'error');
@@ -418,7 +398,6 @@ function AddCompanySetting() {
     $("#IsActiveCompanySetting").prop("checked", false);
 }
 function CancelCompanySetting() {
-    debugger;
     $("#txtSettingType").val('');
     $("#txtDataText").val('');
     $("#txtDataValue").val('');
@@ -431,7 +410,6 @@ function CancelCompanySetting() {
 
 }
 function EditCompanySetting(e,i) {
-    debugger;
     $("#addCompanySetting").css("display", "none");
     $("#newCompanySetting").css("display", "block");
     $("#txtSettingType").val($("#txtSettingType_" + e).text());
@@ -510,14 +488,12 @@ function DeleteCompanysetting(e) {
         CompanyId: 0,
         UserId: null
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/DeleteCompanySetting",
         type: "POST",
         dataType: "html",
         data: deleteCompanySetting,
         success: function (data) {
-            debugger;
             if (data !== "NO") {
                 $("#CompanySettings").html(data);
                 MessageShow('', 'Company Setting saved', 'success');
@@ -572,7 +548,6 @@ function CancelTemplate() {
 
 }
 function EditTemplate(e,i) {
-    debugger;
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
     $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
@@ -589,7 +564,6 @@ function EditTemplate(e,i) {
     $("#hdnTemplateId").val($("#hdnTemplateId_" + e).val());
 }
 function AddEditTemplate() {
-    debugger;
     if ($("#txtTemplateType").val() == '') {
         MessageShow('', 'TemplateType is blank', 'error');
     }
@@ -652,7 +626,6 @@ function DeleteTemplate(e) {
         CompanyId: 0,
         UserId: null
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/DeleteTemplate",
         type: "POST",
@@ -660,7 +633,6 @@ function DeleteTemplate(e) {
         data: deleteTemplate,
         success: function (data) {
 
-            debugger;
             if (data !== "NO") {
                 $("#Template").html(data);
                 MessageShow('', 'Template saved', 'success');
@@ -719,7 +691,6 @@ function CancelTheme() {
 
 }
 function EditTheme(e, i, j) {
-    debugger;
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
     $("#txtThemeName").val($("#txtThemeName_" + e).text());
@@ -808,14 +779,12 @@ function DeleteTheme(e) {
         CompanyId: 0,
         UserId: null
     }
-    debugger;
     $.ajax({
         url: baseURL + "Company/DeleteTheme",
         type: "POST",
         dataType: "html",
         data: deleteTheme,
         success: function (data) {
-            debugger;
             if (data !== "NO") {
                 $("#Theme").html(data);
                 MessageShow('', 'Theme Deleted', 'success');
