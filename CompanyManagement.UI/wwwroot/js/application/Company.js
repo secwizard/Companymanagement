@@ -9,7 +9,20 @@ function hideall() {
     $("#templates").hide();
     $("#themes").hide();
 }
+
+function tabAllInActive() {
+    $("#AddEditTabs li, #companyDetails, #AddEditTabs li a").removeClass("active");
+    $("#AddEditTabs li, #branch, #AddEditTabs li a").removeClass("active");
+    $("#AddEditTabs li, #mailServerinfo, #AddEditTabs li a").removeClass("active");
+    $("#AddEditTabs li, #settings, #AddEditTabs li a").removeClass("active");
+    $("#AddEditTabs li, #templates, #AddEditTabs li a").removeClass("active");
+    $("#AddEditTabs li, #themes, #AddEditTabs li a").removeClass("active");
+}
+
 function GetCompanyDetails() {
+    tabAllInActive();
+    $("#companyDetails, #liCompany").addClass("active");
+
     var dt = baseURL + "Company/GetCompanydetails";
     $.ajax({
         url: baseURL + "Company/GetCompanydetails",
@@ -31,6 +44,9 @@ function GetCompanyDetails() {
     });
 }
 function GetBranchDetails() {
+    tabAllInActive();
+    $("#branch, #liBranch").addClass("active");
+
     $.ajax({
         url: baseURL + "Company/GetBranchdetails",
         type: "GET",
@@ -299,6 +315,9 @@ function EditCompany() {
     }
 }
 function GetMailDetails() {
+    tabAllInActive();
+    $("#mailServerinfo, #liMail").addClass("active");
+
     var dt = baseURL + "Company/GetMailDetails";
     $.ajax({
         url: baseURL + "Company/GetMailDetails",
@@ -377,6 +396,9 @@ function EditMailServer() {
     }
 }
 function GetCompanySettingsDetails() {
+    tabAllInActive();
+    $("#settings, #liSettings").addClass("active");
+
     var dt = baseURL + "Company/GetCompanySettingsDetails";
     $.ajax({
         url: baseURL + "Company/GetCompanySettingsDetails",
@@ -518,6 +540,9 @@ function DeleteCompanysetting(e) {
     });
 }
 function GetTemplateDetails() {
+    tabAllInActive();
+    $("#templates, #liTemplates").addClass("active");
+
     $.ajax({
         url: baseURL + "Company/GetTemplateDetails",
         type: "GET",
@@ -655,6 +680,9 @@ function DeleteTemplate(e) {
     });
 }
 function GetThemeDetails() {
+    tabAllInActive();
+    $("#themes, #liThemes").addClass("active");
+
     $.ajax({
         url: baseURL + "Company/GetThemeDetails",
         type: "GET",
