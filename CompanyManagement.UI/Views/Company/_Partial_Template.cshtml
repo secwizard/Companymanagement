@@ -60,7 +60,7 @@
                                     <th style="width:20%"><p class="table-blankp mb-0">Template Type</p></th>
                                     <th style="width:20%"><p class="table-blankp mb-0"> Name</p></th>
                                     <th style="width:30%"><p class="table-blankp mb-0"> Title</p></th>
-                                    <th style="width:20%" class="text-center">Action</th>
+                                    <th style="width:10%" class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
@@ -73,7 +73,7 @@
                                     <td style="width:20%" id='txtTemplateType_@i' >@item.TemplateType</td>
                                     <td style="width:20%" id='txtName_@i'>@item.Name</td>
                                     <td style="width:30%" id='txtTitle_@i'>@item.Title</td>
-                                    <td style="width:20%" class="text-center">
+                                    <td style="width:10%" class="text-center">
                                         <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTemplate(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTemplate(@i)"></i>
                                     </td>
                                     <td style="width:0%" class="text-center">

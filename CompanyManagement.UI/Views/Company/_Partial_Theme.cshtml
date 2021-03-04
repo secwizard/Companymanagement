@@ -15,13 +15,13 @@
         </div>
         <div class="col-md-3">
             <div class="mb-12">
-                <p class="all-textlabel">Ext Theme Name<span style="color:red">*</span></p>
+                <p class="all-textlabel">Name Ext<span style="color:red">*</span></p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtExtThemeName">
             </div>
         </div>
         <div class="col-md-3">
             <div class="mb-12">
-                <p class="all-textlabel">ImageRatio</p>
+                <p class="all-textlabel">Image Ratio</p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageRatio">
             </div>
         </div>
@@ -40,19 +40,19 @@
         </div>
         <div class="col-md-2">
             <div class="mb-12">
-                <p class="all-textlabel">NoOfHomePanels</p>
+                <p class="all-textlabel">No of Home Panels</p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtNoOfHomePanels">
             </div>
         </div>
         <div class="col-md-2">
             <div class="mb-12">
-                <p class="all-textlabel">MobileHeight</p>
+                <p class="all-textlabel">Mobile Height</p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtMobileHeight">
             </div>
         </div>
         <div class="col-md-2">
             <div class="mb-12">
-                <p class="all-textlabel">DesktopHeight</p>
+                <p class="all-textlabel">Desktop Height</p>
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtDesktopHeight">
             </div>
         </div>
@@ -85,15 +85,15 @@
                 <table class="table table-responsive table-bordered border-0 mb-3">
                     <thead class="custom-table-thead">
                         <tr class="text-leftt-thtd">
-                            <th style="width:20%"><p class="table-blankp mb-0">Theme Name</p></th>
-                            <th style="width:20%"><p class="table-blankp mb-0"> ExtThemeName</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> ImageRatio</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> Colour</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> NoOfHomePanels</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> MobileHeight</p></th>
-                            <th style="width:30%"><p class="table-blankp mb-0"> DesktopHeight</p></th>
+                            <th style="width:20%"><p class="table-blankp mb-0"> Theme Name</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Name Ext</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Image Ratio</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Colour</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> No of Home Panels</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Mobile Height</p></th>
+                            <th style="width:10%"><p class="table-blankp mb-0"> Desktop Height</p></th>
 
-                            <th style="width:20%" class="text-center">Action</th>
+                            <th style="width:10%" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
@@ -104,13 +104,13 @@
                             {
                                 <tr>
                                     <td style="width:20%" id='txtThemeName_@i'>@item.ThemeName</td>
-                                    <td style="width:20%" id='txtExtThemeName_@i'>@item.ExtThemeName</td>
-                                    <td style="width:30%" id='txtImageRatio_@i'>@item.ImageRatio</td>
-                                    <td style="width:20%" id='txtColour_@i'>@item.Colour</td>
-                                    <td style="width:20%" id='txtNoOfHomePanels_@i'>@item.NoOfHomePanels</td>
-                                    <td style="width:30%" id='txtMobileHeight_@i'>@item.MobileHeight</td>
-                                    <td style="width:30%" id='txtDesktopHeight_@i'>@item.DesktopHeight</td>
-                                    <td style="width:20%" class="text-center">
+                                    <td style="width:10%" id='txtExtThemeName_@i'>@item.ExtThemeName</td>
+                                    <td style="width:10%" id='txtImageRatio_@i'>@item.ImageRatio</td>
+                                    <td style="width:10%" id='txtColour_@i'>@item.Colour</td>
+                                    <td style="width:10%" id='txtNoOfHomePanels_@i'>@item.NoOfHomePanels</td>
+                                    <td style="width:10%" id='txtMobileHeight_@i'>@item.MobileHeight</td>
+                                    <td style="width:10%" id='txtDesktopHeight_@i'>@item.DesktopHeight</td>
+                                    <td style="width:10%" class="text-center">
                                         <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme(@i, '@item.IsActive', '@item.IsDefault')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme(@i)"></i>
                                     </td>
                                     <td style="width:0%" class="text-center">
