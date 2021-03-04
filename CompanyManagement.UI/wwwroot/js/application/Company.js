@@ -31,6 +31,7 @@ function GetCompanyDetails() {
     });
 }
 function GetBranchDetails() {
+    debugger;
     $.ajax({
         url: baseURL + "Company/GetBranchdetails",
         type: "GET",
@@ -51,6 +52,171 @@ function GetBranchDetails() {
         }
     });
 }
+
+function AddBranch() {
+    $("#addBranch").css("display", "none");
+    $("#newBranch").css("display", "block");
+    $("#IsActiveBranch").prop("checked", false);
+}
+function CancelBranch() {
+    $("#txtNameBranch").val('');
+    $("#txtCode").val('');
+    $("#txtPostalCode").val('');
+    $("#txtCountry").val('');
+    $("#txtAddress1Branch").val('');
+    $("#txtAddress2Branch").val('');
+    $("#txtDistrict").val('');
+    $("#txtState").val('');
+    $("#txtPhone").val('');
+    $("#txtEmail").val('');
+    $("#hdnBranchId").val(0);
+    $("#addBranch").css("display", "block");
+    $("#newBranch").css("display", "none");
+
+}
+function EditBranch(e, i) {
+    $("#addBranch").css("display", "none");
+    $("#newBranch").css("display", "block");
+    $("#txtNameBranch").val($("#txtNameBranch_" + e).text());
+    $("#txtCode").val($("#txtCode_" + e).text());
+    $("#txtPostalCode").val($("#txtPostalCode_" + e).text());
+    $("#txtCountry").val($("#txtCountry_" + e).val());
+    $("#txtAddress1Branch").val($("#txtAddress1Branch_" + e).val());
+    $("#txtAddress2Branch").val($("#txtAddress2Branch_" + e).val());
+    $("#txtDistrict").val($("#txtDistrict_" + e).text());
+    $("#txtState").val($("#txtState_" + e).text());
+    $("#txtPhone").val($("#txtPhone_" + e).text());
+    $("#txtEmail").val($("#txtEmail_" + e).text());
+    if (i == "True") {
+        $("#IsActiveBranch").prop("checked", true);
+    } else {
+        $("#IsActiveBranch").prop("checked", false);
+    }
+    $("#hdnBranchId").val($("#hdnBranchId_" + e).val());
+}
+function AddEditBranch() {
+    debugger;
+    if ($("#txtNameBranch").val() == '') {
+        MessageShow('', 'Name is blank', 'error');
+    }
+    else if ($("#txtCode").val() == '') {
+        MessageShow('', 'Code is blank', 'error');
+    }
+    else if ($("#txtPhone").val() == '') {
+        MessageShow('', 'Phone is blank', 'error');
+    }
+    else if ($("#txtEmail").val() == '') {
+        MessageShow('', 'Email is blank', 'error');
+    }
+    else {
+        var BranchId = parseInt($("#hdnBranchId").val());
+
+        
+        var Name = $("#txtNameBranch").val();
+        var Code = $("#txtCode").val();
+        var Address1 = $("#txtAddress1Branch").val();
+        var Address2 = $("#txtAddress2Branch").val();
+        var PostalCode = $("#txtPostalCode").val();
+        var District = $("#txtDistrict").val();
+        var State = $("#txtState").val();
+        var Country = $("#txtCountry").val();
+        var Phone = $("#txtPhone").val();
+        var Email = $("#txtEmail").val();
+
+        var isActive = $('#IsActiveBranch').is(':checked');
+        var branchInfo = {
+            CompanyId: 0,
+            BranchId: BranchId,
+            Name: Name,
+            Code: Code,
+            Address1: Address1,
+            Address2: Address2,
+            PostalCode: PostalCode,
+            District: District,
+            State: State,
+            IsActive: isActive,
+            Country: Country,
+            Phone: Phone,
+            Email: Email,
+            CreatedBy: null,
+            CreatedDate: null,
+            ModifiedDate: null,
+            ModifiedBy :null
+        }
+        $.ajax({
+            url: baseURL + "Company/EditBranch",
+            type: "POST",
+            dataType: "html",
+            data: branchInfo,
+            success: function (data) {
+                if (data !== "NO") {
+                    CancelBranch()
+                    $("#Branch").html(data);
+                    MessageShow('', 'Branch saved', 'success');
+                }
+                else {
+                    MessageShow('', 'Branch is not saved', 'error');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
+    }
+}
+
+function DeleteBranch(e) {
+
+    var TemplateId = $("#hdnBranchId_" + e).val();
+    deleteBranch = {
+        BranchId: TemplateId,
+        CompanyId: 0,
+        UserId: null
+    }
+    debugger;
+    $.ajax({
+        url: baseURL + "Company/DeleteBranch",
+        type: "POST",
+        dataType: "html",
+        data: deleteBranch,
+        success: function (data) {
+
+            debugger;
+            if (data !== "NO") {
+                CancelBranch()
+                $("#Branch").html(data);
+                MessageShow('', 'Template saved', 'success');
+            }
+            else {
+                MessageShow('', 'Template is not saved', 'error');
+            }
+            HideLoader();
+        },
+        error: function (data) {
+            MessageShow('', 'Something Went Wrong', 'error');
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 function EditCompany() {
     if ($("#txtName").val() == '') {
         MessageShow('', 'Name is blank', 'error');

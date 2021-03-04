@@ -275,6 +275,37 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+
+        public async Task<string> GetBranchDetails(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompanyBranch";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> EditBranch(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/EditBranchSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> DeleteBranch(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/DeleteBranchSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
         #endregion
         #region Generic
         public async Task<string> APIRequest(string url, string method, string postdata, string token = "")

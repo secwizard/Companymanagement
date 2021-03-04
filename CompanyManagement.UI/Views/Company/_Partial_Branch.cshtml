@@ -1,1 +1,146 @@
-﻿
+﻿@using System.Data
+@model ResponseList<CompanyManagement.UI.Models.Response.ResponseBranchDetails>
+
+<div class="mb-10 text-left">
+    <button class="primary-button min-w-80px" id="addTheme" onclick="AddBranch()">+ Add</button>
+</div>
+<div class="table-responsive" style="display:none" id="newBranch">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Name</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtNameBranch">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Code</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCode">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Postal Code</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPostalCode">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-12">
+                <p class="all-textlabel">Country</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountry">
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="mb-12">
+                <p class="all-textlabel">Address1</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1Branch">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-12">
+                <p class="all-textlabel">Address2</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2Branch">
+            </div>
+        </div>
+        <div class="col-md-3 text-right pr-0 pl-0-pr-0-mob">
+            <p class="all-textlabel">&nbsp;</p>
+            <input type="button" class="secondary-button mr-2 min-w-80px" value="Cancel" onclick="CancelBranch();" />
+            <input type="button" class="primary-button min-w-80px" value="Save" onclick="AddEditBranch()" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">District</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrict">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">State</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtState">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Phone</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPhone">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="mb-12">
+                <p class="all-textlabel">Email</p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtEmail">
+            </div>
+        </div>
+        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+            <p class="all-textlabel"> </p>
+            <br />
+            <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                <input class="permissionCheckbox" type="checkbox" id="IsActiveBranch" />Is Active
+                <span class="checkmark"></span>
+            </label>
+        </div>
+
+    </div>
+    <input type='hidden' id='hdnBranchId' value='0' />
+
+</div>
+
+<div class="scrollsetting">
+    <div class="row">
+        <div class="col p-0">
+            <div class="custom-table mt-3">
+                <table class="table table-responsive table-bordered border-0 mb-3">
+                    <thead class="custom-table-thead">
+                        <tr class="text-leftt-thtd">
+                            <th style="width:20%"><p class="table-blankp mb-0">Name</p></th>
+                            <th style="width:20%"><p class="table-blankp mb-0">Code</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> PostalCode</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> District</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> State</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Phone</p></th>
+                            <th style="width:30%"><p class="table-blankp mb-0"> Email</p></th>
+
+                            <th style="width:20%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                        @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+                        {
+                            var i = 1;
+                            foreach (var item in Model.Data)
+                            {
+                                <tr>
+                                    <td style="width:20%" id='txtNameBranch_@i'>@item.Name</td>
+                                    <td style="width:20%" id='txtCode_@i'>@item.Code</td>
+                                    <td style="width:30%" id='txtPostalCode_@i'>@item.PostalCode</td>
+                                    <td style="width:20%" id='txtDistrict_@i'>@item.District</td>
+                                    <td style="width:20%" id='txtState_@i'>@item.State</td>
+                                    <td style="width:30%" id='txtPhone_@i'>@item.Phone</td>
+                                    <td style="width:30%" id='txtEmail_@i'>@item.Email</td>
+                                    <td style="width:20%" class="text-center">
+                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch(@i)"></i>
+                                    </td>
+                                    <td style="width:0%" class="text-center">
+                                        <input type='hidden' id='hdnBranchId_@i' value='@item.BranchId' />
+                                        <input type='hidden' id='txtCountry_@i' value='@item.Country' />
+                                        <input type='hidden' id='txtAddress1Branch_@i' value='@item.Address1' />
+                                        <input type='hidden' id='txtAddress2Branch_@i' value='@item.Address2' />
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -16,6 +16,8 @@ namespace CompanyManagement.Api.Service
         Task<ResponseList<GetCompanyTheme>> EditTheme(GetCompanyTheme request);
         Task<ResponseList<GetCompanyTheme>> DeleteTheme(DeleteCompanyTheme request);
         Task<List<BranchInfo>> GetCompanyBranch(RequestBase request);
+        Task<ResponseList<BranchInfo>> EditBranch(Branch request);
+        Task<ResponseList<BranchInfo>> DeleteBranch(DeleteCompanyBranch request);
         Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request);
         Task<ResponseList<CompanySettingInfo>> EditCompanySetting(CompanySettingInfo request);
         Task<ResponseList<CompanySettingInfo>> DeleteCompanySetting(DeleteCompanySettings request);

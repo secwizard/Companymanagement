@@ -33,6 +33,9 @@ namespace CompanyManagement.UI.Services
         Task<string> GetThemeDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> EditTheme(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> DeleteTheme(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> GetBranchDetails(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> EditBranch(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> DeleteBranch(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
 

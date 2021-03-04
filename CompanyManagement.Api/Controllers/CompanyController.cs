@@ -346,6 +346,55 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+
+        [Authorize]
+        [HttpPost("EditBranchSetting")]
+        public async Task<IActionResult> EditBranchSetting(Branch request)
+        {
+            var responce = new ResponseList<BranchInfo>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.EditBranch(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        [Authorize]
+        [HttpPost("DeleteBranchSetting")]
+        public async Task<IActionResult> DeleteBranchSetting(DeleteCompanyBranch request)
+        {
+            var responce = new ResponseList<BranchInfo>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce = await _companyService.DeleteBranch(request);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+
         [Authorize]
         [HttpPost("GetCompanyTemplate")]
         public async Task<IActionResult> GetCompanyTemplate(RequestBase request)

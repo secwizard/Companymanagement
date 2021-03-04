@@ -366,6 +366,85 @@ namespace CompanyManagement.UI.Controllers
             }
 
         }
+
+        public async Task<IActionResult> GetBranchDetails()
+        {
+            ResponseList<ResponseBranchDetails> result = new ResponseList<ResponseBranchDetails>();
+            try
+            {
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
+                var compDtl = await _restAPI.GetBranchDetails(JsonConvert.SerializeObject(request), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseBranchDetails>>(compDtl);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return PartialView("_Partial_Branch", result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditBranch(ResponseBranchDetails companysetting)
+        {
+            ResponseList<ResponseBranchDetails> result = new ResponseList<ResponseBranchDetails>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.CreatedBy = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.EditBranch(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseBranchDetails>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Branch", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteBranch(DeleteCompanyBranch companysetting)
+        {
+            ResponseList<ResponseBranchDetails> result = new ResponseList<ResponseBranchDetails>();
+            try
+            {
+
+                var user = Session.Get<UserToken>("CompanyConfiguration");
+                companysetting.UserId = user.Id;
+                companysetting.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.DeleteBranch(JsonConvert.SerializeObject(companysetting), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<ResponseBranchDetails>>(compDtl);
+                if (result != null && result.Status)
+                {
+                    return PartialView("_Partial_Branch", result);
+                }
+                else
+                {
+                    return Json("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Something Went Wrong";
+                result.Status = false;
+                log.Info("***EditCompanySetting*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Json("NO");
+            }
+
+        }
     }
     
 }

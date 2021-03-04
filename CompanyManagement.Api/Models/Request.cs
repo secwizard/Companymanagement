@@ -48,5 +48,10 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public Guid UserId { get; set; }
     }
-
+    public class DeleteCompanyBranch
+    {
+        public long BranchId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
 }

@@ -420,6 +420,113 @@ namespace CompanyManagement.Api.Service
             }
         }
 
+        public async Task<ResponseList<BranchInfo>> EditBranch(Branch request)
+        {
+            var retVal = new ResponseList<BranchInfo>();
+            try
+            {
+                if (request != null && request.BranchId > 0)
+                {
+                    var data = await _context.Branch
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.BranchId == request.BranchId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data = MapBranch(data, request);
+                        data.ModifiedBy = request.CreatedBy;
+                        data.ModifiedDate = DateTime.Now;
+                        _context.Entry(data).State = EntityState.Modified;
+
+                    }
+                }
+                else
+                {
+                    var data = MapBranch(new Branch(), request);
+                    data.CreatedDate = DateTime.Now;
+                    data.CreatedBy = request.CreatedBy;
+                    _context.Branch.Add(data);
+                }
+                _context.SaveChanges();
+                RequestBase req = new RequestBase();
+                req.CompanyId = request.CompanyId;
+
+                retVal.Data = GetCompanyBranch(req).Result;
+                retVal.Message = "OK";
+                retVal.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        public async Task<ResponseList<BranchInfo>> DeleteBranch(DeleteCompanyBranch request)
+        {
+            var retVal = new ResponseList<BranchInfo>();
+            try
+            {
+                if (request != null && request.BranchId > 0)
+                {
+                    var data = await _context.Branch
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.BranchId == request.BranchId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (data != null)
+                    {
+                        data.ModifiedBy = request.UserId;
+                        data.ModifiedDate = DateTime.Now;
+                        data.IsActive = false;
+                        _context.Entry(data).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        RequestBase req = new RequestBase();
+                        req.CompanyId = request.CompanyId;
+
+                        retVal.Data = GetCompanyBranch(req).Result;
+                        retVal.Message = "OK";
+                        retVal.Status = true;
+
+                    }
+                    else
+                    {
+                        retVal.Status = false;
+                    }
+                }
+                else
+                {
+                    retVal.Status = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        private Branch MapBranch(Branch preData, Branch postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.Address1 = postData.Address1;
+            preData.Address2 = postData.Address2;
+            preData.Code = postData.Code;
+            preData.Country = postData.Country;
+            preData.District = postData.District;
+            preData.Email = postData.Email;
+            preData.IsActive = postData.IsActive;
+            preData.Name = postData.Name;
+            preData.Phone = postData.Phone;
+            preData.PostalCode = postData.PostalCode;
+            preData.State = postData.State;
+            return preData;
+        }
+
         public async Task<List<CompanySettingInfo>> GetCompanySetting(RequestCompanySetting request)
         {
             try
