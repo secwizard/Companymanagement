@@ -269,7 +269,7 @@ function ThemesOnFocus() {
     $("#companyThemesDetailsError").text("");
 }
 function EditCompany() {
-    debugger;
+    
     var flag = true;
     var err = "";
     if ($("#txtName").val() == '') {
@@ -362,7 +362,7 @@ function EditCompany() {
             dataType: "html",
             data: companyInfo,
             success: function (data) {
-                debugger;
+                
                 if (data == "login") {
                     window.location.href = baseURL + 'Login/Index'
                 }

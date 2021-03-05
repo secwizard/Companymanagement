@@ -9,20 +9,20 @@ function GetCompanyDetails() {
         NewCompanyId: 0,
         UserId: null
     }
-    debugger;
+    
     $.ajax({
         url: baseURL + "OnBoard/GetNewCompanydetails",
         type: "POST",
         dataType: "html",
         data: newCompany,
         success: function (data) {
-            debugger;
+            
             $("#NewCompany").html(data);
             //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            debugger;
+            
             console.log("error");
             console.log(data);
             HideLoader();
@@ -34,20 +34,20 @@ function GetSuggestedCompanyId() {
         CompanyId: 0,
         Type: $("#ddlBusinessType").val()
     }
-    debugger;
+    
     $.ajax({
         url: baseURL + "OnBoard/GetSuggestedCompanyId",
         type: "POST",
         dataType: "json",
         data: postData,
         success: function (data) {
-            debugger;
+            
             $("#txtCompanyId").val(data.companyId);
             //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            debugger;
+            
             console.log("error");
             console.log(data);
             HideLoader();
@@ -74,7 +74,7 @@ function GetBranchDetails() {
     });
 }
 function AddCompany() {
-    debugger;
+    
 
     var flag = true;
     var err = "";
