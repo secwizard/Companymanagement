@@ -38,6 +38,7 @@ namespace CompanyManagement.UI.Models.Response
         public Guid? ModifiedBy { get; set; }
         public List<LookUpInfo> LookUps { get; set; }
         public LookUpInfo SelectedLookUp { get; set; }
+        public Int64 SuggestedCompanyId { get; set; }
     }
     public class LookUpInfo
     {
@@ -46,4 +47,15 @@ namespace CompanyManagement.UI.Models.Response
 
 
     }
+
+    public class BusinessType
+    {
+        public string Type { get; set; }
+        public Int64 CompanyId { get; set; }
+    }
+    public class ResponseCompanyId
+    {
+        public long CompanyId { get; set; }
+    }
+
 }

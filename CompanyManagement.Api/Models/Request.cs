@@ -54,4 +54,18 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public Guid UserId { get; set; }
     }
+    public class NewCompanyDetails
+    {
+        public Int64 CompanyId { get; set; }
+        public Int64 NewCompanyId { get; set; }
+        public Guid UserId { get; set; }
+
+
+    }
+    public class BusinessType
+    {
+        public string Type { get; set; }
+        public Int64 CompanyId { get; set; }
+    }
+
 }

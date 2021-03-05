@@ -178,5 +178,10 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class GetSuggestedCompanyId
+    {
+        [Key]
+        public Int64 CompanyId { get; set; }
+    }
 
 }
