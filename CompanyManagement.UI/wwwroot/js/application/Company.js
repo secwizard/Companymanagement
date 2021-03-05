@@ -86,6 +86,7 @@ function CancelBranch() {
     $("#hdnBranchId").val(0);
     $("#addBranch").css("display", "block");
     $("#newBranch").css("display", "none");
+    BranchOnFocus();
 }
 function EditBranch(e, i) {
     $("#addBranch").css("display", "none");
@@ -108,22 +109,33 @@ function EditBranch(e, i) {
     $("#hdnBranchId").val($("#hdnBranchId_" + e).val());
 }
 function AddEditBranch() {
+    var flag = true;
+    var err = "";
+    if ($("#txtCode").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Branch Code " : " Branch Code ";
+    }
     if ($("#txtNameBranch").val() == '') {
-        MessageShow('', 'Name is Not Correct', 'error');
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
     }
-    else if ($("#txtCode").val() == '') {
-        MessageShow('', 'Code is Not Correct', 'error');
+    if (!phonenumber($("#txtPhone").val())) {
+        flag = false;
+        err = err != "" ? err + ", Phone " : " Phone ";
     }
-    else if (!phonenumber($("#txtPhone").val())) {
-        MessageShow('', 'Phone is Not Correct', 'error');
+    if (!IsEmail($("#txtEmail").val())) {
+        flag = false;
+        err = err != "" ? err + ", Email " : " Email ";
     }
-    else if (!IsEmail($("#txtEmail").val())) {
-        MessageShow('', 'Email is Not Correct', 'error');
+    if ($("#txtCountry").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Country " : " Country ";
+    }
+    if (!flag) {
+        $("#branchDetailsError").text("* " + err + "is Not Correct");
     }
     else {
         var BranchId = parseInt($("#hdnBranchId").val());
-
-        
         var Name = $("#txtNameBranch").val();
         var Code = $("#txtCode").val();
         var Address1 = $("#txtAddress1Branch").val();
@@ -153,7 +165,7 @@ function AddEditBranch() {
             CreatedBy: null,
             CreatedDate: null,
             ModifiedDate: null,
-            ModifiedBy :null
+            ModifiedBy: null
         }
         $.ajax({
             url: baseURL + "Company/EditBranch",
@@ -199,10 +211,10 @@ function DeleteBranch(e) {
             if (data !== "NO") {
                 CancelBranch()
                 $("#Branch").html(data);
-                MessageShow('', 'Template saved', 'success');
+                MessageShow('', 'Branch Deleted', 'success');
             }
             else {
-                MessageShow('', 'Template is not saved', 'error');
+                MessageShow('', 'Branch not Deleted', 'error');
             }
             HideLoader();
         },
@@ -233,29 +245,40 @@ function ThemesOnFocus() {
     $("#companyThemesDetailsError").text("");
 }
 function EditCompany() {
+
+    var flag = true;
+    var err = "";
     if ($("#txtName").val() == '') {
-        $("#companyDetailsError").text("* Company Name is Not Correct");
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
     }
-    else if (!phonenumber($("#txtAdminPhone").val())) {
-        $("#companyDetailsError").text("* Admin Phone is Not Correct");
+    if (!phonenumber($("#txtAdminPhone").val())) {
+        flag = false;
+        err = err != "" ? err + ", Admin Phone " : " Admin Phone ";
     }
-    else if (!IsEmail($("#txtAdminEmail").val())) {
-        $("#companyDetailsError").text("* Admin Email is Not Correct");
+    if (!IsEmail($("#txtAdminEmail").val())) {
+        flag = false;
+        err = err != "" ? err + ", Admin Email " : " Admin Email ";
     }
-    else if ($("#txtCurrencyCode").val() == '') {
-        $("#companyDetailsError").text("* Currency Code is Not Correct");
+    if ($("#txtCurrencyCode").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Currency Code " : " Currency Code ";
     }
-    else if ($("#txtImageFilePath").val() == '') {
-        $("#companyDetailsError").text("* Image File Path is Not Correct");
+    if ($("#txtImageFilePath").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Image File Path " : " Image File Path ";
     }
-    else if ($("#txtShortname").val() == '') {
-        $("#companyDetailsError").text("* Company Short Name is Not Correct");
+    if ($("#txtShortname").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Short Name " : " Short Name ";
     }
-    else if ($("#txtGSTNumber").val() != '' && !IsGST($("#txtGSTNumber").val())) {
-
-        $("#companyDetailsError").text("* GST is Not Correct");
+    if ($("#txtGSTNumber").val() != '' && !IsGST($("#txtGSTNumber").val())) {
+        flag = false;
+        err = err != "" ? err + ", GST " : " GST ";
     }
-
+    if (!flag) {
+        $("#companyDetailsError").text("* " + err + "is Not Correct");
+    }
     else {
         var companyId = parseInt($("#txtCompanyId").val());
         var name = $("#txtName").val();
@@ -316,7 +339,7 @@ function EditCompany() {
             data: companyInfo,
             success: function (data) {
                 if (data == "NO") {
-                    MessageShow('', 'Not Saved', 'error');
+                    MessageShow('', 'Company Not Saved', 'error');
                 }
                 else {
                     MessageShow('', 'Company Saved', 'success');
@@ -358,14 +381,22 @@ function GetMailDetails() {
     });
 }
 function EditMailServer() {
+    var flag = true;
+    var err = "";
     if ($("#txtSTMPServer").val() == '') {
-        $("#companymailDetailsError").text("* SMTP Server is Not Correct");
+        flag = false;
+        err = err != "" ? err + ", SMTP Server " : " SMTP Server ";
     }
-    else if ($("#txtSTMPPort").val() == '') {
-        $("#companymailDetailsError").text("* SMTP Port is Not Correct");
+    if ($("#txtSTMPPort").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", SMTP Port " : " SMTP Port ";
     }
-    else if ($("#txtFromEmailDisplayName").val() == '') {
-        $("#companymailDetailsError").text("* from Email Display Name  is Not Correct");
+    if ($("#txtFromEmailDisplayName").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", From Email Display Name " : " From Email Display Name ";
+    }
+    if (!flag) {
+        $("#companymailDetailsError").text("* " + err + "is Not Correct");
     }
     else {
         var companyId = parseInt($("#hdnCompanyId").val());
@@ -397,7 +428,7 @@ function EditMailServer() {
             data: stmpInfo,
             success: function (data) {
                 if (data == "NO") {
-                    MessageShow('', 'Not Saved', 'error');
+                    MessageShow('', 'SMTP Not Saved', 'error');
                 }
                 else {
                     MessageShow('', 'SMTP Saved', 'success');
@@ -453,9 +484,9 @@ function CancelCompanySetting() {
     $("#hdnCompanySettingId").val(0);
     $("#addCompanySetting").css("display", "block");
     $("#newCompanySetting").css("display", "none");
-
+    SettingOnFocus();
 }
-function EditCompanySetting(e,i) {
+function EditCompanySetting(e, i) {
     $("#addCompanySetting").css("display", "none");
     $("#newCompanySetting").css("display", "block");
     $("#txtSettingType").val($("#txtSettingType_" + e).text());
@@ -472,14 +503,22 @@ function EditCompanySetting(e,i) {
     $("#hdnCompanySettingId").val($("#hdnCompanySettingId_" + e).val());
 }
 function AddEditCompanySetting() {
+    var flag = true;
+    var err = "";
     if ($("#txtSettingType").val() == '') {
-        MessageShow('', 'Setting Type is Not Correct', 'error');
+        flag = false;
+        err = err != "" ? err + ", Type " : " Type ";
     }
-    else if ($("#txtDataText").val() == '') {
-        MessageShow('', 'Data Text is Not Correct', 'error');
+    if ($("#txtDataText").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Data Text " : " Data Text ";
     }
-    else if ($("#txtDataValue").val() == '') {
-        MessageShow('', 'Data Value is Not Correct', 'error');
+    if ($("#txtDataValue").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Data Value " : " Data Value ";
+    }
+    if (!flag) {
+        $("#companySettingsDetailsError").text("* " + err + "is Not Correct");
     }
     else {
         var companySettingId = parseInt($("#hdnCompanySettingId").val());
@@ -542,10 +581,10 @@ function DeleteCompanysetting(e) {
         success: function (data) {
             if (data !== "NO") {
                 $("#CompanySettings").html(data);
-                MessageShow('', 'Company Setting saved', 'success');
+                MessageShow('', 'Company Setting Deleted', 'success');
             }
             else {
-                MessageShow('', 'Company Setting is not saved', 'error');
+                MessageShow('', 'Company Setting  not Deleted', 'error');
             }
             HideLoader();
         },
@@ -594,9 +633,9 @@ function CancelTemplate() {
     $("#hdnTemplateId").val(0);
     $("#addTemplate").css("display", "block");
     $("#newTemplate").css("display", "none");
-
+    TemplateOnFocus();
 }
-function EditTemplate(e,i) {
+function EditTemplate(e, i) {
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
     $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
@@ -613,16 +652,23 @@ function EditTemplate(e,i) {
     $("#hdnTemplateId").val($("#hdnTemplateId_" + e).val());
 }
 function AddEditTemplate() {
+    var flag = true;
+    var err = "";
     if ($("#txtTemplateType").val() == '') {
-        MessageShow('', 'Template Type is Not Correct', 'error');
+        flag = false;
+        err = err != "" ? err + ", Template Type " : "Template Type ";
     }
-    else if ($("#txtNameTemplate").val() == '') {
-        MessageShow('', 'Name is Not Correct', 'error');
+    if ($("#txtNameTemplate").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
     }
-    else if ($("#txtTitle").val() == '') {
-        MessageShow('', 'Title is Not Correct', 'error');
+    if ($("#txtTitle").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Title " : " Title ";
     }
-
+    if (!flag) {
+        $("#companyTemplateDetailsError").text("* " + err + "is Not Correct");
+    }
     else {
         debugger;
         var TemplateId = parseInt($("#hdnTemplateId").val());
@@ -683,10 +729,10 @@ function DeleteTemplate(e) {
 
             if (data !== "NO") {
                 $("#Template").html(data);
-                MessageShow('', 'Template saved', 'success');
+                MessageShow('', 'Template Deleted', 'success');
             }
             else {
-                MessageShow('', 'Template is not saved', 'error');
+                MessageShow('', 'Template not Deleted', 'error');
             }
             HideLoader();
         },
@@ -739,6 +785,7 @@ function CancelTheme() {
     $("#hdnThemeId").val(0);
     $("#addTheme").css("display", "block");
     $("#newTheme").css("display", "none");
+    ThemesOnFocus();
 
 }
 function EditTheme(e, i, j) {
@@ -764,14 +811,22 @@ function EditTheme(e, i, j) {
     $("#hdnThemeId").val($("#hdnThemeId_" + e).val());
 }
 function AddEditTheme() {
+    var flag = true;
+    var err = "";
     if ($("#txtThemeName").val() == '') {
-        MessageShow('', 'ThemeName is blank', 'error');
+        flag = false;
+        err = err != "" ? err + ", Theme Name " : " Theme Name ";
     }
-    else if ($("#txtImageRatio").val() == '') {
-        MessageShow('', 'ImageRatio is blank', 'error');
+    if ($("#txtExtThemeName").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Name Ext " : " Name Ext ";
     }
-    else if ($("#txtColour").val() == '') {
-        MessageShow('', 'Colour is blank', 'error');
+    if ($("#txtImageRatio").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Image Ratio " : " Image Ratio ";
+    }
+    if (!flag) {
+        $("#companyThemesDetailsError").text("* " + err + "is Not Correct");
     }
     else {
         var ThemeId = parseInt($("#hdnThemeId").val());
@@ -841,7 +896,7 @@ function DeleteTheme(e) {
                 MessageShow('', 'Theme Deleted', 'success');
             }
             else {
-                MessageShow('', 'Theme is not Deleted', 'error');
+                MessageShow('', 'Theme not Deleted', 'error');
             }
             HideLoader();
         },
@@ -856,8 +911,7 @@ function DeleteTheme(e) {
 
 function phonenumber(inputtxt) {
     var phoneno = /^\d{10}$/;
-    if ((inputtxt.match(phoneno)))
-        {
+    if ((inputtxt.match(phoneno))) {
         return true;
     }
     else {
