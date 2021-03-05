@@ -670,7 +670,6 @@ function AddEditTemplate() {
         $("#companyTemplateDetailsError").text("* " + err + "is Not Correct");
     }
     else {
-        debugger;
         var TemplateId = parseInt($("#hdnTemplateId").val());
         var TemplateType = $("#txtTemplateType").val();
         var Name = $("#txtNameTemplate").val();
