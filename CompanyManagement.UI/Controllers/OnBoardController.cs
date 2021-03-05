@@ -55,7 +55,7 @@ namespace CompanyManagement.UI.Controllers
                 result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
                 if(result != null && result.Data != null && result.Status)
                 {
-                    ViewBag.NewCompanyId = result.Data.CompanyId;
+                    Session.Set("NewCompanyId", result.Data.CompanyId);
                     return PartialView("_Partial_OnBoardCompany",result);
                 }
                 else
@@ -111,13 +111,14 @@ namespace CompanyManagement.UI.Controllers
             Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
             try
             {
+                var newCompanyId= Session.Get<long>("NewCompanyId");
                 var user = Session.Get<UserToken>("CompanyConfiguration");
                 companyInfo.CreatedBy = user.Id;
                 var compDtl = await _restAPI.AddCompany(JsonConvert.SerializeObject(companyInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
                 if(result != null && result.Data != null && result.Status)
                 {
-                    ViewBag.NewCompanyId = result.Data.CompanyId;
+                    Session.Set("NewCompanyId", result.Data.CompanyId);
                     return PartialView("_Partial_Company", result);
                 }
                 else

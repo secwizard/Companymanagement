@@ -37,11 +37,11 @@ namespace CompanyManagement.Api.Controllers
             var responce = new Response<CompanyInfo>();
             try
             {
-                var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-                {
+                //var user = (UserInfo)HttpContext.Items["User"];
+                //if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                //{
                     responce.Data = await _onBoardService.GetCompanyDetails(request);
-                }
+                //}
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
