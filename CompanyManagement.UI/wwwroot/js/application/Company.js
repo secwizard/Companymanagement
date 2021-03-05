@@ -132,7 +132,7 @@ function AddEditBranch() {
         err = err != "" ? err + ", Country " : " Country ";
     }
     if (!flag) {
-        $("#branchDetailsError").text("* " + err + "is Not Correct");
+        $("#branchDetailsError").text("* " + err + "is required.");
     }
     else {
         var BranchId = parseInt($("#hdnBranchId").val());
@@ -396,7 +396,7 @@ function EditMailServer() {
         err = err != "" ? err + ", From Email Display Name " : " From Email Display Name ";
     }
     if (!flag) {
-        $("#companymailDetailsError").text("* " + err + "is Not Correct");
+        $("#companymailDetailsError").text("* " + err + "is required.");
     }
     else {
         var companyId = parseInt($("#hdnCompanyId").val());
@@ -518,7 +518,7 @@ function AddEditCompanySetting() {
         err = err != "" ? err + ", Data Value " : " Data Value ";
     }
     if (!flag) {
-        $("#companySettingsDetailsError").text("* " + err + "is Not Correct");
+        $("#companySettingsDetailsError").text("* " + err + "is required.");
     }
     else {
         var companySettingId = parseInt($("#hdnCompanySettingId").val());
@@ -667,7 +667,7 @@ function AddEditTemplate() {
         err = err != "" ? err + ", Title " : " Title ";
     }
     if (!flag) {
-        $("#companyTemplateDetailsError").text("* " + err + "is Not Correct");
+        $("#companyTemplateDetailsError").text("* " + err + "is required.");
     }
     else {
         var TemplateId = parseInt($("#hdnTemplateId").val());
@@ -825,7 +825,7 @@ function AddEditTheme() {
         err = err != "" ? err + ", Image Ratio " : " Image Ratio ";
     }
     if (!flag) {
-        $("#companyThemesDetailsError").text("* " + err + "is Not Correct");
+        $("#companyThemesDetailsError").text("* " + err + "is required.");
     }
     else {
         var ThemeId = parseInt($("#hdnThemeId").val());
