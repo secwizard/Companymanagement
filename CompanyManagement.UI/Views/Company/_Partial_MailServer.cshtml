@@ -25,14 +25,14 @@
     <div class="row">
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="all-textlabel">Email</p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId">
+                <p class="all-textlabel">Email<span style="color:red">*</span></p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId"  onfocus="MailOnFocus()">
             </div>
         </div>
         <div class="col-md-4">
             <div class="mb-05">
-                <p class="all-textlabel">Password</p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd">
+                <p class="all-textlabel">Password<span style="color:red">*</span></p>
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd"  onfocus="MailOnFocus()">
             </div>
         </div>
         <div class="col-md-2">
@@ -58,7 +58,7 @@
     <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
     <div class="row text-right mt-3">
         <div class="col p-0">
-            <button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>
+            @*<button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>*@
             <button class="primary-button min-w-80px" onclick="EditMailServer()">Save</button>
         </div>
     </div>

@@ -21,6 +21,7 @@ function tabAllInActive() {
 
 function GetCompanyDetails() {
     tabAllInActive();
+    CompanyOnFocus();
     $("#companyDetails, #liCompany").addClass("active");
 
     var dt = baseURL + "Company/GetCompanydetails";
@@ -31,10 +32,21 @@ function GetCompanyDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#Company").html(data);
-            hideall();
-            $("#companyDetails").show();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#Company").html(data);
+                hideall();
+                $("#companyDetails").show();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
             HideLoader();
+
+
         },
         error: function (data) {
             console.log("error");
@@ -45,6 +57,7 @@ function GetCompanyDetails() {
 }
 function GetBranchDetails() {
     tabAllInActive();
+    BranchOnFocus();
     $("#branch, #liBranch").addClass("active");
 
     $.ajax({
@@ -54,11 +67,18 @@ function GetBranchDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#Branch").html(data);
-            hideall();
-            $("#branch").show();
-
-            HideLoader();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#Branch").html(data);
+                hideall();
+                $("#branch").show();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
         },
         error: function (data) {
             console.log("error");
@@ -173,8 +193,10 @@ function AddEditBranch() {
             dataType: "html",
             data: branchInfo,
             success: function (data) {
-
-                if (data !== "NO") {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data !== "NO") {
                     CancelBranch()
                     $("#Branch").html(data);
                     MessageShow('', 'Branch saved', 'success');
@@ -207,8 +229,10 @@ function DeleteBranch(e) {
         dataType: "html",
         data: deleteBranch,
         success: function (data) {
-
-            if (data !== "NO") {
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
                 CancelBranch()
                 $("#Branch").html(data);
                 MessageShow('', 'Branch Deleted', 'success');
@@ -338,7 +362,11 @@ function EditCompany() {
             dataType: "html",
             data: companyInfo,
             success: function (data) {
-                if (data == "NO") {
+                debugger;
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data == "NO") {
                     MessageShow('', 'Company Not Saved', 'error');
                 }
                 else {
@@ -357,6 +385,7 @@ function EditCompany() {
 }
 function GetMailDetails() {
     tabAllInActive();
+    MailOnFocus();
     $("#mailServerinfo, #liMail").addClass("active");
 
     var dt = baseURL + "Company/GetMailDetails";
@@ -367,11 +396,19 @@ function GetMailDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#MailServer").html(data);
-            hideall();
-            $("#mailServerinfo").show();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#MailServer").html(data);
+                hideall();
+                $("#mailServerinfo").show();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
 
-            HideLoader();
         },
         error: function (data) {
             console.log("error");
@@ -393,7 +430,15 @@ function EditMailServer() {
     }
     if ($("#txtFromEmailDisplayName").val() == '') {
         flag = false;
-        err = err != "" ? err + ", From Email Display Name " : " From Email Display Name ";
+        err = err != "" ? err + ", Display Email Name " : " Display Email Name ";
+    }
+    if ($("#txtFromEmailId").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Email " : " Email ";
+    }
+    if ($("#txtFromEmailIdPwd").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Password " : " Password ";
     }
     if (!flag) {
         $("#companymailDetailsError").text("* " + err + "is required.");
@@ -427,7 +472,10 @@ function EditMailServer() {
             dataType: "html",
             data: stmpInfo,
             success: function (data) {
-                if (data == "NO") {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data == "NO") {
                     MessageShow('', 'SMTP Not Saved', 'error');
                 }
                 else {
@@ -446,6 +494,7 @@ function EditMailServer() {
 }
 function GetCompanySettingsDetails() {
     tabAllInActive();
+    SettingOnFocus();
     $("#settings, #liSettings").addClass("active");
 
     var dt = baseURL + "Company/GetCompanySettingsDetails";
@@ -456,11 +505,19 @@ function GetCompanySettingsDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#CompanySettings").html(data);
-            hideall();
-            $("#settings").show();
-
-            HideLoader();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#CompanySettings").html(data);
+                hideall();
+                $("#settings").show();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
+            
         },
         error: function (data) {
             console.log("error");
@@ -547,7 +604,10 @@ function AddEditCompanySetting() {
             dataType: "html",
             data: companySettingInfo,
             success: function (data) {
-                if (data !== "NO") {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data !== "NO") {
                     CancelCompanySetting()
                     $("#CompanySettings").html(data);
                     MessageShow('', 'Company Setting saved', 'success');
@@ -579,7 +639,10 @@ function DeleteCompanysetting(e) {
         dataType: "html",
         data: deleteCompanySetting,
         success: function (data) {
-            if (data !== "NO") {
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
                 $("#CompanySettings").html(data);
                 MessageShow('', 'Company Setting Deleted', 'success');
             }
@@ -598,6 +661,7 @@ function DeleteCompanysetting(e) {
 }
 function GetTemplateDetails() {
     tabAllInActive();
+    TemplateOnFocus();
     $("#templates, #liTemplates").addClass("active");
 
     $.ajax({
@@ -607,11 +671,19 @@ function GetTemplateDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#Template").html(data);
-            hideall();
-            $("#templates").show();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#Template").html(data);
+                hideall();
+                $("#templates").show();
 
-            HideLoader();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
         },
         error: function (data) {
             console.log("error");
@@ -692,7 +764,10 @@ function AddEditTemplate() {
             dataType: "html",
             data: templateInfo,
             success: function (data) {
-                if (data !== "NO") {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data !== "NO") {
                     CancelCompanySetting();
                     $("#Template").html(data);
                     MessageShow('', 'Template saved', 'success');
@@ -725,8 +800,10 @@ function DeleteTemplate(e) {
         dataType: "html",
         data: deleteTemplate,
         success: function (data) {
-
-            if (data !== "NO") {
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
                 $("#Template").html(data);
                 MessageShow('', 'Template Deleted', 'success');
             }
@@ -745,6 +822,7 @@ function DeleteTemplate(e) {
 }
 function GetThemeDetails() {
     tabAllInActive();
+    ThemesOnFocus();
     $("#themes, #liThemes").addClass("active");
 
     $.ajax({
@@ -754,11 +832,20 @@ function GetThemeDetails() {
         data: "",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $("#Theme").html(data);
-            hideall();
-            $("#themes").show();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
+                $("#Theme").html(data);
+                hideall();
+                $("#themes").show();
 
-            HideLoader();
+                HideLoader();
+            }
+            else {
+                MessageShow('', 'Something Went Wrong', 'error');
+            }
+           
         },
         error: function (data) {
             console.log("error");
@@ -816,14 +903,14 @@ function AddEditTheme() {
         flag = false;
         err = err != "" ? err + ", Theme Name " : " Theme Name ";
     }
-    if ($("#txtExtThemeName").val() == '') {
-        flag = false;
-        err = err != "" ? err + ", Name Ext " : " Name Ext ";
-    }
-    if ($("#txtImageRatio").val() == '') {
-        flag = false;
-        err = err != "" ? err + ", Image Ratio " : " Image Ratio ";
-    }
+    //if ($("#txtExtThemeName").val() == '') {
+    //    flag = false;
+    //    err = err != "" ? err + ", Name Ext " : " Name Ext ";
+    //}
+    //if ($("#txtImageRatio").val() == '') {
+    //    flag = false;
+    //    err = err != "" ? err + ", Image Ratio " : " Image Ratio ";
+    //}
     if (!flag) {
         $("#companyThemesDetailsError").text("* " + err + "is required.");
     }
@@ -858,7 +945,10 @@ function AddEditTheme() {
             dataType: "html",
             data: themeInfo,
             success: function (data) {
-                if (data !== "NO") {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data !== "NO") {
                     CancelTheme();
                     $("#Theme").html(data);
                     MessageShow('', 'Theme saved', 'success');
@@ -890,7 +980,10 @@ function DeleteTheme(e) {
         dataType: "html",
         data: deleteTheme,
         success: function (data) {
-            if (data !== "NO") {
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else if (data !== "NO") {
                 $("#Theme").html(data);
                 MessageShow('', 'Theme Deleted', 'success');
             }
