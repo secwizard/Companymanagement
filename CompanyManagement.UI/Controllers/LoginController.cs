@@ -76,15 +76,15 @@ namespace CompanyManagement.UI.Controllers
                 {
                     user.CompanyId = input.CompanyId;
                 }
-                
 
-                //if (user.CompanyId == -1)
-                //{
-                //    CreateLoginObject(user);
-                //    input.ReturnUrl = "Login/CompanySelection";
-                //    input.ErrorMessage = "OK";
-                //    return Json(input);
-                //}
+
+                if (user.CompanyId == -1)
+                {
+                    CreateLoginObject(user);
+                    input.ReturnUrl = "Login/CompanySelection";
+                    input.ErrorMessage = "OK";
+                    return Json(input);
+                }
 
                 var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
                 var compDtl = await _restAPI.CompanyDtl(JsonConvert.SerializeObject(request), user.token);

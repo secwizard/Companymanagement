@@ -24,8 +24,8 @@ namespace CompanyManagement.Api.Data
         public DbSet<GetCompanyTemplate> GetCompanyTemplate { get; set; }
         public DbSet<GetLookUpType> GetLookUpType { get; set; }
         public DbSet<GetCompanyTheme> GetCompanyTheme { get; set; }
-
-
+        public DbSet<GetSuggestedCompanyId> GetSuggestedCompanyId { get; set; }
+        
 
     }
 }

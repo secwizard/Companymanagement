@@ -62,6 +62,7 @@ namespace CompanyManagement.Api.Models
         public Guid? ModifiedBy { get; set; }
         public List<LookUpInfo> LookUps { get; set; }
         public LookUpInfo SelectedLookUp { get; set; }
+        public Int64 SuggestedCompanyId { get; set; }
     }
 
     public class CompanyMailServer

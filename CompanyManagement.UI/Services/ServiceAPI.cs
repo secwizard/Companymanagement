@@ -134,6 +134,7 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+        
         public async Task<string> CompanyList(string authorizationToken, bool bearerToken)
         {
             string url = $"{_appSettings.ApiHost}/company/GetCompanyList";
@@ -307,6 +308,30 @@ namespace CompanyManagement.UI.Services
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
         #endregion
+
+        #region OnBoard
+        public async Task<string> NewCompanyDtl(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/onBoard/GetCompanyDetails";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetSuggestedCompanyId(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/onBoard/GetSuggestedCompanyId";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        #endregion
+
         #region Generic
         public async Task<string> APIRequest(string url, string method, string postdata, string token = "")
         {

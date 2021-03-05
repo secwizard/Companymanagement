@@ -9,8 +9,9 @@ namespace CompanyManagement.Api.Service
 {
     public interface IOnBoardService
     {
-        Task<CompanyInfo> GetCompanyDetails(RequestBase request);
+        Task<CompanyInfo> GetCompanyDetails(NewCompanyDetails request);
 
         Task<Response<CompanyInfo>> AddCompany(CompanyInfo request);
+        Task<ResponseCompanyId> GetSuggestedCompanyId(string type);
     }
 }
