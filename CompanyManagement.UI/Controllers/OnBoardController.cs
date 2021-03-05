@@ -49,6 +49,11 @@ namespace CompanyManagement.UI.Controllers
             Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
             try
             {
+                var newCompanyId = Session.Get<long>("NewCompanyId");
+                if(newCompanyId != 0)
+                {
+                    newCompanyDetails.NewCompanyId = newCompanyId;
+                }
                 newCompanyDetails.UserId = user.Id;
                 newCompanyDetails.CompanyId = user.CompanyId;
                 var compDtl = await _restAPI.NewCompanyDtl(JsonConvert.SerializeObject(newCompanyDetails), user.token);

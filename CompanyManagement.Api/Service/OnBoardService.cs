@@ -51,7 +51,7 @@ namespace CompanyManagement.Api.Service
                     res.SelectedLookUp = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
                     if (res.CompanyId <= 0)
                     {
-                        var suggest = GetSuggestedCompanyId(res.SelectedLookUp.LookUpValue).Result ;
+                        var suggest = GetSuggestedCompanyId(res.SelectedLookUp.LookUpValue).Result;
                         res.SuggestedCompanyId = suggest.CompanyId;
                     }
 
@@ -78,7 +78,7 @@ namespace CompanyManagement.Api.Service
 
                 string sqlText = $"EXECUTE dbo.[GetSuggestedCompanyId] @Type";
                 var dataList = _context.GetSuggestedCompanyId.FromSqlRaw(sqlText, parms).ToList();
-                response.CompanyId = dataList.FirstOrDefault().CompanyId +1;
+                response.CompanyId = dataList.FirstOrDefault().CompanyId + 1;
                 return response;
             }
             catch (Exception ex)
@@ -116,25 +116,27 @@ namespace CompanyManagement.Api.Service
             try
             {
                 var res = new CompanyInfo();
-                var data = new Company();
-                //var data = await _context.Company
-                //    .Where(c => c.CompanyId == request.CompanyId
-                //    && c.IsActive == true).FirstOrDefaultAsync();
+                //var data = new Company();
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
 
-                //if (data != null)
-                //{
-                //    data = MapCompany(data,request);
-                //    data.ModifiedBy = request.CreatedBy;
-                //    data.ModifiedDate = DateTime.Now;
-                //    _context.Entry(data).State = EntityState.Modified;
-                //}
-                //else
-                //{
-                data = MapCompany(data, request);
-                data.CreatedBy = request.CreatedBy;
-                data.CreatedDate = DateTime.Now;
-                _context.Company.Add(data);
-                //}
+                if (data != null)
+                {
+                    data = MapCompany(data, request);
+                    data.ModifiedBy = request.CreatedBy;
+                    data.ModifiedDate = DateTime.Now;
+                    _context.Entry(data).State = EntityState.Modified;
+                }
+                else
+                {
+                    data = new Company();
+                    data = MapCompany(data, request);
+                    data.CreatedBy = request.CreatedBy;
+                    data.CreatedDate = DateTime.Now;
+                    _context.Company.Add(data);
+                }
+                
                 _context.SaveChanges();
                 request.CompanyId = data.CompanyId;
                 retVal.Data = request;

@@ -123,7 +123,7 @@ function AddCompany() {
         var countryCode = $("#txtCountryCode").val();
         var adminPhone = $("#txtAdminPhone").val();
         var servicePhone = $("#txtServicePhone").val();
-        var buisnessType = $("#txtBusinessType").val();
+        var buisnessType = $("#ddlBusinessType").val();
         var adminEmail = $("#txtAdminEmail").val();
         var serviceEmail = $("#txtServiceEmail").val();
         var secondaryEmail = $("#txtSecondaryEmail").val();

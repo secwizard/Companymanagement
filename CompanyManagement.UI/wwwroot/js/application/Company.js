@@ -269,7 +269,7 @@ function ThemesOnFocus() {
     $("#companyThemesDetailsError").text("");
 }
 function EditCompany() {
-
+    debugger;
     var flag = true;
     var err = "";
     if ($("#txtName").val() == '') {
