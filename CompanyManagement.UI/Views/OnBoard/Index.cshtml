@@ -110,6 +110,9 @@
         z-index: -1;
         left: 0;
     }
+    .disableAnchor{
+        pointer-events:none;
+    }
 </style>
 
 <title>Company On-Boarding</title>
@@ -118,23 +121,23 @@
     <div class="stepwizard">
         <div class="stepwizard-row setup-panel">
             <div class="stepwizard-step stepwizard-stepfirst">
-                <a href="#step-1" type="button" class="btna btn-successa btn-circle">1</a>
+                <a href="#step-1" type="button" class="btna btn-successa btn-circle disableAnchor">1</a>
                 <p><small>Company</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-2" type="button" class="btna btn-default btn-circle" disabled="disabled">2</a>
+                <a href="#step-2" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">2</a>
                 <p><small>Base Subscription</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-3" type="button" class="btna btn-default btn-circle" disabled="disabled">3</a>
+                <a href="#step-3" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">3</a>
                 <p><small>Add-Ons</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-4" type="button" class="btna btn-default btn-circle" disabled="disabled">4</a>
+                <a href="#step-4" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">4</a>
                 <p><small>Configuration</small></p>
             </div>
             <div class="stepwizard-step stepwizard-steplast">
-                <a href="#step-5" type="button" class="btna btn-default btn-circle" disabled="disabled">5</a>
+                <a href="#step-5" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">5</a>
                 <p><small>Summery</small></p>
             </div>
         </div>
