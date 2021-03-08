@@ -40,6 +40,7 @@ namespace CompanyManagement.UI.Services
 
         #region OnBoard
         Task<string> NewCompanyDtl(string postdata, string authorizationToken, bool bearerToken= true);
+        Task<string> GetRequiredDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetSuggestedCompanyId(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }

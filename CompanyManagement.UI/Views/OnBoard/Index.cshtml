@@ -1,10 +1,14 @@
-﻿@using CompanyManagement.UI.Helpers;
+﻿@using System.Configuration
+@using CompanyManagement.UI.Helpers;
 @using Microsoft.Extensions.Options;
 @inject IOptions<AppSettings> Settings
 @{
     ViewData["Title"] = "On-Board";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using System.Data
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+
 <script src="~/js/application/OnBoard.js?v=@Settings.Value.JSVersion"></script>
 <link href="~/css/application/datepicker.css" rel="stylesheet" />
 <link href="~/css/application/bootstrap-clockpicker.min.css" rel="stylesheet" />
@@ -110,6 +114,10 @@
         z-index: -1;
         left: 0;
     }
+
+    .disableAnchor {
+        pointer-events: none;
+    }
 </style>
 
 <title>Company On-Boarding</title>
@@ -118,184 +126,192 @@
     <div class="stepwizard">
         <div class="stepwizard-row setup-panel">
             <div class="stepwizard-step stepwizard-stepfirst">
-                <a href="#step-1" type="button" class="btna btn-successa btn-circle">1</a>
+                <a href="#step-1" type="button" class="btna btn-successa btn-circle disableAnchor">1</a>
                 <p><small>Company</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-2" type="button" class="btna btn-default btn-circle" disabled="disabled">2</a>
+                <a href="#step-2" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">2</a>
                 <p><small>Base Subscription</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-3" type="button" class="btna btn-default btn-circle" disabled="disabled">3</a>
+                <a href="#step-3" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">3</a>
                 <p><small>Add-Ons</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-4" type="button" class="btna btn-default btn-circle" disabled="disabled">4</a>
+                <a href="#step-4" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">4</a>
                 <p><small>Configuration</small></p>
             </div>
             <div class="stepwizard-step stepwizard-steplast">
-                <a href="#step-5" type="button" class="btna btn-default btn-circle" disabled="disabled">5</a>
+                <a href="#step-5" type="button" class="btna btn-default btn-circle disableAnchor" disabled="disabled">5</a>
                 <p><small>Summery</small></p>
             </div>
         </div>
     </div>
 
 
-        <div class="panel panel-primary setup-content" id="step-1">
-            <div class="panel-heading">
-                <div class="container">
-                    <div class="row pb-3" id="AddEditUserDiv">
-                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                            <h3 class="page-label-header mb-4">Company Information</h3>
-                        </div>
-                        <div class="tab-section menunav mt-1 w-100">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs pl-2 pl-0-pr-0-mob" id="AddEditTabs">
-                                <li class="nav-item ">
-                                    <a id="liCompany" class="nav-link " data-toggle="tab" href="#companyDetails" onclick="GetCompanyDetails()">Company</a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a id="liBranch" class="nav-link " data-toggle="tab" href="#branch" onclick="GetBranchDetails()">Branch</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a id="liMail" class="nav-link" data-toggle="tab" href="#mailServerinfo" onclick="GetMailDetails()">Mail Server</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a id="liSettings" class="nav-link " data-toggle="tab" href="#settings" onclick="GetCompanySettingsDetails()">Settings</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a id="liTemplates" class="nav-link" data-toggle="tab" href="#templates" onclick="GetTemplateDetails()">Templates</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a id="liThemes" class="nav-link" data-toggle="tab" href="#themes" onclick="GetThemeDetails()">Themes</a>
-                                </li>
-                            </ul>
+    <div class="panel panel-primary setup-content" id="step-1">
+        <div class="panel-heading">
+            <div class="container">
+                <div class="row pb-3" id="AddEditUserDiv">
+                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                        <h3 class="page-label-header mb-4">Company Information</h3>
+                    </div>
+                    <div class="tab-section menunav mt-1 w-100">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs pl-2 pl-0-pr-0-mob" id="AddEditTabs">
+                            <li class="nav-item ">
+                                <a id="liCompany" class="nav-link " data-toggle="tab" href="#companyDetails" onclick="FocusCompany()">Company</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a id="liBranch" class="nav-link " data-toggle="tab" href="#branch" onclick="FocusBranch()">Branch</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="liMail" class="nav-link" data-toggle="tab" href="#mailServerinfo" onclick="FocusMail()">Mail Server</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="liSettings" class="nav-link " data-toggle="tab" href="#settings" onclick="FocusSetting()">Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="liTemplates" class="nav-link" data-toggle="tab" href="#templates" onclick="FocusTemplate()">Templates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="liThemes" class="nav-link" data-toggle="tab" href="#themes" onclick="FocusTheme()">Themes</a>
+                            </li>
+                        </ul>
 
-                            <!-- Tab panes -->
-                            <div class="col-md-12 tab-content mt-4 p-0">
-                                <div class="tab-pane active" id="companyDetails">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Company Details</h2><span class="errormessage" id="companyDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="NewCompany">
-                                                </div>
+                        <!-- Tab panes -->
+                        <div class="col-md-12 tab-content mt-4 p-0">
+                            <div class="tab-pane active" id="companyDetails">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Company Details</h2><span class="errormessage" id="companyDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="NewCompany">
+                                                @*@Html.RenderPartial("_Partial_OnBoardCompany",Model);*@
+                                                @await Html.PartialAsync("_Partial_OnBoardCompany", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="branch" style="display:none">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Branch Details</h2><span class="errormessage" id="branchDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="Branch">
-                                                </div>
+                            </div>
+                            <div class="tab-pane active" id="branch" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Branch Details</h2><span class="errormessage" id="branchDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="Branch">
+                                                @await Html.PartialAsync("_Partial_OnBoardBranch", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="mailServerinfo" style="display:none">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Mail Details</h2><span class="errormessage" id="companymailDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="MailServer">
-                                                </div>
+                            </div>
+                            <div class="tab-pane active" id="mailServerinfo" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Mail Details</h2><span class="errormessage" id="companymailDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="MailServer">
+                                                @await Html.PartialAsync("_Partial_OnBoardMailServer", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="settings" style="display:none">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Settings</h2><span class="errormessage" id="companySettingsDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="CompanySettings">
-                                                </div>
+                            </div>
+                            <div class="tab-pane active" id="settings" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Settings</h2><span class="errormessage" id="companySettingsDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="CompanySettings">
+                                                @await Html.PartialAsync("_Partial_OnBoard_CompanySetting", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="templates" style="display:none">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Templates</h2><span class="errormessage" id="companyTemplateDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="Template">
-                                                </div>
+                            </div>
+                            <div class="tab-pane active" id="templates" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Templates</h2><span class="errormessage" id="companyTemplateDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="Template">
+                                                @await Html.PartialAsync("_Partial_OnBoard_Template", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="themes" style="display:none">
-                                    <div class="row">
-                                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-                                            <div class="article-box" style="min-height:325px;">
-                                                <div class="row"><h2 class="article-header pl-1 mb-0">Themes</h2><span class="errormessage" id="companyThemesDetailsError"></span></div>
-                                                <div class="row mt-15px-mob" id="Theme">
-                                                </div>
+                            </div>
+                            <div class="tab-pane active" id="themes" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                                        <div class="article-box" style="min-height:325px;">
+                                            <div class="row"><h2 class="article-header pl-1 mb-0">Themes</h2><span class="errormessage" id="companyThemesDetailsError"></span></div>
+                                            <div class="row mt-15px-mob" id="Theme">
+                                                @await Html.PartialAsync("_Partial_OnBoard_Theme", Model)
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-12 pl-2 pr-2">
+                    <div class="col-md-12 pl-2 pr-2">
 
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
-
-                <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
-            </div>
         </div>
-
-        <div class="panel panel-primary setup-content" id="step-2">
-            <div class="panel-heading">
-                <h3 class="panel-title">Destination</h3>
-            </div>
-            <div class="panel-body">
-
-                <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
-            </div>
+        <div class="panel-body">
+            <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
+            <button class="btn btn-primary nextBtn pull-right" id="nextCompany" type="button">Next</button>
         </div>
+    </div>
 
-        <div class="panel panel-primary setup-content" id="step-3">
-            <div class="panel-heading">
-                <h3 class="panel-title">Schedule</h3>
-            </div>
-            <div class="panel-body">
-
-                <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
-            </div>
+    <div class="panel panel-primary setup-content" id="step-2">
+        <div class="panel-heading">
+            <h3 class="panel-title">Destination</h3>
         </div>
-        <div class="panel panel-primary setup-content" id="step-4">
-            <div class="panel-heading">
-                <h3 class="panel-title">Schedule</h3>
-            </div>
-            <div class="panel-body">
+        <div class="panel-body">
 
-                <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
-            </div>
+            <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
+            <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
         </div>
-        <div class="panel panel-primary setup-content" id="step-5">
-            <div class="panel-heading">
-                <h3 class="panel-title">Cargo</h3>
-            </div>
-            <div class="panel-body">
+    </div>
 
-                <button class="btn btn-success pull-right" type="submit">Finish!</button>
-            </div>
+    <div class="panel panel-primary setup-content" id="step-3">
+        <div class="panel-heading">
+            <h3 class="panel-title">Schedule</h3>
         </div>
+        <div class="panel-body">
+
+            <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
+            <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+        </div>
+    </div>
+    <div class="panel panel-primary setup-content" id="step-4">
+        <div class="panel-heading">
+            <h3 class="panel-title">Schedule</h3>
+        </div>
+        <div class="panel-body">
+
+            <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
+            <button class="btn btn-primary nextBtn pull-right" type="button">Next</button>
+        </div>
+    </div>
+    <div class="panel panel-primary setup-content" id="step-5">
+        <div class="panel-heading">
+            <h3 class="panel-title">Cargo</h3>
+        </div>
+        <div class="panel-body">
+            <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
+            <button class="btn btn-success pull-right" type="submit">Save!</button>
+        </div>
+    </div>
 
 </div>
 
-
-<input type="hidden" id="newCompanyId" value="@ViewBag.NewCompanyId" />
 <script>
     $(document).ready(function () {
 
@@ -303,6 +319,7 @@
         var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn');
+        allPrevBtn = $('.prevBtn');
 
         allWells.hide();
 
@@ -321,7 +338,7 @@
         });
 
         allNextBtn.click(function () {
-            
+
             var curStep = $(this).closest(".setup-content"),
                 curStepBtn = curStep.attr("id"),
                 nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -338,7 +355,24 @@
 
             if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
         });
+        allPrevBtn.click(function () {
 
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                isValid = true;
+
+            $(".form-group").removeClass("has-error");
+            for (var i = 0; i < curInputs.length; i++) {
+                if (!curInputs[i].validity.valid) {
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }
+
+            if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
+        });
         $('div.setup-panel div a.btn-successa').trigger('click');
     });
 </script>
