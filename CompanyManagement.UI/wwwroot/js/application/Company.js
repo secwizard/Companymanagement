@@ -418,7 +418,6 @@ function GetMailDetails() {
     });
 }
 function EditMailServer() {
-    debugger;
     var flag = true;
     var err = "";
     if ($("#txtSTMPServer").val() == '') {
