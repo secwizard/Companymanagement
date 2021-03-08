@@ -1,19 +1,33 @@
-﻿
+﻿@using System.Data
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+@if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanyInfo != null)
+{
+    var data = Model.OnBoardCompanyInfo.CompanyInfo;
     <div class="table-responsive">
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
                     <select class="customselect" id="ddlBusinessType" onchange="GetSuggestedCompanyId()">
-                       
+                        @foreach (var item in Model.OnBoardCompanyInfo.CompanyInfo.LookUps)
+                        {
+                            if (item.LookUpValue.ToLower() == Model.OnBoardCompanyInfo.CompanyInfo.SelectedLookUp.LookUpValue.ToLower())
+                            {
+                                <option value="@item.LookUpValue" selected>@item.LookUpText</option>
+                            }
+                            else
+                            {
+                                <option value="@item.LookUpValue">@item.LookUpText</option>
+                            }
 
+                        }
                     </select>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Company Id</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="" disabled>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="@data.SuggestedCompanyId" disabled>
                 </div>
             </div>
             <div class="col-md-4">
@@ -166,3 +180,4 @@
             </div>
         </div>
     </div>
+}

@@ -1,56 +1,63 @@
 ﻿
-var gosecond = false;
-$(document).ready(function () {
-    GetCompanyDetails();
-    GetRequiredDetails();
-});
-function GetRequiredDetails() {
-    debugger;
-    $.ajax({
-        url: baseURL + "OnBoard/GetRequiredDetails",
-        type: "POST",
-        dataType: "json",
-        data: {},
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            debugger;
-            var d = data.data;
-            var selected = $("#ddlBusinessType").val();
-            var html = '';
-            for (var i = 0; i < data.data.length; i++) {
-                html += '<option value="' + data.data[i].lookUpValue +'">' + data.data[i].lookUpText + '</option>';
-            }
-            $("#ddlBusinessType").html(html);
-            GetSuggestedCompanyId();
-            HideLoader();
-        },
-        error: function (data) {
-            console.log("error");
-            console.log(data);
-            HideLoader();
-        }
-    });
+
+function FocusCompany() {
+    $("#companyDetails").show();
+    $("#branch").hide();
+    $("#mailServerinfo").hide();
+    $("#settings").hide();
+    $("#templates").hide();
+    $("#themes").hide();
+}      
+function FocusBranch() {
+    $("#companyDetails").hide();
+    $("#branch").show();
+    $("#mailServerinfo").hide();
+    $("#settings").hide();
+    $("#templates").hide();
+    $("#themes").hide();
+}
+function FocusMail() {
+    $("#companyDetails").hide();
+    $("#branch").hide();
+    $("#mailServerinfo").show();
+    $("#settings").hide();
+    $("#templates").hide();
+    $("#themes").hide();
+}
+function FocusSetting() {
+    $("#companyDetails").hide();
+    $("#branch").hide();
+    $("#mailServerinfo").hide();
+    $("#settings").show();
+    $("#templates").hide();
+    $("#themes").hide();
+}
+function FocusTemplate() {
+    $("#companyDetails").hide();
+    $("#branch").hide();
+    $("#mailServerinfo").hide();
+    $("#settings").hide();
+    $("#templates").show();
+    $("#themes").hide();
+}
+function FocusTheme() {
+    $("#companyDetails").hide();
+    $("#branch").hide();
+    $("#mailServerinfo").hide();
+    $("#settings").hide();
+    $("#templates").hide();
+    $("#themes").show();
 }
 function GetCompanyDetails() {
-    var newCompany = {
-        CompanyId: 0,
-        NewCompanyId: 0,
-        UserId: null
-    }
-    
     $.ajax({
         url: baseURL + "OnBoard/GetNewCompanydetails",
         type: "POST",
         dataType: "html",
         data: {},
         success: function (data) {
-            
-            $("#NewCompany").html(data);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
-            
             console.log("error");
             console.log(data);
             HideLoader();
@@ -71,30 +78,10 @@ function GetSuggestedCompanyId() {
         success: function (data) {
             
             $("#txtCompanyId").val(data.companyId);
-            //$("#summerydata").html(data);
             HideLoader();
         },
         error: function (data) {
             
-            console.log("error");
-            console.log(data);
-            HideLoader();
-        }
-    });
-}
-function GetBranchDetails() {
-    $.ajax({
-        url: baseURL + "OnBoard/GetBranchdetails",
-        type: "GET",
-        dataType: "html",
-        data: "",
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            $("#OnBoardBranch").html(data);
-            //$("#summerydata").html(data);
-            HideLoader();
-        },
-        error: function (data) {
             console.log("error");
             console.log(data);
             HideLoader();
@@ -138,9 +125,9 @@ function AddCompany() {
         //$("#OnompanyDetailsError").text("* " + err + "is Not Correct");
         alert("no");
     }
-    else {
-        $("#nextCompany").disabled = false;
-    }
+    //else {
+       
+    //}
     //else {
     //    var myJsVariable = newCompanyId;
     //    var companyId = parseInt($("#txtCompanyId").val());
@@ -239,3 +226,104 @@ function IsGST(GSTNo) {
         return true;
     }
 }
+
+function AddBranch() {
+    $("#addBranch").css("display", "none");
+    $("#newBranch").css("display", "block");
+    $("#IsActiveBranch").prop("checked", false);
+}
+function CancelBranch() {
+    $("#txtNameBranch").val('');
+    $("#txtCode").val('');
+    $("#txtPostalCode").val('');
+    $("#txtCountry").val('');
+    $("#txtAddress1Branch").val('');
+    $("#txtAddress2Branch").val('');
+    $("#txtDistrict").val('');
+    $("#txtState").val('');
+    $("#txtPhone").val('');
+    $("#txtEmail").val('');
+    $("#hdnBranchId").val(0);
+    $("#addBranch").css("display", "block");
+    $("#newBranch").css("display", "none");
+    BranchOnFocus();
+}
+function AddTemplate() {
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
+    $("#IsActiveTemplate").prop("checked", false);
+}
+function CancelTemplate() {
+    $("#txtTemplateType").val('');
+    $("#txtName").val('');
+    $("#txtTitle").val('');
+    $("#txtHTMLData").val('');
+    $("#hdnTemplateId").val(0);
+    $("#addTemplate").css("display", "block");
+    $("#newTemplate").css("display", "none");
+    TemplateOnFocus();
+}
+function AddTheme() {
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+    $("#IsActiveTheme").prop("checked", false);
+    $("#IsDefault").prop("checked", false);
+}
+function CancelTheme() {
+    $("#txtThemeName").val('');
+    $("#txtExtThemeName").val('');
+    $("#txtImageRatio").val('');
+    $("#txtColour").val('');
+    $("#txtNoOfHomePanels").val('');
+    $("#txtMobileHeight").val('');
+    $("#txtDesktopHeight").val('');
+    $("#hdnThemeId").val(0);
+    $("#addTheme").css("display", "block");
+    $("#newTheme").css("display", "none");
+    ThemesOnFocus();
+
+}
+function AddCompanySetting() {
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
+    $("#IsActiveCompanySetting").prop("checked", false);
+}
+function CancelCompanySetting() {
+    $("#txtSettingType").val('');
+    $("#txtDataText").val('');
+    $("#txtDataValue").val('');
+    $("#txtOption1").val('');
+    $("#txtOption2").val('');
+    $("#txtOption3").val('');
+    $("#hdnCompanySettingId").val(0);
+    $("#addCompanySetting").css("display", "block");
+    $("#newCompanySetting").css("display", "none");
+    SettingOnFocus();
+}
+//function GetRequiredDetails() {
+//    debugger;
+//    $.ajax({
+//        url: baseURL + "OnBoard/GetRequiredDetails",
+//        type: "POST",
+//        dataType: "json",
+//        data: {},
+//        contentType: "application/json; charset=utf-8",
+//        success: function (data) {
+//            debugger;
+//            var d = data.data;
+//            var selected = $("#ddlBusinessType").val();
+//            var html = '';
+//            for (var i = 0; i < data.data.length; i++) {
+//                html += '<option value="' + data.data[i].lookUpValue + '">' + data.data[i].lookUpText + '</option>';
+//            }
+//            $("#ddlBusinessType").html(html);
+//            GetSuggestedCompanyId();
+//            HideLoader();
+//        },
+//        error: function (data) {
+//            console.log("error");
+//            console.log(data);
+//            HideLoader();
+//        }
+//    });
+//}

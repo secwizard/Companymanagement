@@ -1,5 +1,5 @@
 ﻿@using System.Data
-@model ResponseList<CompanyManagement.UI.Models.Response.ResponseCompanySetting>
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
 
 
 <div class="mb-10 text-left">
@@ -82,29 +82,24 @@
                         </tr>
                     </thead>
                     <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
-                        @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+                        @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo.Count>0)
                         {
-                            var i = 1;
-                            foreach (var item in Model.Data)
-                            {
-                                <tr>
-                                    <td style="width:10%" id='txtSettingType_@i'>@item.SettingType</td>
-                                    <td style="width:20%" id='txtDataText_@i'>@item.DataText</td>
-                                    <td style="width:20%" id='txtDataValue_@i'>@item.DataValue</td>
-                                    <td style="width:10%" id='txtOption1_@i'>@item.Option1</td>
-                                    <td style="width:10%" id='txtOption2_@i'>@item.Option2</td>
-                                    <td style="width:10%" id='txtOption3_@i'>@item.Option3</td>
-                                    <td style="width:10%" class="text-center">
-                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditCompanySetting(@i, '@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteCompanysetting(@i)"></i>
-                                    </td>
-                                    <td style="width:0%" class="text-center">
-                                        <input type='hidden' id='hdnCompanySettingId_@i' value='@item.CompanySettingId' />
-                                    </td>
-                                </tr>
-                                i++;
-                            }
+                            <tr>
+                                <td style="width:10%" id='txtSettingType_'></td>
+                                <td style="width:20%" id='txtDataText_'></td>
+                                <td style="width:20%" id='txtDataValue_'></td>
+                                <td style="width:10%" id='txtOption1_'></td>
+                                <td style="width:10%" id='txtOption2_'></td>
+                                <td style="width:10%" id='txtOption3_'></td>
+                                <td style="width:10%" class="text-center">
+                                    <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditCompanySetting()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteCompanysetting()"></i>
+                                </td>
+                                <td style="width:0%" class="text-center">
+                                    <input type='hidden' id='hdnCompanySettingId_' value='' />
+                                </td>
+                            </tr>
                         }
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>

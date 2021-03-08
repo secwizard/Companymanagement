@@ -1,6 +1,5 @@
 ﻿@using System.Data
-@model ResponseList<CompanyManagement.UI.Models.Response.ResponseBranchDetails>
-
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
 <div class="mb-10 text-left">
     <button class="primary-button min-w-80px" id="addTheme" onclick="AddBranch()">+ Add</button>
 </div>
@@ -111,33 +110,28 @@
                         </tr>
                     </thead>
                     <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
-                        @if (Model != null && Model.Data != null && Model.Data.Count > 0)
+                        @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.BranchInfo != null && Model.OnBoardCompanyInfo.BranchInfo.Count>0)
                         {
-                            var i = 1;
-                            foreach (var item in Model.Data)
-                            {
-                                <tr>
-                                    <td style="width:10%" id='txtCode_@i'>@item.Code</td>
-                                    <td style="width:20%" id='txtNameBranch_@i'>@item.Name</td>
-                                    <td style="width:10%" id='txtEmail_@i'>@item.Email</td>
-                                    <td style="width:10%" id='txtPhone_@i'>@item.Phone</td>
-                                    <td style="width:10%" id='txtPostalCode_@i'>@item.PostalCode</td>
-                                    <td style="width:10%" id='txtDistrict_@i'>@item.District</td>
-                                    <td style="width:10%" id='txtState_@i'>@item.State</td>
-                                    <td style="width:10%" class="text-center">
-                                        <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch(@i,'@item.IsActive')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch(@i)"></i>
-                                    </td>
-                                    <td style="width:0%" class="text-center">
-                                        <input type='hidden' id='hdnBranchId_@i' value='@item.BranchId' />
-                                        <input type='hidden' id='txtCountry_@i' value='@item.Country' />
-                                        <input type='hidden' id='txtAddress1Branch_@i' value='@item.Address1' />
-                                        <input type='hidden' id='txtAddress2Branch_@i' value='@item.Address2' />
-                                    </td>
-                                </tr>
-                                i++;
-                            }
+                            <tr>
+                                <td style="width:10%" id='txtCode_'></td>
+                                <td style="width:20%" id='txtNameBranch_'></td>
+                                <td style="width:10%" id='txtEmail_'></td>
+                                <td style="width:10%" id='txtPhone_'></td>
+                                <td style="width:10%" id='txtPostalCode_'></td>
+                                <td style="width:10%" id='txtDistrict_'></td>
+                                <td style="width:10%" id='txtState_'></td>
+                                <td style="width:10%" class="text-center">
+                                    <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch()"></i>
+                                </td>
+                                <td style="width:0%" class="text-center">
+                                    <input type='hidden' id='hdnBranchId_' value='' />
+                                    <input type='hidden' id='txtCountry_' value='' />
+                                    <input type='hidden' id='txtAddress1Branch_' value='' />
+                                    <input type='hidden' id='txtAddress2Branch_' value='' />
+                                </td>
+                            </tr>
                         }
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>

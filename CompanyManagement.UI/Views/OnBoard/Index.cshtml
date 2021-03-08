@@ -1,10 +1,14 @@
-﻿@using CompanyManagement.UI.Helpers;
+﻿@using System.Configuration
+@using CompanyManagement.UI.Helpers;
 @using Microsoft.Extensions.Options;
 @inject IOptions<AppSettings> Settings
 @{
     ViewData["Title"] = "On-Board";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using System.Data
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+
 <script src="~/js/application/OnBoard.js?v=@Settings.Value.JSVersion"></script>
 <link href="~/css/application/datepicker.css" rel="stylesheet" />
 <link href="~/css/application/bootstrap-clockpicker.min.css" rel="stylesheet" />
@@ -156,22 +160,22 @@
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs pl-2 pl-0-pr-0-mob" id="AddEditTabs">
                             <li class="nav-item ">
-                                <a id="liCompany" class="nav-link " data-toggle="tab" href="#companyDetails">Company</a>
+                                <a id="liCompany" class="nav-link " data-toggle="tab" href="#companyDetails" onclick="FocusCompany()">Company</a>
                             </li>
                             <li class="nav-item ">
-                                <a id="liBranch" class="nav-link " data-toggle="tab" href="#branch">Branch</a>
+                                <a id="liBranch" class="nav-link " data-toggle="tab" href="#branch" onclick="FocusBranch()">Branch</a>
                             </li>
                             <li class="nav-item">
-                                <a id="liMail" class="nav-link" data-toggle="tab" href="#mailServerinfo" >Mail Server</a>
+                                <a id="liMail" class="nav-link" data-toggle="tab" href="#mailServerinfo" onclick="FocusMail()">Mail Server</a>
                             </li>
                             <li class="nav-item">
-                                <a id="liSettings" class="nav-link " data-toggle="tab" href="#settings">Settings</a>
+                                <a id="liSettings" class="nav-link " data-toggle="tab" href="#settings" onclick="FocusSetting()">Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a id="liTemplates" class="nav-link" data-toggle="tab" href="#templates" >Templates</a>
+                                <a id="liTemplates" class="nav-link" data-toggle="tab" href="#templates" onclick="FocusTemplate()">Templates</a>
                             </li>
                             <li class="nav-item">
-                                <a id="liThemes" class="nav-link" data-toggle="tab" href="#themes" >Themes</a>
+                                <a id="liThemes" class="nav-link" data-toggle="tab" href="#themes" onclick="FocusTheme()">Themes</a>
                             </li>
                         </ul>
 
@@ -183,6 +187,8 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Company Details</h2><span class="errormessage" id="companyDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="NewCompany">
+                                                @*@Html.RenderPartial("_Partial_OnBoardCompany",Model);*@
+                                                @await Html.PartialAsync("_Partial_OnBoardCompany", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -194,6 +200,7 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Branch Details</h2><span class="errormessage" id="branchDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="Branch">
+                                                @await Html.PartialAsync("_Partial_OnBoardBranch", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -205,6 +212,7 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Mail Details</h2><span class="errormessage" id="companymailDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="MailServer">
+                                                @await Html.PartialAsync("_Partial_OnBoardMailServer", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -216,6 +224,7 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Settings</h2><span class="errormessage" id="companySettingsDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="CompanySettings">
+                                                @await Html.PartialAsync("_Partial_OnBoard_CompanySetting", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -227,6 +236,7 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Templates</h2><span class="errormessage" id="companyTemplateDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="Template">
+                                                @await Html.PartialAsync("_Partial_OnBoard_Template", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -238,6 +248,7 @@
                                         <div class="article-box" style="min-height:325px;">
                                             <div class="row"><h2 class="article-header pl-1 mb-0">Themes</h2><span class="errormessage" id="companyThemesDetailsError"></span></div>
                                             <div class="row mt-15px-mob" id="Theme">
+                                                @await Html.PartialAsync("_Partial_OnBoard_Theme", Model)
                                             </div>
                                         </div>
                                     </div>
@@ -254,7 +265,7 @@
         </div>
         <div class="panel-body">
             <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>
-            <button class="btn btn-primary nextBtn pull-right" id="nextCompany" type="button" disabled>Next</button>
+            <button class="btn btn-primary nextBtn pull-right" id="nextCompany" type="button">Next</button>
         </div>
     </div>
 
