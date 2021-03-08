@@ -418,6 +418,7 @@ function GetMailDetails() {
     });
 }
 function EditMailServer() {
+    debugger;
     var flag = true;
     var err = "";
     if ($("#txtSTMPServer").val() == '') {
@@ -451,7 +452,7 @@ function EditMailServer() {
         var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
         var fromEmailId = $("#txtFromEmailId").val();
         var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
-        var isActive = $('#IsActive').is(':checked');
+        var isActive = $('#IsActiveMail').is(':checked');
         var enableSSL = $('#EnableSSL').is(':checked');
 
 
@@ -479,6 +480,7 @@ function EditMailServer() {
                     MessageShow('', 'SMTP Not Saved', 'error');
                 }
                 else {
+                    $("#MailServer").html(data);
                     MessageShow('', 'SMTP Saved', 'success');
                 }
                 HideLoader();
@@ -711,11 +713,10 @@ function EditTemplate(e, i) {
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
     $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
-    var dd = $("#txtName_" + e).text();
     $("#txtNameTemplate").val($("#txtName_" + e).text());
     $("#txtTitle").val($("#txtTitle_" + e).text());
-    $("#txtHTMLData").val($("#txtHTMLData_" + e).val());
-    var d = $("#IsActive_" + e).val();
+    var dt = $("#txtHTMLData_" + e).val();
+    $("#txtHTMLData").val($("#txtHTMLData_" + e).val()).trigger('change');
     if (i == "True") {
         $("#IsActiveTemplate").prop("checked", true);
     } else {

@@ -107,7 +107,7 @@ namespace CompanyManagement.UI.Controllers
                 var request = new RequestCompanyDtl() { CompanyId = user.CompanyId };
                 var compDtl = await _restAPI.GetMailDetails(JsonConvert.SerializeObject(request), user.token);
                 result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
-                if (result != null && result.Data != null && result.Status)
+                if (result != null && result.Status)
                 {
                     return PartialView("_Partial_MailServer", result);
                 }
@@ -132,9 +132,10 @@ namespace CompanyManagement.UI.Controllers
             try
             {
                 mailInfo.CreatedBy = user.Id;
+                mailInfo.CompanyId = user.CompanyId;
                 var compDtl = await _restAPI.EditSTMPServer(JsonConvert.SerializeObject(mailInfo), user.token);
                 result = JsonConvert.DeserializeObject<Response<ResponseMailServerDetails>>(compDtl);
-                if (result != null && result.Data != null && result.Status)
+                if (result != null  && result.Status)
                 {
                     return PartialView("_Partial_MailServer", result);
                 }
