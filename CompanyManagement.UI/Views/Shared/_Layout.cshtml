@@ -44,22 +44,32 @@
                     }
                     @{
                         var logo = (@HttpContextAccessor.HttpContext.Session.Get<UserToken>("CompanyConfiguration"));
-                        var fullpath = logo.ImageFilePath + logo.Logo;
+                        var fullpath = "/images/logoAdmin.gif";
+                        if (logo.Logo != null)
+                        {
+                            fullpath = logo.ImageFilePath + logo.Logo;
+                        }
                     }
                     <a class="navbar-brand" href="#" target="_blank" style="padding: 5px 0;">
-                        <img class="logo" src="@fullpath" alt="Brand Logo" style="width:100px;height:40px;" />
+                        <img class="logo" src="@fullpath" alt="Brand Logo" style="height:40px;" />
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse menuStyle">
-                        <ul class="nav navbar-nav" style="text-align:left; padding:10px">
-                            <li>@Html.ActionLink("On Board", "Index", "OnBoard")</li>
-                        </ul>
-                        <ul class="nav navbar-nav" style="text-align:left; padding:10px">
-                            <li>@Html.ActionLink("Company", "Index", "Company")</li>
-                        </ul>
+                        @if (logo.CompanyId == 0)
+                        {
+                            <ul class="nav navbar-nav" style="text-align:left; padding:10px">
+                                <li>@Html.ActionLink("On Board", "Index", "OnBoard")</li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="nav navbar-nav" style="text-align:left; padding:10px">
+                                <li>@Html.ActionLink("Company", "Index", "Company")</li>
+                            </ul>
+                        }
                         <ul class="nav navbar-nav" style="text-align:left; padding:10px">
                             <li><a href="https://usermanagement.wizardcomm.in/" target="_blank">User</a></li>
                         </ul>

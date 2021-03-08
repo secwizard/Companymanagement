@@ -42,6 +42,10 @@ namespace CompanyManagement.UI.Controllers
         public async Task<IActionResult> Index()
         {
             if (string.IsNullOrEmpty(user?.token)) return Ok("login");
+            user.CompanyId = 0;
+            user.Logo = null;
+            Session.Set("CompanyConfiguration", user);
+
             OnBoardProcessinfo onBoardProcessinfo = new OnBoardProcessinfo();
             RequestCompanyInfo company = new RequestCompanyInfo();
             List<ResponseBranchDetails> branch = new List<ResponseBranchDetails>();
