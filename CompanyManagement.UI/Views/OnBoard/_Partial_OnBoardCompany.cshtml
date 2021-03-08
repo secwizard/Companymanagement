@@ -1,30 +1,11 @@
-﻿@using System.Data
-@model Response<CompanyManagement.UI.Models.Response.RequestCompanyInfo>
-
-<script>
-    var newCompanyId = @ViewBag.NewCompanyId;
-</script>
-@if (Model != null)
-{
-    var compId = Model.Data.SuggestedCompanyId > 0 ? Model.Data.SuggestedCompanyId : Model.Data.CompanyId;
+﻿
     <div class="table-responsive">
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
                     <select class="customselect" id="ddlBusinessType" onchange="GetSuggestedCompanyId()">
-                        @foreach (var item in Model.Data.LookUps)
-                        {
-                            if (item.LookUpValue.ToLower() == Model.Data.SelectedLookUp.LookUpValue.ToLower())
-                            {
-                                <option value="@item.LookUpValue" selected>@item.LookUpText</option>
-                            }
-                            else
-                            {
-                                <option value="@item.LookUpValue">@item.LookUpText</option>
-                            }
-
-                        }
+                       
 
                     </select>
                 </div>
@@ -32,134 +13,134 @@
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Company Id</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="@compId" disabled>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="" disabled>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Name<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtName" value="@Model.Data.Name" onfocus="CompanyOnFocus()">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtName" value="" onfocus="CompanyOnFocus()">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Short Name<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtShortname" value="@Model.Data.ShortName" onfocus="CompanyOnFocus()">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtShortname" value="" onfocus="CompanyOnFocus()">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Address 1</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1" value="@Model.Data.Address1">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Address 2</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2" value="@Model.Data.Address2">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Pin / Zip </p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="@Model.Data.PIN">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">District</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrictCode" value="@Model.Data.DistrictCode">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrictCode" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">State</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtStateCode" value="@Model.Data.StateCode">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtStateCode" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Country</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountryCode" value="@Model.Data.CountryCode">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountryCode" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Admin Phone<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="@Model.Data.AdminPhone" onfocus="CompanyOnFocus()">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="" onfocus="CompanyOnFocus()">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Service Phone</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="@Model.Data.ServicePhone">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="">
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Admin Email<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminEmail" value="@Model.Data.AdminEmail" onfocus="CompanyOnFocus()">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminEmail" value="" onfocus="CompanyOnFocus()">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Service Email</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServiceEmail" value="@Model.Data.ServiceEmail">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServiceEmail" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Secondary Email</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSecondaryEmail" value="@Model.Data.SecondaryEmail">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSecondaryEmail" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">GST Number</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtGSTNumber" value="@Model.Data.GSTNumber">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtGSTNumber" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Pan Number</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPanNumber" value="@Model.Data.PanNumber">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPanNumber" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Currency Code</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCurrencyCode" value="@Model.Data.CurrencyCode">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCurrencyCode" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Image File Path</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageFilePath" value="@Model.Data.ImageFilePath">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageFilePath" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">WebSite</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtWebsite" value="@Model.Data.Website">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtWebsite" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Logo File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLogoFileName" value="@Model.Data.LogoFileName">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLogoFileName" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Favicon File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFabiconFileName" value="@Model.Data.FavIconFileName">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFabiconFileName" value="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Login Image File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLoginImageFileName" value="@Model.Data.LoginImageFileName">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLoginImageFileName" value="">
                 </div>
             </div>
             <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
@@ -186,4 +167,3 @@
             </div>
         </div>
     </div>
-}
