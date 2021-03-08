@@ -43,30 +43,53 @@ namespace CompanyManagement.UI.Controllers
             return View();
         }
         [HttpPost]
+        public async Task<IActionResult> GetRequiredDetails()
+        {
+            if (string.IsNullOrEmpty(user?.token)) return Ok("login");
+            ResponseList<LookUpInfo> result = new ResponseList<LookUpInfo>();
+            try
+            {
+                ResponseCompanyId newCompanyDetails = new ResponseCompanyId();
+                newCompanyDetails.CompanyId = user.CompanyId;
+                var compDtl = await _restAPI.GetRequiredDetails(JsonConvert.SerializeObject(newCompanyDetails), user.token);
+                result = JsonConvert.DeserializeObject<ResponseList<LookUpInfo>>(compDtl);
+                if (result != null && result.Data != null && result.Status)
+                {
+                    return Json(result);
+                }
+                else
+                {
+                    return Ok("NO");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Either UserName Or Password is Incorrect";
+                result.Status = false;
+                log.Info("***LogVerify*** Date : " + DateTime.UtcNow + " Error " + ex.Message + "StackTrace " + ex.StackTrace.ToString());
+                return Ok("NO");
+            }
+        }
+        [HttpPost]
         public async Task<IActionResult> GetNewCompanydetails(NewCompanyDetails newCompanyDetails)
         {
             if (string.IsNullOrEmpty(user?.token)) return Ok("login");
             Response<RequestCompanyInfo> result = new Response<RequestCompanyInfo>();
             try
             {
-                var newCompanyId = Session.Get<long>("NewCompanyId");
-                if(newCompanyId != 0)
-                {
-                    newCompanyDetails.NewCompanyId = newCompanyId;
-                }
-                newCompanyDetails.UserId = user.Id;
-                newCompanyDetails.CompanyId = user.CompanyId;
-                var compDtl = await _restAPI.NewCompanyDtl(JsonConvert.SerializeObject(newCompanyDetails), user.token);
-                result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
-                if(result != null && result.Data != null && result.Status)
-                {
-                    Session.Set("NewCompanyId", result.Data.CompanyId);
-                    return PartialView("_Partial_OnBoardCompany",result);
-                }
-                else
-                {
-                    return Ok("NO");
-                }
+                //newCompanyDetails.UserId = user.Id;
+                //newCompanyDetails.CompanyId = user.CompanyId;
+                //var compDtl = await _restAPI.NewCompanyDtl(JsonConvert.SerializeObject(newCompanyDetails), user.token);
+                //result = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl);
+                //if(result != null && result.Data != null && result.Status)
+                //{
+                    //Session.Set("NewCompanyId", result.Data.CompanyId);
+                    return PartialView("_Partial_OnBoardCompany");
+                //}
+                //else
+                //{
+                //    return Ok("NO");
+                //}
             }
             catch (Exception ex)
             {

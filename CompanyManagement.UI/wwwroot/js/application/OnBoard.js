@@ -1,8 +1,36 @@
 ﻿
-
+var gosecond = false;
 $(document).ready(function () {
     GetCompanyDetails();
+    GetRequiredDetails();
 });
+function GetRequiredDetails() {
+    debugger;
+    $.ajax({
+        url: baseURL + "OnBoard/GetRequiredDetails",
+        type: "POST",
+        dataType: "json",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            debugger;
+            var d = data.data;
+            var selected = $("#ddlBusinessType").val();
+            var html = '';
+            for (var i = 0; i < data.data.length; i++) {
+                html += '<option value="' + data.data[i].lookUpValue +'">' + data.data[i].lookUpText + '</option>';
+            }
+            $("#ddlBusinessType").html(html);
+            GetSuggestedCompanyId();
+            HideLoader();
+        },
+        error: function (data) {
+            console.log("error");
+            console.log(data);
+            HideLoader();
+        }
+    });
+}
 function GetCompanyDetails() {
     var newCompany = {
         CompanyId: 0,
@@ -14,7 +42,7 @@ function GetCompanyDetails() {
         url: baseURL + "OnBoard/GetNewCompanydetails",
         type: "POST",
         dataType: "html",
-        data: newCompany,
+        data: {},
         success: function (data) {
             
             $("#NewCompany").html(data);
@@ -111,77 +139,80 @@ function AddCompany() {
         alert("no");
     }
     else {
-        var myJsVariable = newCompanyId;
-        var companyId = parseInt($("#txtCompanyId").val());
-        var name = $("#txtName").val();
-        var shortName = $("#txtShortname").val();
-        var address1 = $("#txtAddress1").val();
-        var address2 = $("#txtAddress2").val();
-        var pin = $("#txtPIN").val();
-        var districtCode = $("#txtDistrictCode").val();
-        var stateCode = $("#txtStateCode").val();
-        var countryCode = $("#txtCountryCode").val();
-        var adminPhone = $("#txtAdminPhone").val();
-        var servicePhone = $("#txtServicePhone").val();
-        var buisnessType = $("#ddlBusinessType").val();
-        var adminEmail = $("#txtAdminEmail").val();
-        var serviceEmail = $("#txtServiceEmail").val();
-        var secondaryEmail = $("#txtSecondaryEmail").val();
-        var gstNumber = $("#txtGSTNumber").val();
-        var panNumber = $("#txtPanNumber").val();
-        var currencyCode = $("#txtCurrencyCode").val();
-        var imageFilePath = $("#txtImageFilePath").val();
-        var website = $("#txtWebsite").val();
-        var logoFileName = $("#txtLogoFileName").val();
-        var fabiconFileName = $("#txtFabiconFileName").val();
-        var loginImageFileName = $("#txtLoginImageFileName").val();
-        var isActive = $('#IsActive').is(':checked');
-        var pinRequired = $('#PinRequired').is(':checked');
 
-
-        var companyInfo = {
-            CompanyId: companyId,
-            Name: name,
-            ShortName: shortName,
-            Address1: address1,
-            Address2: address2,
-            PIN: pin,
-            DistrictCode: districtCode,
-            StateCode: stateCode,
-            CountryCode: countryCode,
-            AdminPhone: adminPhone,
-            ServicePhone: servicePhone,
-            AdminEmail: adminEmail,
-            ServiceEmail: serviceEmail,
-            SecondaryEmail: secondaryEmail,
-            GSTNumber: gstNumber,
-            PanNumber: panNumber,
-            BusinessType: buisnessType,
-            CurrencyCode: currencyCode,
-            ImageFilePath: imageFilePath,
-            LogoFileName: logoFileName,
-            FavIconFileName: fabiconFileName,
-            LoginImageFileName: loginImageFileName,
-            Website: website,
-            PINRequired: pinRequired,
-            IsActive: isActive
-        }
-        $.ajax({
-            url: baseURL + "OnBoard/AddCompany",
-            type: "GET",
-            dataType: "json",
-            data: companyInfo,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                HideLoader();
-            },
-            error: function (data) {
-                console.log("error");
-                console.log(data);
-                HideLoader();
-            }
-        });
     }
+    //else {
+    //    var myJsVariable = newCompanyId;
+    //    var companyId = parseInt($("#txtCompanyId").val());
+    //    var name = $("#txtName").val();
+    //    var shortName = $("#txtShortname").val();
+    //    var address1 = $("#txtAddress1").val();
+    //    var address2 = $("#txtAddress2").val();
+    //    var pin = $("#txtPIN").val();
+    //    var districtCode = $("#txtDistrictCode").val();
+    //    var stateCode = $("#txtStateCode").val();
+    //    var countryCode = $("#txtCountryCode").val();
+    //    var adminPhone = $("#txtAdminPhone").val();
+    //    var servicePhone = $("#txtServicePhone").val();
+    //    var buisnessType = $("#ddlBusinessType").val();
+    //    var adminEmail = $("#txtAdminEmail").val();
+    //    var serviceEmail = $("#txtServiceEmail").val();
+    //    var secondaryEmail = $("#txtSecondaryEmail").val();
+    //    var gstNumber = $("#txtGSTNumber").val();
+    //    var panNumber = $("#txtPanNumber").val();
+    //    var currencyCode = $("#txtCurrencyCode").val();
+    //    var imageFilePath = $("#txtImageFilePath").val();
+    //    var website = $("#txtWebsite").val();
+    //    var logoFileName = $("#txtLogoFileName").val();
+    //    var fabiconFileName = $("#txtFabiconFileName").val();
+    //    var loginImageFileName = $("#txtLoginImageFileName").val();
+    //    var isActive = $('#IsActive').is(':checked');
+    //    var pinRequired = $('#PinRequired').is(':checked');
+
+
+    //    var companyInfo = {
+    //        CompanyId: companyId,
+    //        Name: name,
+    //        ShortName: shortName,
+    //        Address1: address1,
+    //        Address2: address2,
+    //        PIN: pin,
+    //        DistrictCode: districtCode,
+    //        StateCode: stateCode,
+    //        CountryCode: countryCode,
+    //        AdminPhone: adminPhone,
+    //        ServicePhone: servicePhone,
+    //        AdminEmail: adminEmail,
+    //        ServiceEmail: serviceEmail,
+    //        SecondaryEmail: secondaryEmail,
+    //        GSTNumber: gstNumber,
+    //        PanNumber: panNumber,
+    //        BusinessType: buisnessType,
+    //        CurrencyCode: currencyCode,
+    //        ImageFilePath: imageFilePath,
+    //        LogoFileName: logoFileName,
+    //        FavIconFileName: fabiconFileName,
+    //        LoginImageFileName: loginImageFileName,
+    //        Website: website,
+    //        PINRequired: pinRequired,
+    //        IsActive: isActive
+    //    }
+    //    $.ajax({
+    //        url: baseURL + "OnBoard/AddCompany",
+    //        type: "GET",
+    //        dataType: "json",
+    //        data: companyInfo,
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            HideLoader();
+    //        },
+    //        error: function (data) {
+    //            console.log("error");
+    //            console.log(data);
+    //            HideLoader();
+    //        }
+    //    });
+    //}
 }
 function phonenumber(inputtxt) {
     var phoneno = /^\d{10}$/;

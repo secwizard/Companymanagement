@@ -65,6 +65,22 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<List<LookUpInfo>> GetRequiredDetails(RequestBase request)
+        {
+            try
+            {
+                var res = new List<LookUpInfo>();
+                var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
+                var lookup = GetCompanyLookUp(reqlookUp).Result;
+                res = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<ResponseCompanyId> GetSuggestedCompanyId(string type)
         {
             ResponseCompanyId response = new ResponseCompanyId();
@@ -136,7 +152,7 @@ namespace CompanyManagement.Api.Service
                     data.CreatedDate = DateTime.Now;
                     _context.Company.Add(data);
                 }
-                
+
                 _context.SaveChanges();
                 request.CompanyId = data.CompanyId;
                 retVal.Data = request;
