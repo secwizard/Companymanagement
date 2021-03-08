@@ -238,7 +238,19 @@ namespace CompanyManagement.Api.Service
                     _context.Entry(data).State = EntityState.Modified;
                     _context.SaveChanges();
                     request.CompanyId = data.CompanyId;
-                    retVal.Data = request;
+                    retVal.Data = request.IsActive == true ? request : null;
+                    retVal.Message = "OK";
+                    retVal.Status = true;
+                }
+                else
+                {
+                    data = MapMailServer(new MailServer(), request);
+                    data.CreatedBy = request.CreatedBy;
+                    data.CreatedDate = DateTime.Now;
+                    _context.MailServer.Add(data);
+                    _context.SaveChanges();
+                    request.CompanyId = data.CompanyId;
+                    retVal.Data = request.IsActive == true? request:null;
                     retVal.Message = "OK";
                     retVal.Status = true;
                 }
@@ -255,6 +267,7 @@ namespace CompanyManagement.Api.Service
         }
         private MailServer MapMailServer(MailServer preData, CompanyMailServer postData)
         {
+            preData.CompanyId = postData.CompanyId;
             preData.SMTPPort = postData.SMTPPort == null ? 0 : postData.SMTPPort;
             preData.SMTPServer = postData.SMTPServer == null ? "" : postData.SMTPServer;
             preData.FromEmailDisplayName = postData.FromEmailDisplayName == null ? "" : postData.FromEmailDisplayName;
@@ -276,12 +289,7 @@ namespace CompanyManagement.Api.Service
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
                 var dataList = _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToList();
-
-                if (dataList?.Count > 0)
-                {
                     return dataList;
-                }
-                return null;
             }
             catch (Exception ex)
             {
@@ -405,13 +413,8 @@ namespace CompanyManagement.Api.Service
                 var data = await _context.Branch
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).ToListAsync();
-
-                if (data != null)
-                {
                     res = _mapper.Map<List<Branch>, List<BranchInfo>>(data);
                     return res;
-                }
-                return null;
             }
             catch (Exception ex)
             {
@@ -540,12 +543,7 @@ namespace CompanyManagement.Api.Service
 
                 string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
                 var dataList = _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToList();
-
-                if (dataList?.Count > 0)
-                {
-                    return dataList;
-                }
-                return null;
+                return dataList;
             }
             catch (Exception ex)
             {
@@ -673,12 +671,7 @@ namespace CompanyManagement.Api.Service
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
                 var dataList = _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToList();
-
-                if (dataList?.Count > 0)
-                {
-                    return dataList;
-                }
-                return null;
+                return dataList;
             }
             catch (Exception ex)
             {

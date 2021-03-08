@@ -148,8 +148,8 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _companyService.GetCompanySmtp(request);
                 }
-                responce.Status = responce.Data != null;
-                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+                responce.Status = true;
+                responce.Message = responce == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {
@@ -172,8 +172,8 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce = await _companyService.EditSTMPServer(request);
                 }
-                responce.Status = responce.Data != null;
-                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+                responce.Status = responce != null ?responce.Status :false;
+                responce.Message = responce == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {
@@ -197,7 +197,7 @@ namespace CompanyManagement.Api.Controllers
                     responce.Data = await _companyService.GetCompanyTheme(request);
                 }
                 responce.Status = responce.Data != null;
-                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+                responce.Message = responce.Data != null ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {
@@ -265,8 +265,8 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _companyService.GetCompanySetting(request);
                 }
-                responce.Status = responce.Data?.Count > 0;
-                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data != null ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {
@@ -335,8 +335,8 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _companyService.GetCompanyBranch(request);
                 }
-                responce.Status = responce.Data?.Count > 0;
-                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data != null ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {
@@ -407,8 +407,8 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _companyService.GetCompanyTemplate(request);
                 }
-                responce.Status = responce.Data?.Count > 0;
-                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data != null ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {
