@@ -139,7 +139,7 @@ function AddCompany() {
         alert("no");
     }
     else {
-
+        $("#nextCompany").disabled = false;
     }
     //else {
     //    var myJsVariable = newCompanyId;
