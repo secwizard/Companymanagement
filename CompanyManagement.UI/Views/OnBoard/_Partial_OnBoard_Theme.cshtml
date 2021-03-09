@@ -56,14 +56,14 @@
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtDesktopHeight">
             </div>
         </div>
-        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+        @*<div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
             <p class="all-textlabel"> </p>
             <br />
             <label class="font11 all-textlabel l-p-initial cus-chkbox">
                 <input class="permissionCheckbox" type="checkbox" id="IsActiveTheme" />Is Active
                 <span class="checkmark"></span>
             </label>
-        </div>
+        </div>*@
         <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
             <p class="all-textlabel"> </p>
             <br />
@@ -99,18 +99,21 @@
                     <tbody class="custom-table-tbody" id="tbl_OnBoard_Theme_body">
                         @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanyTheme != null && Model.OnBoardCompanyInfo.CompanyTheme.Count>0)
                         {
-                            <tr>
-                                <td style="width:20%" id='txtThemeName_'></td>
-                                <td style="width:10%" id='txtExtThemeName_'></td>
-                                <td style="width:10%" id='txtImageRatio_'></td>
-                                <td style="width:10%" id='txtColour_'></td>
-                                <td style="width:10%" id='txtNoOfHomePanels_'></td>
-                                <td style="width:10%" id='txtMobileHeight_'></td>
-                                <td style="width:10%" id='txtDesktopHeight_'></td>
-                                <td style="width:10%" class="text-center">
-                                    <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme()"></i>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td style="width:20%" id='txtThemeName_'></td>
+                            <td style="width:10%" id='txtExtThemeName_'></td>
+                            <td style="width:10%" id='txtImageRatio_'></td>
+                            <td style="width:10%" id='txtColour_'></td>
+                            <td style="width:10%" id='txtNoOfHomePanels_'></td>
+                            <td style="width:10%" id='txtMobileHeight_'></td>
+                            <td style="width:10%" id='txtDesktopHeight_'></td>
+                            <td style="width:10%" class="text-center">
+                                <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme()"></i>
+                            </td>
+                            <td style="width:0%" class="text-center">
+                                <input type='hidden' id='hdnThemeId_' value='' />
+                            </td>
+                        </tr>
                         }
                         </tbody>
                 </table>

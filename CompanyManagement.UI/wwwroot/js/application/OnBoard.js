@@ -424,7 +424,7 @@ function AddEditTheme() {
         var Colour = $("#txtColour").val();
         var MobileHeight = $("#txtMobileHeight").val();
         var DesktopHeight = $("#txtDesktopHeight").val();
-        //var IsDefault = $('#IsDefault').is(':checked');
+        var IsDefault = $('#IsDefault').is(':checked');
         //var IsActive = $('#IsActiveTheme').is(':checked');
         var html = '';
 
@@ -438,6 +438,12 @@ function AddEditTheme() {
         html += '<td style="width:10%" class="text-center">';
         html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme(' + count + ')"></i></td>';
         html += '<td style="width:0%" class="text-center">';
+        if (IsDefault) {
+            html += '<input type="hidden" id="isDefault_' + count + '" value="1" /></td ></tr >';
+        }
+        else {
+            html += '<input type="hidden" id="isDefault_' + count + '" value="0" /></td ></tr >';
+        }
         if (state > 0) {
             $('#themetr_' + state).remove();
             $("#tbl_OnBoard_Theme_body").prepend(html);
@@ -462,16 +468,17 @@ function EditTheme(e) {
     $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).text());
     $("#txtMobileHeight").val($("#txtMobileHeight_" + e).text());
     $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).text());
+    var isDefault = parseInt($("#isDefault_" + e).val());
     //if (i == "True") {
     //    $("#IsActiveTheme").prop("checked", true);
     //} else {
     //    $("#IsActiveTheme").prop("checked", false);
     //}
-    //if (j == "True") {
-    //    $("#IsDefault").prop("checked", true);
-    //} else {
-    //    $("#IsDefault").prop("checked", false);
-    //}
+    if (isDefault == 1) {
+        $("#IsDefault").prop("checked", true);
+    } else {
+        $("#IsDefault").prop("checked", false);
+    }
     $("#hdnThemeId").val(e);
 }
 function DeleteTheme(e) {
