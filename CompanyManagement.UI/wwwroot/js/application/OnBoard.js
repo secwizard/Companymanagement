@@ -7,7 +7,7 @@ function FocusCompany() {
     $("#settings").hide();
     $("#templates").hide();
     $("#themes").hide();
-}      
+}
 function FocusBranch() {
     $("#companyDetails").hide();
     $("#branch").show();
@@ -69,19 +69,19 @@ function GetSuggestedCompanyId() {
         CompanyId: 0,
         Type: $("#ddlBusinessType").val()
     }
-    
+
     $.ajax({
         url: baseURL + "OnBoard/GetSuggestedCompanyId",
         type: "POST",
         dataType: "json",
         data: postData,
         success: function (data) {
-            
+
             $("#txtCompanyId").val(data.companyId);
             HideLoader();
         },
         error: function (data) {
-            
+
             console.log("error");
             console.log(data);
             HideLoader();
@@ -89,7 +89,7 @@ function GetSuggestedCompanyId() {
     });
 }
 function AddCompany() {
-    
+
 
     var flag = true;
     var err = "";
@@ -126,7 +126,7 @@ function AddCompany() {
         alert("no");
     }
     //else {
-       
+
     //}
     //else {
     //    var myJsVariable = newCompanyId;
@@ -226,7 +226,6 @@ function IsGST(GSTNo) {
         return true;
     }
 }
-
 function AddBranch() {
     $("#addBranch").css("display", "none");
     $("#newBranch").css("display", "block");
@@ -300,30 +299,182 @@ function CancelCompanySetting() {
     $("#newCompanySetting").css("display", "none");
     SettingOnFocus();
 }
-//function GetRequiredDetails() {
-//    debugger;
-//    $.ajax({
-//        url: baseURL + "OnBoard/GetRequiredDetails",
-//        type: "POST",
-//        dataType: "json",
-//        data: {},
-//        contentType: "application/json; charset=utf-8",
-//        success: function (data) {
-//            debugger;
-//            var d = data.data;
-//            var selected = $("#ddlBusinessType").val();
-//            var html = '';
-//            for (var i = 0; i < data.data.length; i++) {
-//                html += '<option value="' + data.data[i].lookUpValue + '">' + data.data[i].lookUpText + '</option>';
-//            }
-//            $("#ddlBusinessType").html(html);
-//            GetSuggestedCompanyId();
-//            HideLoader();
-//        },
-//        error: function (data) {
-//            console.log("error");
-//            console.log(data);
-//            HideLoader();
-//        }
-//    });
-//}
+function CompanyOnFocus() {
+    $("#companyDetailsError").text("");
+}
+function BranchOnFocus() {
+    $("#branchDetailsError").text("");
+}
+function MailOnFocus() {
+    $("#companymailDetailsError").text("");
+}
+function SettingOnFocus() {
+    $("#companySettingsDetailsError").text("");
+}
+function TemplateOnFocus() {
+    $("#companyTemplateDetailsError").text("");
+}
+function ThemesOnFocus() {
+    $("#companyThemesDetailsError").text("");
+}
+
+function AddEditBranch() {
+    var count = $('#hdnRowCntBranch').val();
+    var flag = true;
+    var err = "";
+    if ($("#txtCode").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Branch Code " : " Branch Code ";
+    }
+    if ($("#txtNameBranch").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
+    }
+    if (!phonenumber($("#txtPhone").val())) {
+        flag = false;
+        err = err != "" ? err + ", Phone " : " Phone ";
+    }
+    if (!IsEmail($("#txtEmail").val())) {
+        flag = false;
+        err = err != "" ? err + ", Email " : " Email ";
+    }
+    if ($("#txtCountry").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Country " : " Country ";
+    }
+    if (!flag) {
+        $("#branchDetailsError").text("* " + err + "is required.");
+    }
+    else {
+        var state = parseInt($("#hdnBranchId").val());
+        var BranchId = parseInt($("#hdnBranchId").val());
+        var Name = $("#txtNameBranch").val();
+        var Code = $("#txtCode").val();
+        var Address1 = $("#txtAddress1Branch").val();
+        var Address2 = $("#txtAddress2Branch").val();
+        var PostalCode = $("#txtPostalCode").val();
+        var District = $("#txtDistrict").val();
+        var State = $("#txtState").val();
+        var Country = $("#txtCountry").val();
+        var Phone = $("#txtPhone").val();
+        var Email = $("#txtEmail").val();
+        var html = '';
+        html += '<tr id="branchtr_' + count + '"><td style="width:10%" id="txtCode_' + count + '">' + Code + '</td>';
+        html += '<td style="width:20%" id="txtNameBranch_' + count + '">' + Name + '</td>';
+        html += '<td style="width:10%" id="txtEmail_' + count + '">' + Email + '</td>';
+        html += '<td style="width:10%" id="txtPhone_' + count + '">' + Phone + '</td>';
+        html += '<td style="width:10%" id="txtPostalCode_' + count + '">' + PostalCode + '</td>';
+        html += '<td style="width:10%" id="txtDistrict_' + count + '">' + District + '</td>';
+        html += '<td style="width:10%" id="txtState_' + count + '">' + State + '</td>';
+        html += '<td style="width:10%" class="text-center">';
+        html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch(' + count + ')"></i></td>';
+        html += '<td style="width:0%" class="text-center">';
+        html += '<input type="hidden" id="txtCountry_' + count + '" value="' + Country + '" />';
+        html += '<input type="hidden" id="txtAddress1Branch_' + count + '" value="' + Address1 + '" />';
+        html += ' <input type="hidden" id="txtAddress2Branch_' + count + '" value="' + Address2 + '"/>';
+        html += '</td> </tr>';
+        if (state > 0) {
+            $('#branchtr_' + state).remove();
+            $("#tbl_OnBoard_Branch_body").prepend(html);
+        }
+        else {
+            $("#tbl_OnBoard_Branch_body").prepend(html);
+        }
+        $('#hdnRowCntBranch').val(parseInt($('#hdnRowCntBranch').val()) + 1);
+        $("#hdnBranchId").val('0');
+        CancelBranch();
+        BranchOnFocus();
+    }
+}
+function DeleteBranch(e) {
+    $('#branchtr_' + e).remove();
+}
+function EditBranch(e) {
+    $("#addBranch").css("display", "none");
+    $("#newBranch").css("display", "block");
+    $("#txtNameBranch").val($("#txtNameBranch_" + e).text());
+    $("#txtCode").val($("#txtCode_" + e).text());
+    $("#txtPostalCode").val($("#txtPostalCode_" + e).text());
+    $("#txtCountry").val($("#txtCountry_" + e).val());
+    $("#txtAddress1Branch").val($("#txtAddress1Branch_" + e).val());
+    $("#txtAddress2Branch").val($("#txtAddress2Branch_" + e).val());
+    $("#txtDistrict").val($("#txtDistrict_" + e).text());
+    $("#txtState").val($("#txtState_" + e).text());
+    $("#txtPhone").val($("#txtPhone_" + e).text());
+    $("#txtEmail").val($("#txtEmail_" + e).text());
+    $("#hdnBranchId").val(e);
+}
+
+function AddEditTheme() {
+    var count = $('#hdnRowCntBranch').val();
+    var flag = true;
+    var err = "";
+    if ($("#txtThemeName").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Theme Name " : " Theme Name ";
+    }
+    if (!flag) {
+        $("#companyThemesDetailsError").text("* " + err + "is required.");
+    }
+    else {
+        var state = parseInt($("#hdnThemeId").val());
+        var ThemeName = $("#txtThemeName").val();
+        var ExtThemeName = $("#txtExtThemeName").val();
+        var ImageRatio = $("#txtImageRatio").val();
+        var NoOfHomePanels = $("#txtNoOfHomePanels").val();
+        var Colour = $("#txtColour").val();
+        var MobileHeight = $("#txtMobileHeight").val();
+        var DesktopHeight = $("#txtDesktopHeight").val();
+        //var IsDefault = $('#IsDefault').is(':checked');
+        //var IsActive = $('#IsActiveTheme').is(':checked');
+        var html = '';
+
+        html += '<tr id="themetr_' + count + '"><td style="width:20%" id="txtThemeName_' + count + '">' + ThemeName + '</td>';
+        html += '<td style="width:10%" id="txtExtThemeName_' + count + '">' + ExtThemeName + '</td>';
+        html += '<td style="width:10%" id="txtImageRatio_' + count + '">' + ImageRatio + '</td>';
+        html += '<td style="width:10%" id="txtColour_' + count + '">' + Colour + '</td>';
+        html += '<td style="width:10%" id="txtNoOfHomePanels_' + count + '">' + NoOfHomePanels + '</td>';
+        html += '<td style="width:10%" id="txtMobileHeight_' + count + '">' + MobileHeight + '</td>';
+        html += '<td style="width:10%" id="txtDesktopHeight_' + count + '">' + DesktopHeight + '</td>';
+        html += '<td style="width:10%" class="text-center">';
+        html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme(' + count + ')"></i></td>';
+        html += '<td style="width:0%" class="text-center">';
+        if (state > 0) {
+            $('#themetr_' + state).remove();
+            $("#tbl_OnBoard_Theme_body").prepend(html);
+        }
+        else {
+            $("#tbl_OnBoard_Theme_body").prepend(html);
+        }
+        $('#hdnRowCntTheme').val(parseInt($('#hdnRowCntBranch').val()) + 1);
+        $("#hdnBranchId").val('0');
+        CancelTheme();
+        ThemesOnFocus();
+    }
+}
+function EditTheme(e) {
+    debugger;
+    $("#addTheme").css("display", "none");
+    $("#newTheme").css("display", "block");
+    $("#txtThemeName").val($("#txtThemeName_" + e).text());
+    $("#txtExtThemeName").val($("#txtExtThemeName_" + e).text());
+    $("#txtImageRatio").val($("#txtImageRatio_" + e).text());
+    $("#txtColour").val($("#txtColour_" + e).text());
+    $("#txtNoOfHomePanels").val($("#txtNoOfHomePanels_" + e).text());
+    $("#txtMobileHeight").val($("#txtMobileHeight_" + e).text());
+    $("#txtDesktopHeight").val($("#txtDesktopHeight_" + e).text());
+    //if (i == "True") {
+    //    $("#IsActiveTheme").prop("checked", true);
+    //} else {
+    //    $("#IsActiveTheme").prop("checked", false);
+    //}
+    //if (j == "True") {
+    //    $("#IsDefault").prop("checked", true);
+    //} else {
+    //    $("#IsDefault").prop("checked", false);
+    //}
+    $("#hdnThemeId").val(e);
+}
+function DeleteTheme(e) {
+    $('#themetr_' + e).remove();
+}

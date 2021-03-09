@@ -96,7 +96,7 @@
                             <th style="width:10%" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                    <tbody class="custom-table-tbody" id="tbl_OnBoard_Theme_body">
                         @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanyTheme != null && Model.OnBoardCompanyInfo.CompanyTheme.Count>0)
                         {
                             <tr>
@@ -110,9 +110,6 @@
                                 <td style="width:10%" class="text-center">
                                     <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTheme()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTheme()"></i>
                                 </td>
-                                <td style="width:0%" class="text-center">
-                                    <input type='hidden' id='hdnThemeId_' value='' />
-                                </td>
                             </tr>
                         }
                         </tbody>
@@ -123,3 +120,4 @@
 </div>
 
 
+<input type='hidden' id='hdnRowCntBranch' value="1" />

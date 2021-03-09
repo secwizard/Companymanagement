@@ -62,7 +62,7 @@
         <div class="col-md-3">
             <div class="mb-12">
                 <p class="all-textlabel">Country<span style="color:red">*</span></p>
-                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountry">
+                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountry" onfocus="BranchOnFocus()">
             </div>
         </div>
         <div class="col-md-2">
@@ -77,14 +77,14 @@
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrict">
             </div>
         </div>
-        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+        @*<div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
             <p class="all-textlabel"> </p>
             <br />
             <label class="font11 all-textlabel l-p-initial cus-chkbox">
                 <input class="permissionCheckbox" type="checkbox" id="IsActiveBranch" />Is Active
                 <span class="checkmark"></span>
             </label>
-        </div>
+        </div>*@
 
     </div>
     <input type='hidden' id='hdnBranchId' value='0' />
@@ -109,7 +109,7 @@
                             <th style="width:10%" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                    <tbody class="custom-table-tbody" id="tbl_OnBoard_Branch_body">
                         @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.BranchInfo != null && Model.OnBoardCompanyInfo.BranchInfo.Count>0)
                         {
                             <tr>
@@ -124,7 +124,6 @@
                                     <i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditBranch()"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteBranch()"></i>
                                 </td>
                                 <td style="width:0%" class="text-center">
-                                    <input type='hidden' id='hdnBranchId_' value='' />
                                     <input type='hidden' id='txtCountry_' value='' />
                                     <input type='hidden' id='txtAddress1Branch_' value='' />
                                     <input type='hidden' id='txtAddress2Branch_' value='' />
@@ -137,5 +136,5 @@
         </div>
     </div>
 </div>
-
+<input type='hidden' id='hdnRowCntTheme' value="1" />
 
