@@ -40,14 +40,14 @@
                 <textarea class="content width100 bordccc" name="Description" id="txtHTMLData"></textarea>
             </div>
         </div>
-        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+        @*<div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
             <p class="all-textlabel"> </p>
             <br />
             <label class="font11 all-textlabel l-p-initial cus-chkbox">
                 <input class="permissionCheckbox" type="checkbox" id="IsActiveTemplate" />Is Active
                 <span class="checkmark"></span>
             </label>
-        </div>
+        </div>*@
 
     </div>
     <input type='hidden' id='hdnTemplateId' value='0' />
@@ -66,7 +66,7 @@
                             <th style="width:10%" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
+                    <tbody class="custom-table-tbody" id="tbl_OnBoard_Template_body">
                         @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanyTemplate != null && Model.OnBoardCompanyInfo.CompanyTemplate.Count>0)
                         {
                             <tr>
@@ -93,3 +93,6 @@
 
 
 </script>
+
+
+<input type='hidden' id='hdnRowCntTemplate' value="1" />

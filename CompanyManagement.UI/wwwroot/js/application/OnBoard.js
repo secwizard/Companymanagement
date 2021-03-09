@@ -1,6 +1,4 @@
-﻿
-
-function FocusCompany() {
+﻿function FocusCompany() {
     $("#companyDetails").show();
     $("#branch").hide();
     $("#mailServerinfo").hide();
@@ -254,9 +252,10 @@ function AddTemplate() {
 }
 function CancelTemplate() {
     $("#txtTemplateType").val('');
-    $("#txtName").val('');
+    $("#txtNameTemplate").val('');
     $("#txtTitle").val('');
-    $("#txtHTMLData").val('');
+    //$("#txtHTMLData").val('');
+    $("#txtHTMLData").val("").trigger('change');
     $("#hdnTemplateId").val(0);
     $("#addTemplate").css("display", "block");
     $("#newTemplate").css("display", "none");
@@ -447,7 +446,7 @@ function AddEditTheme() {
             $("#tbl_OnBoard_Theme_body").prepend(html);
         }
         $('#hdnRowCntTheme').val(parseInt($('#hdnRowCntBranch').val()) + 1);
-        $("#hdnBranchId").val('0');
+        $("#hdnThemeId").val('0');
         CancelTheme();
         ThemesOnFocus();
     }
@@ -477,4 +476,131 @@ function EditTheme(e) {
 }
 function DeleteTheme(e) {
     $('#themetr_' + e).remove();
+}
+
+function AddEditTemplate() {
+    var count = $('#hdnRowCntBranch').val();
+    var flag = true;
+    var err = "";
+    if ($("#txtTemplateType").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Template Type " : "Template Type ";
+    }
+    if ($("#txtNameTemplate").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
+    }
+    if ($("#txtTitle").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Title " : " Title ";
+    }
+    if (!flag) {
+        $("#companyTemplateDetailsError").text("* " + err + "is required.");
+    }
+    else {
+        var state = parseInt($("#hdnTemplateId").val());
+        var TemplateType = $("#txtTemplateType").val();
+        var Name = $("#txtNameTemplate").val();
+        var Title = $("#txtTitle").val();
+        var HTMLData = $("#txtHTMLData").val();
+        var html = '';
+        html += '<tr id="templatetr_' + count + '"><td style="width:20%" id="txtTemplateType_' + count + '">' + TemplateType + '</td>';
+        html += '<td style="width:20%" id="txtName_' + count + '">' + Name + '</td>';
+        html += '<td style="width:30%" id="txtTitle_' + count + '">' + Title + '</td>';
+        html += '<td style="width:10%" class="text-center">';
+        html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTemplate(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTemplate(' + count + ')"></i></td>';
+        html += '<td style="width:0%" class="text-center">';
+        html += '<input type="hidden" id="txtHTMLData_' + count + '" value="' + HTMLData + '" /></td></tr>';
+        if (state > 0) {
+            $('#templatetr_' + state).remove();
+            $("#tbl_OnBoard_Template_body").prepend(html);
+        }
+        else {
+            $("#tbl_OnBoard_Template_body").prepend(html);
+        }
+        $('#hdnRowCntTemplate').val(parseInt($('#hdnRowCntTemplate').val()) + 1);
+        $("#hdnTemplateId").val('0');
+        CancelTemplate();
+        TemplateOnFocus();
+
+    }
+}
+function EditTemplate(e) {
+    debugger;
+    $("#addTemplate").css("display", "none");
+    $("#newTemplate").css("display", "block");
+    $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
+    $("#txtNameTemplate").val($("#txtName_" + e).text());
+    $("#txtTitle").val($("#txtTitle_" + e).text());
+    var dt = $("#txtHTMLData_" + e).val();
+    $("#txtHTMLData").val($("#txtHTMLData_" + e).val()).trigger('change');
+    $("#hdnTemplateId").val(e);
+}
+function DeleteTemplate(e) {
+    $('#templatetr_' + e).remove();
+}
+
+function AddEditCompanySetting() {
+    debugger;
+    var count = $('#hdnRowCntBranch').val();
+    var flag = true;
+    var err = "";
+    if ($("#txtSettingType").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Type " : " Type ";
+    }
+    if ($("#txtDataText").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Data Text " : " Data Text ";
+    }
+    if ($("#txtDataValue").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Data Value " : " Data Value ";
+    }
+    if (!flag) {
+        $("#companySettingsDetailsError").text("* " + err + "is required.");
+    }
+    else {
+        var state = parseInt($("#hdnCompanySettingId").val());
+        var settingType = $("#txtSettingType").val();
+        var dataText = $("#txtDataText").val();
+        var dataValue = $("#txtDataValue").val();
+        var option1 = $("#txtOption1").val();
+        var option2 = $("#txtOption2").val();
+        var option3 = $("#txtOption3").val();
+        var html = '';
+        html += '<tr id="settingtr_' + count + '"><td style="width:10%" id="txtSettingType_' + count + '">' + settingType + '</td>';
+        html += '<td style="width:20%" id="txtDataText_' + count + '">' + dataText + '</td>';
+        html += '<td style="width:20%" id="txtDataValue_' + count + '">' + dataValue + '</td>';
+        html += '<td style="width:10%" id="txtOption1_' + count + '">' + option1 + '</td>';
+        html += '<td style="width:10%" id="txtOption2_' + count + '">' + option2 + '</td>';
+        html += '<td style="width:10%" id="txtOption3_' + count + '">' + option3 + '</td>';
+        html += '<td style="width:10%" class="text-center">';
+        html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditCompanySetting(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteCompanysetting(' + count + ')"></i></td></tr>';
+        if (state > 0) {
+            $('#settingtr_' + state).remove();
+            $("#tbl_OnBoard_Setting_body").prepend(html);
+        }
+        else {
+            $("#tbl_OnBoard_Setting_body").prepend(html);
+        }
+        $('#hdnRowCntSetting').val(parseInt($('#hdnRowCntSetting').val()) + 1);
+        $("#hdnCompanySettingId").val('0');
+        CancelCompanySetting();
+        SettingOnFocus();
+    }
+}
+function EditCompanySetting(e) {
+    $("#addCompanySetting").css("display", "none");
+    $("#newCompanySetting").css("display", "block");
+    $("#txtSettingType").val($("#txtSettingType_" + e).text());
+    $("#txtDataText").val($("#txtDataText_" + e).text());
+    $("#txtDataValue").val($("#txtDataValue_" + e).text());
+    $("#txtOption1").val($("#txtOption1_" + e).text());
+    $("#txtOption2").val($("#txtOption2_" + e).text());
+    $("#txtOption3").val($("#txtOption3_" + e).text());
+    $("#hdnCompanySettingId").val(e);
+}
+function DeleteCompanysetting(e) {
+    $('#settingtr_' + e).remove();
 }

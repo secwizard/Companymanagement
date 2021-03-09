@@ -51,14 +51,14 @@
                 <input type="text" class="form-control textbox-custom" placeholder="" id="txtOption3">
             </div>
         </div>
-        <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+        @*<div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
             <p class="all-textlabel"> </p>
             <br />
             <label class="font11 all-textlabel l-p-initial cus-chkbox">
                 <input class="permissionCheckbox" type="checkbox" id="IsActiveCompanySetting" />Is Active
                 <span class="checkmark"></span>
             </label>
-        </div>
+        </div>*@
     </div>
     <input type='hidden' id='hdnCompanySettingId' value='0' />
 
@@ -81,8 +81,8 @@
                             <th style="width:10%" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="custom-table-tbody" id="tbl_AssignRoleList_body">
-                        @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo.Count>0)
+                    <tbody class="custom-table-tbody" id="tbl_OnBoard_Setting_body">
+                        @if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo != null && Model.OnBoardCompanyInfo.CompanySettingInfo.Count > 0)
                         {
                             <tr>
                                 <td style="width:10%" id='txtSettingType_'></td>
@@ -99,13 +99,14 @@
                                 </td>
                             </tr>
                         }
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
+<input type='hidden' id='hdnRowCntSetting' value="1" />
 
 
 
