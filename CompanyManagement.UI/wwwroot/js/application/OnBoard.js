@@ -458,7 +458,6 @@ function AddEditTheme() {
     }
 }
 function EditTheme(e) {
-    debugger;
     $("#addTheme").css("display", "none");
     $("#newTheme").css("display", "block");
     $("#txtThemeName").val($("#txtThemeName_" + e).text());
@@ -533,7 +532,6 @@ function AddEditTemplate() {
     }
 }
 function EditTemplate(e) {
-    debugger;
     $("#addTemplate").css("display", "none");
     $("#newTemplate").css("display", "block");
     $("#txtTemplateType").val($("#txtTemplateType_" + e).text());
@@ -548,7 +546,6 @@ function DeleteTemplate(e) {
 }
 
 function AddEditCompanySetting() {
-    debugger;
     var count = $('#hdnRowCntBranch').val();
     var flag = true;
     var err = "";
