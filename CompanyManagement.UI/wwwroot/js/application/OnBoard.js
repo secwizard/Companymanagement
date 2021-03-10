@@ -1,4 +1,5 @@
-﻿function FocusCompany() {
+﻿
+function FocusCompany() {
     $("#companyDetails").show();
     $("#branch").hide();
     $("#mailServerinfo").hide();
@@ -405,7 +406,7 @@ function EditBranch(e) {
 }
 
 function AddEditTheme() {
-    var count = $('#hdnRowCntBranch').val();
+    var count = $('#hdnRowCntTheme').val();
     var flag = true;
     var err = "";
     if ($("#txtThemeName").val() == '') {
@@ -451,7 +452,7 @@ function AddEditTheme() {
         else {
             $("#tbl_OnBoard_Theme_body").prepend(html);
         }
-        $('#hdnRowCntTheme').val(parseInt($('#hdnRowCntBranch').val()) + 1);
+        $('#hdnRowCntTheme').val(parseInt($('#hdnRowCntTheme').val()) + 1);
         $("#hdnThemeId").val('0');
         CancelTheme();
         ThemesOnFocus();
@@ -485,7 +486,7 @@ function DeleteTheme(e) {
 }
 
 function AddEditTemplate() {
-    var count = $('#hdnRowCntBranch').val();
+    var count = $('#hdnRowCntTemplate').val();
     var flag = true;
     var err = "";
     if ($("#txtTemplateType").val() == '') {
@@ -511,8 +512,8 @@ function AddEditTemplate() {
         var HTMLData = $("#txtHTMLData").val();
         var html = '';
         html += '<tr id="templatetr_' + count + '"><td style="width:20%" id="txtTemplateType_' + count + '">' + TemplateType + '</td>';
-        html += '<td style="width:20%" id="txtName_' + count + '">' + Name + '</td>';
-        html += '<td style="width:30%" id="txtTitle_' + count + '">' + Title + '</td>';
+        html += '<td style="width:20%" id="txtNameTemplate_' + count + '">' + Name + '</td>';
+        html += '<td style="width:30%" id="txtTitleTemplate_' + count + '">' + Title + '</td>';
         html += '<td style="width:10%" class="text-center">';
         html += '<i class="fas fa-pencil-alt" style="cursor:pointer" onclick="EditTemplate(' + count + ')"></i> | <i class="fas fa-trash-alt" style="cursor:pointer" onclick="DeleteTemplate(' + count + ')"></i></td>';
         html += '<td style="width:0%" class="text-center">';
@@ -546,7 +547,7 @@ function DeleteTemplate(e) {
 }
 
 function AddEditCompanySetting() {
-    var count = $('#hdnRowCntBranch').val();
+    var count = $('#hdnRowCntSetting').val();
     var flag = true;
     var err = "";
     if ($("#txtSettingType").val() == '') {
@@ -607,4 +608,173 @@ function EditCompanySetting(e) {
 }
 function DeleteCompanysetting(e) {
     $('#settingtr_' + e).remove();
+}
+
+function SaveOnBoard() {
+    debugger;
+    //--company--
+
+    var name = $("#txtName").val();
+    var shortName = $("#txtShortname").val();
+    var address1 = $("#txtAddress1").val();
+    var address2 = $("#txtAddress2").val();
+    var pin = $("#txtPIN").val();
+    var districtCode = $("#txtDistrictCode").val();
+    var stateCode = $("#txtStateCode").val();
+    var countryCode = $("#txtCountryCode").val();
+    var adminPhone = $("#txtAdminPhone").val();
+    var servicePhone = $("#txtServicePhone").val();
+    var buisnessType = $("#ddlBusinessType").val();
+    var adminEmail = $("#txtAdminEmail").val();
+    var serviceEmail = $("#txtServiceEmail").val();
+    var secondaryEmail = $("#txtSecondaryEmail").val();
+    var gstNumber = $("#txtGSTNumber").val();
+    var panNumber = $("#txtPanNumber").val();
+    var currencyCode = $("#txtCurrencyCode").val();
+    var imageFilePath = $("#txtImageFilePath").val();
+    var website = $("#txtWebsite").val();
+    var logoFileName = $("#txtLogoFileName").val();
+    var fabiconFileName = $("#txtFabiconFileName").val();
+    var loginImageFileName = $("#txtLoginImageFileName").val();
+    var pinRequired = $('#PinRequired').is(':checked');
+    var companyInfo = {
+        CompanyId: 0,
+        Name: name,
+        ShortName: shortName,
+        Address1: address1,
+        Address2: address2,
+        PIN: pin,
+        DistrictCode: districtCode,
+        StateCode: stateCode,
+        CountryCode: countryCode,
+        AdminPhone: adminPhone,
+        ServicePhone: servicePhone,
+        AdminEmail: adminEmail,
+        ServiceEmail: serviceEmail,
+        SecondaryEmail: secondaryEmail,
+        GSTNumber: gstNumber,
+        PanNumber: panNumber,
+        BusinessType: buisnessType,
+        CurrencyCode: currencyCode,
+        ImageFilePath: imageFilePath,
+        LogoFileName: logoFileName,
+        FavIconFileName: fabiconFileName,
+        LoginImageFileName: loginImageFileName,
+        Website: website,
+        PINRequired: pinRequired,
+        IsActive: true
+    }
+    //Mail
+    var stmpServer = $("#txtSTMPServer").val();
+    var stmpPort = $("#txtSTMPPort").val();
+    var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
+    var fromEmailId = $("#txtFromEmailId").val();
+    var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
+    var enableSSL = $('#EnableSSL').is(':checked');
+
+
+    var stmpInfo = {
+        CompanyId: 0,
+        MailServerId: 0,
+        SMTPServer: stmpServer,
+        SMTPPort: stmpPort,
+        FromEmailDisplayName: fromEmailDisplayName,
+        FromEmailId: fromEmailId,
+        FromEmailPwd: fromEmailIdPwd,
+        EnableSSL: enableSSL,
+        IsActive: true
+    }
+    //Branch
+    var branchRows = [];
+    $('#tbl_OnBoard_Branch_body tr').each(function (e) {
+        var id = $(this).index();
+        var trID = $(this).attr("id");
+        var count = trID.split('_');
+        branchRows.push({
+            BranchId: 0,
+            CompanyId: 0,
+            Name: $('#txtNameBranch_' + count[1]).text(),
+            Code: $('#txtCode_' + count[1]).text(),
+            Address1: $('#txtAddress1Branch_' + count[1]).val(),
+            Address2: $('#txtAddress2Branch_' + count[1]).val(),
+            PostalCode: $('#txtPostalCode_' + count[1]).text(),
+            District: $('#txtDistrict_' + count[1]).text(),
+            State: $('#txtState_' + count[1]).text(),
+            Country: $('#txtCountry_' + count[1]).text(),
+            Phone: $('#txtPhone_' + count[1]).text(),
+            Email: $('#txtEmail_' + count[1]).text(),
+            IsActive: true
+
+        });
+    });
+
+    //Setting
+    var settingRows = [];
+    $('#tbl_OnBoard_Setting_body tr').each(function (e) {
+        var trID = $(this).attr("id");
+        var count = trID.split('_');
+        settingRows.push({
+            CompanySettingId: 0,
+            CompanyId: 0,
+            SettingType: $('#txtSettingType_' + count[1]).text(),
+            DataText: $('#txtDataText_' + count[1]).text(),
+            DataValue: $('#txtDataValue_' + count[1]).text(),
+            Option1: $('#txtOption1_' + count[1]).text(),
+            Option2: $('#txtOption2_' + count[1]).text(),
+            Option3: $('#txtOption3_' + count[1]).text(),
+            IsActive: true
+
+        });
+    });
+
+    //Template
+    var templateRows = [];
+    $('#tbl_OnBoard_Template_body tr').each(function (e) {
+        var trID = $(this).attr("id");
+        var count = trID.split('_');
+        templateRows.push({
+            TemplateId: 0,
+            CompanyId: 0,
+            TemplateType: $('#txtTemplateType_' + count[1]).text(),
+            Name: $('#txtNameTemplate_' + count[1]).text(),
+            Title: $('#txtTitleTemplate_' + count[1]).text(),
+            HTMLData: $('#txtHTMLData_' + count[1]).val(),
+            IsActive: true
+
+        });
+    });
+
+    //Theme
+    var themeRows = [];
+    $('#tbl_OnBoard_Theme_body tr').each(function (e) {
+        debugger;
+        var trID = $(this).attr("id");
+        var count = trID.split('_');
+        var flag = $("#isDefault_" + count[1]).val();
+        var isDefault = false;
+        if (flag == 1)
+            isDefault = true;
+        themeRows.push({
+            ThemeId: 0,
+            CompanyId: 0,
+            ThemeName: $('#txtThemeName_' + count[1]).text(),
+            ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
+            ImageRatio: $('#txtImageRatio_' + count[1]).text(),
+            NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
+            Colour: $('#txtColour_' + count[1]).text(),
+            MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
+            DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
+            IsDefault: isDefault,
+            IsActive: true
+
+        });
+    });
+    var OnBoardCompanyInfo = {
+        CompanyInfo: companyInfo,
+       BranchInfo: branchRows,
+        MailServerInfo: stmpInfo,
+        CompanySettingInfo: settingRows,
+        CompanyTemplate: templateRows,
+        CompanyTheme: themeRows
+    }
 }
