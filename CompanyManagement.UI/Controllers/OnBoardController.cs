@@ -204,6 +204,7 @@ namespace CompanyManagement.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveOnBoardProcess(OnBoardProcessinfo request)
         {
+            if (string.IsNullOrEmpty(user?.token)) return Ok("login");
             var responce = new Response<ResponseCompanyId>();
             try
             {

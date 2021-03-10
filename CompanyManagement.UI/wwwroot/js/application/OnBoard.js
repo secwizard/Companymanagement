@@ -18,6 +18,13 @@ function numberValidationWithoutDot(e) {
         e.preventDefault();
     }
 }
+function focusstep1() {
+    $("#step-1").show();
+    $("#step-2").hide();
+    $("#step-3").hide();
+    $("#step-4").hide();
+    $("#step-5").hide();
+}
 function FocusCompany() {
     $("#companyDetails").show();
     $("#branch").hide();
@@ -631,6 +638,7 @@ function DeleteCompanysetting(e) {
 
 function SaveOnBoard() {
     var flag = true;
+    var stmpInfo = {};
     var err = "";
     if ($("#txtName").val() == '') {
         flag = false;
@@ -660,208 +668,248 @@ function SaveOnBoard() {
         flag = false;
         err = err != "" ? err + ", GST " : " GST ";
     }
-    if (!flag) {
-        $("#companyDetailsError").text("* " + err + "is Not Correct");
-        FocusCompany();
+    if (flag) {
+        var flag2 = true;
+        if (($("#txtSTMPServer").val() == '') && ($("#txtSTMPPort").val() == '') && ($("#txtFromEmailDisplayName").val() == '') && ($("#txtFromEmailId").val() == '') && ($("#txtFromEmailIdPwd").val() == '')) {
+            flag2 = true;
+        }
+        else {
+            var err2 = "";
+            if ($("#txtSTMPServer").val() == '') {
+                flag2 = false;
+                err2 = err2 != "" ? err2 + ", SMTP Server " : " SMTP Server ";
+            }
+            if ($("#txtSTMPPort").val() == '') {
+                flag2 = false;
+                err2 = err2 != "" ? err2 + ", SMTP Port " : " SMTP Port ";
+            }
+            if ($("#txtFromEmailDisplayName").val() == '') {
+                flag2 = false;
+                err2 = err2 != "" ? err2 + ", Display Email Name " : " Display Email Name ";
+            }
+            if ($("#txtFromEmailId").val() == '') {
+                flag2 = false;
+                err2 = err2 != "" ? err2 + ", Email " : " Email ";
+            }
+            if ($("#txtFromEmailIdPwd").val() == '') {
+                flag2 = false;
+                err2 = err2 != "" ? err2 + ", Password " : " Password ";
+            }
+            if (flag2) {
+                //Mail
+                var stmpServer = $("#txtSTMPServer").val();
+                var stmpPort = $("#txtSTMPPort").val();
+                var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
+                var fromEmailId = $("#txtFromEmailId").val();
+                var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
+                var enableSSL = $('#EnableSSL').is(':checked');
+
+
+                stmpInfo = {
+                    CompanyId: 0,
+                    MailServerId: 0,
+                    SMTPServer: stmpServer,
+                    SMTPPort: stmpPort,
+                    FromEmailDisplayName: fromEmailDisplayName,
+                    FromEmailId: fromEmailId,
+                    FromEmailPwd: fromEmailIdPwd,
+                    EnableSSL: enableSSL,
+                    IsActive: true
+                }
+            }
+        }
+
+        if (flag2) {
+            //--company--
+
+            var name = $("#txtName").val();
+            var shortName = $("#txtShortname").val();
+            var address1 = $("#txtAddress1").val();
+            var address2 = $("#txtAddress2").val();
+            var pin = $("#txtPIN").val();
+            var districtCode = $("#txtDistrictCode").val();
+            var stateCode = $("#txtStateCode").val();
+            var countryCode = $("#txtCountryCode").val();
+            var adminPhone = $("#txtAdminPhone").val();
+            var servicePhone = $("#txtServicePhone").val();
+            var buisnessType = $("#ddlBusinessType").val();
+            var adminEmail = $("#txtAdminEmail").val();
+            var serviceEmail = $("#txtServiceEmail").val();
+            var secondaryEmail = $("#txtSecondaryEmail").val();
+            var gstNumber = $("#txtGSTNumber").val();
+            var panNumber = $("#txtPanNumber").val();
+            var currencyCode = $("#txtCurrencyCode").val();
+            var imageFilePath = $("#txtImageFilePath").val();
+            var website = $("#txtWebsite").val();
+            var logoFileName = $("#txtLogoFileName").val();
+            var fabiconFileName = $("#txtFabiconFileName").val();
+            var loginImageFileName = $("#txtLoginImageFileName").val();
+            var pinRequired = $('#PinRequired').is(':checked');
+            var companyInfo = {
+                CompanyId: 0,
+                Name: name,
+                ShortName: shortName,
+                Address1: address1,
+                Address2: address2,
+                PIN: pin,
+                DistrictCode: districtCode,
+                StateCode: stateCode,
+                CountryCode: countryCode,
+                AdminPhone: adminPhone,
+                ServicePhone: servicePhone,
+                AdminEmail: adminEmail,
+                ServiceEmail: serviceEmail,
+                SecondaryEmail: secondaryEmail,
+                GSTNumber: gstNumber,
+                PanNumber: panNumber,
+                BusinessType: buisnessType,
+                CurrencyCode: currencyCode,
+                ImageFilePath: imageFilePath,
+                LogoFileName: logoFileName,
+                FavIconFileName: fabiconFileName,
+                LoginImageFileName: loginImageFileName,
+                Website: website,
+                PINRequired: pinRequired,
+                IsActive: true
+            }
+
+            //Branch
+            var branchRows = [];
+            $('#tbl_OnBoard_Branch_body tr').each(function (e) {
+                var id = $(this).index();
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                branchRows.push({
+                    BranchId: 0,
+                    CompanyId: 0,
+                    Name: $('#txtNameBranch_' + count[1]).text(),
+                    Code: $('#txtCode_' + count[1]).text(),
+                    Address1: $('#txtAddress1Branch_' + count[1]).val(),
+                    Address2: $('#txtAddress2Branch_' + count[1]).val(),
+                    PostalCode: $('#txtPostalCode_' + count[1]).text(),
+                    District: $('#txtDistrict_' + count[1]).text(),
+                    State: $('#txtState_' + count[1]).text(),
+                    Country: $('#txtCountry_' + count[1]).val(),
+                    Phone: $('#txtPhone_' + count[1]).text(),
+                    Email: $('#txtEmail_' + count[1]).text(),
+                    IsActive: true
+
+                });
+            });
+
+            //Setting
+            var settingRows = [];
+            $('#tbl_OnBoard_Setting_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                settingRows.push({
+                    CompanySettingId: 0,
+                    CompanyId: 0,
+                    SettingType: $('#txtSettingType_' + count[1]).text(),
+                    DataText: $('#txtDataText_' + count[1]).text(),
+                    DataValue: $('#txtDataValue_' + count[1]).text(),
+                    Option1: $('#txtOption1_' + count[1]).text(),
+                    Option2: $('#txtOption2_' + count[1]).text(),
+                    Option3: $('#txtOption3_' + count[1]).text(),
+                    IsActive: true
+
+                });
+            });
+
+            //Template
+            var templateRows = [];
+            $('#tbl_OnBoard_Template_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                templateRows.push({
+                    TemplateId: 0,
+                    CompanyId: 0,
+                    TemplateType: $('#txtTemplateType_' + count[1]).text(),
+                    Name: $('#txtNameTemplate_' + count[1]).text(),
+                    Title: $('#txtTitleTemplate_' + count[1]).text(),
+                    HTMLData: $('#txtHTMLData_' + count[1]).val(),
+                    IsActive: true
+
+                });
+            });
+
+            //Theme
+            var themeRows = [];
+            $('#tbl_OnBoard_Theme_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                var flag = $("#isDefault_" + count[1]).val();
+                var isDefault = false;
+                if (flag == 1)
+                    isDefault = true;
+                themeRows.push({
+                    ThemeId: 0,
+                    CompanyId: 0,
+                    ThemeName: $('#txtThemeName_' + count[1]).text(),
+                    ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
+                    ImageRatio: $('#txtImageRatio_' + count[1]).text(),
+                    NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
+                    Colour: $('#txtColour_' + count[1]).text(),
+                    MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
+                    DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
+                    IsDefault: isDefault,
+                    IsActive: true
+
+                });
+            });
+            var OnBoardCompanyInfo = {
+                CompanyInfo: companyInfo,
+                BranchInfo: branchRows,
+                MailServerInfo: stmpInfo,
+                CompanySettingInfo: settingRows,
+                CompanyTemplate: templateRows,
+                CompanyTheme: themeRows
+            }
+            var OnBoardSubscriptionInfo = {};
+            var OnBoardAddOn = {};
+            var OnBoardConfiguration = {};
+            var OnBoardProcessinfo = {
+                OnBoardCompanyInfo: OnBoardCompanyInfo,
+                OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
+                OnBoardAddOn: OnBoardAddOn,
+                OnBoardConfiguration: OnBoardConfiguration
+            }
+            console.log(OnBoardProcessinfo);
+            $.ajax({
+                url: baseURL + "OnBoard/SaveOnBoardProcess",
+                type: "POST",
+                dataType: "html",
+                data: OnBoardProcessinfo,
+                success: function (data) {
+                    if (data == "login") {
+                        window.location.href = baseURL + 'Login/Index'
+                    }
+                    else if (data == "NO") {
+                        MessageShow('', 'working in process', 'success');
+                    }
+                    else {
+                        MessageShow('', 'working in process', 'success');
+                    }
+                    HideLoader();
+                },
+                error: function (data) {
+                    MessageShow('', 'working in process', 'success');
+                    console.log("error");
+                    console.log(data);
+                    HideLoader();
+                }
+            });
+        }
+        else {
+            $("#companymailDetailsError").text("* " + err2 + "is required.");
+            FocusMail();
+            focusstep1();
+        }
     }
     else {
-        //--company--
-
-        var name = $("#txtName").val();
-        var shortName = $("#txtShortname").val();
-        var address1 = $("#txtAddress1").val();
-        var address2 = $("#txtAddress2").val();
-        var pin = $("#txtPIN").val();
-        var districtCode = $("#txtDistrictCode").val();
-        var stateCode = $("#txtStateCode").val();
-        var countryCode = $("#txtCountryCode").val();
-        var adminPhone = $("#txtAdminPhone").val();
-        var servicePhone = $("#txtServicePhone").val();
-        var buisnessType = $("#ddlBusinessType").val();
-        var adminEmail = $("#txtAdminEmail").val();
-        var serviceEmail = $("#txtServiceEmail").val();
-        var secondaryEmail = $("#txtSecondaryEmail").val();
-        var gstNumber = $("#txtGSTNumber").val();
-        var panNumber = $("#txtPanNumber").val();
-        var currencyCode = $("#txtCurrencyCode").val();
-        var imageFilePath = $("#txtImageFilePath").val();
-        var website = $("#txtWebsite").val();
-        var logoFileName = $("#txtLogoFileName").val();
-        var fabiconFileName = $("#txtFabiconFileName").val();
-        var loginImageFileName = $("#txtLoginImageFileName").val();
-        var pinRequired = $('#PinRequired').is(':checked');
-        var companyInfo = {
-            CompanyId: 0,
-            Name: name,
-            ShortName: shortName,
-            Address1: address1,
-            Address2: address2,
-            PIN: pin,
-            DistrictCode: districtCode,
-            StateCode: stateCode,
-            CountryCode: countryCode,
-            AdminPhone: adminPhone,
-            ServicePhone: servicePhone,
-            AdminEmail: adminEmail,
-            ServiceEmail: serviceEmail,
-            SecondaryEmail: secondaryEmail,
-            GSTNumber: gstNumber,
-            PanNumber: panNumber,
-            BusinessType: buisnessType,
-            CurrencyCode: currencyCode,
-            ImageFilePath: imageFilePath,
-            LogoFileName: logoFileName,
-            FavIconFileName: fabiconFileName,
-            LoginImageFileName: loginImageFileName,
-            Website: website,
-            PINRequired: pinRequired,
-            IsActive: true
-        }
-        //Mail
-        var stmpServer = $("#txtSTMPServer").val();
-        var stmpPort = $("#txtSTMPPort").val();
-        var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
-        var fromEmailId = $("#txtFromEmailId").val();
-        var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
-        var enableSSL = $('#EnableSSL').is(':checked');
-
-
-        var stmpInfo = {
-            CompanyId: 0,
-            MailServerId: 0,
-            SMTPServer: stmpServer,
-            SMTPPort: stmpPort,
-            FromEmailDisplayName: fromEmailDisplayName,
-            FromEmailId: fromEmailId,
-            FromEmailPwd: fromEmailIdPwd,
-            EnableSSL: enableSSL,
-            IsActive: true
-        }
-        //Branch
-        var branchRows = [];
-        $('#tbl_OnBoard_Branch_body tr').each(function (e) {
-            var id = $(this).index();
-            var trID = $(this).attr("id");
-            var count = trID.split('_');
-            branchRows.push({
-                BranchId: 0,
-                CompanyId: 0,
-                Name: $('#txtNameBranch_' + count[1]).text(),
-                Code: $('#txtCode_' + count[1]).text(),
-                Address1: $('#txtAddress1Branch_' + count[1]).val(),
-                Address2: $('#txtAddress2Branch_' + count[1]).val(),
-                PostalCode: $('#txtPostalCode_' + count[1]).text(),
-                District: $('#txtDistrict_' + count[1]).text(),
-                State: $('#txtState_' + count[1]).text(),
-                Country: $('#txtCountry_' + count[1]).val(),
-                Phone: $('#txtPhone_' + count[1]).text(),
-                Email: $('#txtEmail_' + count[1]).text(),
-                IsActive: true
-
-            });
-        });
-
-        //Setting
-        var settingRows = [];
-        $('#tbl_OnBoard_Setting_body tr').each(function (e) {
-            var trID = $(this).attr("id");
-            var count = trID.split('_');
-            settingRows.push({
-                CompanySettingId: 0,
-                CompanyId: 0,
-                SettingType: $('#txtSettingType_' + count[1]).text(),
-                DataText: $('#txtDataText_' + count[1]).text(),
-                DataValue: $('#txtDataValue_' + count[1]).text(),
-                Option1: $('#txtOption1_' + count[1]).text(),
-                Option2: $('#txtOption2_' + count[1]).text(),
-                Option3: $('#txtOption3_' + count[1]).text(),
-                IsActive: true
-
-            });
-        });
-
-        //Template
-        var templateRows = [];
-        $('#tbl_OnBoard_Template_body tr').each(function (e) {
-            var trID = $(this).attr("id");
-            var count = trID.split('_');
-            templateRows.push({
-                TemplateId: 0,
-                CompanyId: 0,
-                TemplateType: $('#txtTemplateType_' + count[1]).text(),
-                Name: $('#txtNameTemplate_' + count[1]).text(),
-                Title: $('#txtTitleTemplate_' + count[1]).text(),
-                HTMLData: $('#txtHTMLData_' + count[1]).val(),
-                IsActive: true
-
-            });
-        });
-
-        //Theme
-        var themeRows = [];
-        $('#tbl_OnBoard_Theme_body tr').each(function (e) {
-            var trID = $(this).attr("id");
-            var count = trID.split('_');
-            var flag = $("#isDefault_" + count[1]).val();
-            var isDefault = false;
-            if (flag == 1)
-                isDefault = true;
-            themeRows.push({
-                ThemeId: 0,
-                CompanyId: 0,
-                ThemeName: $('#txtThemeName_' + count[1]).text(),
-                ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
-                ImageRatio: $('#txtImageRatio_' + count[1]).text(),
-                NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
-                Colour: $('#txtColour_' + count[1]).text(),
-                MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
-                DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
-                IsDefault: isDefault,
-                IsActive: true
-
-            });
-        });
-        var OnBoardCompanyInfo = {
-            CompanyInfo: companyInfo,
-            BranchInfo: branchRows,
-            MailServerInfo: stmpInfo,
-            CompanySettingInfo: settingRows,
-            CompanyTemplate: templateRows,
-            CompanyTheme: themeRows
-        }
-        var OnBoardSubscriptionInfo = {};
-        var OnBoardAddOn = {};
-        var OnBoardConfiguration = {};
-        var OnBoardProcessinfo = {
-            OnBoardCompanyInfo: OnBoardCompanyInfo,
-            OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
-            OnBoardAddOn: OnBoardAddOn,
-            OnBoardConfiguration: OnBoardConfiguration
-        }
-        console.log(OnBoardProcessinfo);
-        $.ajax({
-            url: baseURL + "OnBoard/SaveOnBoardProcess",
-            type: "POST",
-            dataType: "html",
-            data: OnBoardProcessinfo,
-            success: function (data) {
-                if (data == "login") {
-                    window.location.href = baseURL + 'Login/Index'
-                }
-                else if (data == "NO") {
-                    MessageShow('', 'SMTP Not Saved', 'error');
-                }
-                else {
-                    MessageShow('', 'SMTP Saved', 'success');
-                }
-                HideLoader();
-            },
-            error: function (data) {
-                MessageShow('', 'Something Went Wrong', 'error');
-                console.log("error");
-                console.log(data);
-                HideLoader();
-            }
-        });
+        $("#companyDetailsError").text("* " + err + "is Not Correct");
+        FocusCompany();
+        focusstep1();
     }
+
 }
