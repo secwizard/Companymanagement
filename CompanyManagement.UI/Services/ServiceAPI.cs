@@ -340,6 +340,16 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+        public async Task<string> SaveOnBoardProcess(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/OnBoard/SaveOnBoardProcess";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
         #endregion
 
         #region Generic

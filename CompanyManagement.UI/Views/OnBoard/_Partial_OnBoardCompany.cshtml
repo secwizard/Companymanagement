@@ -57,7 +57,7 @@
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Pin / Zip </p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="" onkeydown="numberValidationWithoutDot(event)">
                 </div>
             </div>
             <div class="col-md-4">
@@ -81,13 +81,13 @@
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Admin Phone<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="" onfocus="CompanyOnFocus()">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="" onfocus="CompanyOnFocus()" onkeydown="numberValidationWithoutDot(event)">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-05">
                     <p class="all-textlabel">Service Phone</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="">
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="" onkeydown="numberValidationWithoutDot(event)">
                 </div>
             </div>
 

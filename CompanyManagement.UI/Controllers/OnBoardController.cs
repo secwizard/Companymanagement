@@ -201,6 +201,22 @@ namespace CompanyManagement.UI.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> SaveOnBoardProcess(OnBoardProcessinfo request)
+        {
+            var responce = new Response<ResponseCompanyId>();
+            try
+            {
+                var result = await _restAPI.SaveOnBoardProcess(JsonConvert.SerializeObject(request), user.token);
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
     }
 
 }

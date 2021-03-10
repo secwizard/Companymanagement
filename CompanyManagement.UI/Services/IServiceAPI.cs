@@ -42,6 +42,7 @@ namespace CompanyManagement.UI.Services
         Task<string> NewCompanyDtl(string postdata, string authorizationToken, bool bearerToken= true);
         Task<string> GetRequiredDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetSuggestedCompanyId(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> SaveOnBoardProcess(string postdata, string authorizationToken, bool bearerToken = true);
         #endregion
     }
 

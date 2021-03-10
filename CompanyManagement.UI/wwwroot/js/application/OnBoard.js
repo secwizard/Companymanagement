@@ -1,4 +1,23 @@
-﻿
+﻿function numberValidation(e) {
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+        (e.keyCode == 65 && e.ctrlKey === true) ||
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+        return;
+    }
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+}
+function numberValidationWithoutDot(e) {
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+        (e.keyCode == 65 && e.ctrlKey === true) ||
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+        return;
+    }
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+}
 function FocusCompany() {
     $("#companyDetails").show();
     $("#branch").hide();
@@ -611,170 +630,238 @@ function DeleteCompanysetting(e) {
 }
 
 function SaveOnBoard() {
-    debugger;
-    //--company--
-
-    var name = $("#txtName").val();
-    var shortName = $("#txtShortname").val();
-    var address1 = $("#txtAddress1").val();
-    var address2 = $("#txtAddress2").val();
-    var pin = $("#txtPIN").val();
-    var districtCode = $("#txtDistrictCode").val();
-    var stateCode = $("#txtStateCode").val();
-    var countryCode = $("#txtCountryCode").val();
-    var adminPhone = $("#txtAdminPhone").val();
-    var servicePhone = $("#txtServicePhone").val();
-    var buisnessType = $("#ddlBusinessType").val();
-    var adminEmail = $("#txtAdminEmail").val();
-    var serviceEmail = $("#txtServiceEmail").val();
-    var secondaryEmail = $("#txtSecondaryEmail").val();
-    var gstNumber = $("#txtGSTNumber").val();
-    var panNumber = $("#txtPanNumber").val();
-    var currencyCode = $("#txtCurrencyCode").val();
-    var imageFilePath = $("#txtImageFilePath").val();
-    var website = $("#txtWebsite").val();
-    var logoFileName = $("#txtLogoFileName").val();
-    var fabiconFileName = $("#txtFabiconFileName").val();
-    var loginImageFileName = $("#txtLoginImageFileName").val();
-    var pinRequired = $('#PinRequired').is(':checked');
-    var companyInfo = {
-        CompanyId: 0,
-        Name: name,
-        ShortName: shortName,
-        Address1: address1,
-        Address2: address2,
-        PIN: pin,
-        DistrictCode: districtCode,
-        StateCode: stateCode,
-        CountryCode: countryCode,
-        AdminPhone: adminPhone,
-        ServicePhone: servicePhone,
-        AdminEmail: adminEmail,
-        ServiceEmail: serviceEmail,
-        SecondaryEmail: secondaryEmail,
-        GSTNumber: gstNumber,
-        PanNumber: panNumber,
-        BusinessType: buisnessType,
-        CurrencyCode: currencyCode,
-        ImageFilePath: imageFilePath,
-        LogoFileName: logoFileName,
-        FavIconFileName: fabiconFileName,
-        LoginImageFileName: loginImageFileName,
-        Website: website,
-        PINRequired: pinRequired,
-        IsActive: true
+    var flag = true;
+    var err = "";
+    if ($("#txtName").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Name " : " Name ";
     }
-    //Mail
-    var stmpServer = $("#txtSTMPServer").val();
-    var stmpPort = $("#txtSTMPPort").val();
-    var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
-    var fromEmailId = $("#txtFromEmailId").val();
-    var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
-    var enableSSL = $('#EnableSSL').is(':checked');
-
-
-    var stmpInfo = {
-        CompanyId: 0,
-        MailServerId: 0,
-        SMTPServer: stmpServer,
-        SMTPPort: stmpPort,
-        FromEmailDisplayName: fromEmailDisplayName,
-        FromEmailId: fromEmailId,
-        FromEmailPwd: fromEmailIdPwd,
-        EnableSSL: enableSSL,
-        IsActive: true
+    if (!phonenumber($("#txtAdminPhone").val())) {
+        flag = false;
+        err = err != "" ? err + ", Admin Phone " : " Admin Phone ";
     }
-    //Branch
-    var branchRows = [];
-    $('#tbl_OnBoard_Branch_body tr').each(function (e) {
-        var id = $(this).index();
-        var trID = $(this).attr("id");
-        var count = trID.split('_');
-        branchRows.push({
-            BranchId: 0,
+    if (!IsEmail($("#txtAdminEmail").val())) {
+        flag = false;
+        err = err != "" ? err + ", Admin Email " : " Admin Email ";
+    }
+    if ($("#txtCurrencyCode").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Currency Code " : " Currency Code ";
+    }
+    if ($("#txtImageFilePath").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Image File Path " : " Image File Path ";
+    }
+    if ($("#txtShortname").val() == '') {
+        flag = false;
+        err = err != "" ? err + ", Short Name " : " Short Name ";
+    }
+    if ($("#txtGSTNumber").val() != '' && !IsGST($("#txtGSTNumber").val())) {
+        flag = false;
+        err = err != "" ? err + ", GST " : " GST ";
+    }
+    if (!flag) {
+        $("#companyDetailsError").text("* " + err + "is Not Correct");
+        FocusCompany();
+    }
+    else {
+        //--company--
+
+        var name = $("#txtName").val();
+        var shortName = $("#txtShortname").val();
+        var address1 = $("#txtAddress1").val();
+        var address2 = $("#txtAddress2").val();
+        var pin = $("#txtPIN").val();
+        var districtCode = $("#txtDistrictCode").val();
+        var stateCode = $("#txtStateCode").val();
+        var countryCode = $("#txtCountryCode").val();
+        var adminPhone = $("#txtAdminPhone").val();
+        var servicePhone = $("#txtServicePhone").val();
+        var buisnessType = $("#ddlBusinessType").val();
+        var adminEmail = $("#txtAdminEmail").val();
+        var serviceEmail = $("#txtServiceEmail").val();
+        var secondaryEmail = $("#txtSecondaryEmail").val();
+        var gstNumber = $("#txtGSTNumber").val();
+        var panNumber = $("#txtPanNumber").val();
+        var currencyCode = $("#txtCurrencyCode").val();
+        var imageFilePath = $("#txtImageFilePath").val();
+        var website = $("#txtWebsite").val();
+        var logoFileName = $("#txtLogoFileName").val();
+        var fabiconFileName = $("#txtFabiconFileName").val();
+        var loginImageFileName = $("#txtLoginImageFileName").val();
+        var pinRequired = $('#PinRequired').is(':checked');
+        var companyInfo = {
             CompanyId: 0,
-            Name: $('#txtNameBranch_' + count[1]).text(),
-            Code: $('#txtCode_' + count[1]).text(),
-            Address1: $('#txtAddress1Branch_' + count[1]).val(),
-            Address2: $('#txtAddress2Branch_' + count[1]).val(),
-            PostalCode: $('#txtPostalCode_' + count[1]).text(),
-            District: $('#txtDistrict_' + count[1]).text(),
-            State: $('#txtState_' + count[1]).text(),
-            Country: $('#txtCountry_' + count[1]).text(),
-            Phone: $('#txtPhone_' + count[1]).text(),
-            Email: $('#txtEmail_' + count[1]).text(),
+            Name: name,
+            ShortName: shortName,
+            Address1: address1,
+            Address2: address2,
+            PIN: pin,
+            DistrictCode: districtCode,
+            StateCode: stateCode,
+            CountryCode: countryCode,
+            AdminPhone: adminPhone,
+            ServicePhone: servicePhone,
+            AdminEmail: adminEmail,
+            ServiceEmail: serviceEmail,
+            SecondaryEmail: secondaryEmail,
+            GSTNumber: gstNumber,
+            PanNumber: panNumber,
+            BusinessType: buisnessType,
+            CurrencyCode: currencyCode,
+            ImageFilePath: imageFilePath,
+            LogoFileName: logoFileName,
+            FavIconFileName: fabiconFileName,
+            LoginImageFileName: loginImageFileName,
+            Website: website,
+            PINRequired: pinRequired,
             IsActive: true
+        }
+        //Mail
+        var stmpServer = $("#txtSTMPServer").val();
+        var stmpPort = $("#txtSTMPPort").val();
+        var fromEmailDisplayName = $("#txtFromEmailDisplayName").val();
+        var fromEmailId = $("#txtFromEmailId").val();
+        var fromEmailIdPwd = $("#txtFromEmailIdPwd").val();
+        var enableSSL = $('#EnableSSL').is(':checked');
 
-        });
-    });
 
-    //Setting
-    var settingRows = [];
-    $('#tbl_OnBoard_Setting_body tr').each(function (e) {
-        var trID = $(this).attr("id");
-        var count = trID.split('_');
-        settingRows.push({
-            CompanySettingId: 0,
+        var stmpInfo = {
             CompanyId: 0,
-            SettingType: $('#txtSettingType_' + count[1]).text(),
-            DataText: $('#txtDataText_' + count[1]).text(),
-            DataValue: $('#txtDataValue_' + count[1]).text(),
-            Option1: $('#txtOption1_' + count[1]).text(),
-            Option2: $('#txtOption2_' + count[1]).text(),
-            Option3: $('#txtOption3_' + count[1]).text(),
+            MailServerId: 0,
+            SMTPServer: stmpServer,
+            SMTPPort: stmpPort,
+            FromEmailDisplayName: fromEmailDisplayName,
+            FromEmailId: fromEmailId,
+            FromEmailPwd: fromEmailIdPwd,
+            EnableSSL: enableSSL,
             IsActive: true
+        }
+        //Branch
+        var branchRows = [];
+        $('#tbl_OnBoard_Branch_body tr').each(function (e) {
+            var id = $(this).index();
+            var trID = $(this).attr("id");
+            var count = trID.split('_');
+            branchRows.push({
+                BranchId: 0,
+                CompanyId: 0,
+                Name: $('#txtNameBranch_' + count[1]).text(),
+                Code: $('#txtCode_' + count[1]).text(),
+                Address1: $('#txtAddress1Branch_' + count[1]).val(),
+                Address2: $('#txtAddress2Branch_' + count[1]).val(),
+                PostalCode: $('#txtPostalCode_' + count[1]).text(),
+                District: $('#txtDistrict_' + count[1]).text(),
+                State: $('#txtState_' + count[1]).text(),
+                Country: $('#txtCountry_' + count[1]).val(),
+                Phone: $('#txtPhone_' + count[1]).text(),
+                Email: $('#txtEmail_' + count[1]).text(),
+                IsActive: true
 
+            });
         });
-    });
 
-    //Template
-    var templateRows = [];
-    $('#tbl_OnBoard_Template_body tr').each(function (e) {
-        var trID = $(this).attr("id");
-        var count = trID.split('_');
-        templateRows.push({
-            TemplateId: 0,
-            CompanyId: 0,
-            TemplateType: $('#txtTemplateType_' + count[1]).text(),
-            Name: $('#txtNameTemplate_' + count[1]).text(),
-            Title: $('#txtTitleTemplate_' + count[1]).text(),
-            HTMLData: $('#txtHTMLData_' + count[1]).val(),
-            IsActive: true
+        //Setting
+        var settingRows = [];
+        $('#tbl_OnBoard_Setting_body tr').each(function (e) {
+            var trID = $(this).attr("id");
+            var count = trID.split('_');
+            settingRows.push({
+                CompanySettingId: 0,
+                CompanyId: 0,
+                SettingType: $('#txtSettingType_' + count[1]).text(),
+                DataText: $('#txtDataText_' + count[1]).text(),
+                DataValue: $('#txtDataValue_' + count[1]).text(),
+                Option1: $('#txtOption1_' + count[1]).text(),
+                Option2: $('#txtOption2_' + count[1]).text(),
+                Option3: $('#txtOption3_' + count[1]).text(),
+                IsActive: true
 
+            });
         });
-    });
 
-    //Theme
-    var themeRows = [];
-    $('#tbl_OnBoard_Theme_body tr').each(function (e) {
-        debugger;
-        var trID = $(this).attr("id");
-        var count = trID.split('_');
-        var flag = $("#isDefault_" + count[1]).val();
-        var isDefault = false;
-        if (flag == 1)
-            isDefault = true;
-        themeRows.push({
-            ThemeId: 0,
-            CompanyId: 0,
-            ThemeName: $('#txtThemeName_' + count[1]).text(),
-            ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
-            ImageRatio: $('#txtImageRatio_' + count[1]).text(),
-            NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
-            Colour: $('#txtColour_' + count[1]).text(),
-            MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
-            DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
-            IsDefault: isDefault,
-            IsActive: true
+        //Template
+        var templateRows = [];
+        $('#tbl_OnBoard_Template_body tr').each(function (e) {
+            var trID = $(this).attr("id");
+            var count = trID.split('_');
+            templateRows.push({
+                TemplateId: 0,
+                CompanyId: 0,
+                TemplateType: $('#txtTemplateType_' + count[1]).text(),
+                Name: $('#txtNameTemplate_' + count[1]).text(),
+                Title: $('#txtTitleTemplate_' + count[1]).text(),
+                HTMLData: $('#txtHTMLData_' + count[1]).val(),
+                IsActive: true
 
+            });
         });
-    });
-    var OnBoardCompanyInfo = {
-        CompanyInfo: companyInfo,
-       BranchInfo: branchRows,
-        MailServerInfo: stmpInfo,
-        CompanySettingInfo: settingRows,
-        CompanyTemplate: templateRows,
-        CompanyTheme: themeRows
+
+        //Theme
+        var themeRows = [];
+        $('#tbl_OnBoard_Theme_body tr').each(function (e) {
+            var trID = $(this).attr("id");
+            var count = trID.split('_');
+            var flag = $("#isDefault_" + count[1]).val();
+            var isDefault = false;
+            if (flag == 1)
+                isDefault = true;
+            themeRows.push({
+                ThemeId: 0,
+                CompanyId: 0,
+                ThemeName: $('#txtThemeName_' + count[1]).text(),
+                ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
+                ImageRatio: $('#txtImageRatio_' + count[1]).text(),
+                NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
+                Colour: $('#txtColour_' + count[1]).text(),
+                MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
+                DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
+                IsDefault: isDefault,
+                IsActive: true
+
+            });
+        });
+        var OnBoardCompanyInfo = {
+            CompanyInfo: companyInfo,
+            BranchInfo: branchRows,
+            MailServerInfo: stmpInfo,
+            CompanySettingInfo: settingRows,
+            CompanyTemplate: templateRows,
+            CompanyTheme: themeRows
+        }
+        var OnBoardSubscriptionInfo = {};
+        var OnBoardAddOn = {};
+        var OnBoardConfiguration = {};
+        var OnBoardProcessinfo = {
+            OnBoardCompanyInfo: OnBoardCompanyInfo,
+            OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
+            OnBoardAddOn: OnBoardAddOn,
+            OnBoardConfiguration: OnBoardConfiguration
+        }
+        console.log(OnBoardProcessinfo);
+        $.ajax({
+            url: baseURL + "OnBoard/SaveOnBoardProcess",
+            type: "POST",
+            dataType: "html",
+            data: OnBoardProcessinfo,
+            success: function (data) {
+                if (data == "login") {
+                    window.location.href = baseURL + 'Login/Index'
+                }
+                else if (data == "NO") {
+                    MessageShow('', 'SMTP Not Saved', 'error');
+                }
+                else {
+                    MessageShow('', 'SMTP Saved', 'success');
+                }
+                HideLoader();
+            },
+            error: function (data) {
+                MessageShow('', 'Something Went Wrong', 'error');
+                console.log("error");
+                console.log(data);
+                HideLoader();
+            }
+        });
     }
 }

@@ -144,4 +144,34 @@ namespace CompanyManagement.Api.Models
 
 
     }
+
+
+    public class OnBoardProcessinfo
+    {
+        public OnBoardCompany OnBoardCompanyInfo { get; set; }
+        public OnBoardSubscriptions OnBoardSubscriptionInfo { get; set; }
+        public OnBoardAddOns OnBoardAddOn { get; set; }
+        public OnBoardConfiguration OnBoardConfiguration { get; set; }
+    }
+    public class OnBoardCompany
+    {
+        public CompanyInfo CompanyInfo { get; set; }
+        public List<BranchInfo> BranchInfo { get; set; }
+        public CompanyMailServer MailServerInfo { get; set; }
+        public List<CompanySettingInfo> CompanySettingInfo { get; set; }
+        public List<GetCompanyTemplate> CompanyTemplate { get; set; }
+        public List<CompanyTheme> CompanyTheme { get; set; }
+    }
+    public class OnBoardSubscriptions
+    {
+
+    }
+    public class OnBoardAddOns
+    {
+
+    }
+    public class OnBoardConfiguration
+    {
+
+    }
 }
