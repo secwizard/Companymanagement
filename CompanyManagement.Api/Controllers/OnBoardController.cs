@@ -131,7 +131,13 @@ namespace CompanyManagement.Api.Controllers
             var responce = new Response<ResponseCompanyId>();
             try
             {
-                
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == -1)
+                {
+                    responce.Data = await _onBoardService.SaveOnBoardProcess(request,user);
+                }
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
             {

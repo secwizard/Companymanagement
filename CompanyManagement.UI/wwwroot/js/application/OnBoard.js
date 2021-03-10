@@ -745,9 +745,11 @@ function SaveOnBoard() {
             var fabiconFileName = $("#txtFabiconFileName").val();
             var loginImageFileName = $("#txtLoginImageFileName").val();
             var pinRequired = $('#PinRequired').is(':checked');
+            var suggCompanyId = $('txtCompanyId').val();
             var companyInfo = {
                 CompanyId: 0,
                 Name: name,
+                SuggestedCompanyId: suggCompanyId,
                 ShortName: shortName,
                 Address1: address1,
                 Address2: address2,

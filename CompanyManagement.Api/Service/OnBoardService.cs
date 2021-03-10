@@ -172,7 +172,7 @@ namespace CompanyManagement.Api.Service
         {
             if (preData == null)
                 preData = new Company();
-            preData.CompanyId = postData.CompanyId;
+            preData.CompanyId = postData.SuggestedCompanyId;
             preData.Address1 = postData.Address1 == null ? "" : postData.Address1;
             preData.Address2 = postData.Address2 == null ? "" : postData.Address2;
             preData.AdminEmail = postData.AdminEmail == null ? "" : postData.AdminEmail;
@@ -198,6 +198,154 @@ namespace CompanyManagement.Api.Service
             preData.StateCode = postData.StateCode == null ? "" : postData.StateCode;
             preData.Website = postData.Website == null ? "" : postData.Website;
             return preData;
+        }
+
+        private MailServer MapMailServer(MailServer preData, CompanyMailServer postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.SMTPPort = postData.SMTPPort == null ? 0 : postData.SMTPPort;
+            preData.SMTPServer = postData.SMTPServer == null ? "" : postData.SMTPServer;
+            preData.FromEmailDisplayName = postData.FromEmailDisplayName == null ? "" : postData.FromEmailDisplayName;
+            preData.FromEmailId = postData.FromEmailId == null ? "" : postData.FromEmailId;
+            preData.FromEmailPwd = postData.FromEmailPwd == null ? "" : postData.FromEmailPwd;
+            preData.IsActive = postData.FromEmailPwd == null ? false : postData.IsActive;
+            preData.EnableSSL = postData.EnableSSL == null ? false : postData.EnableSSL;
+            return preData;
+        }
+        private Theme MapTheme(Theme preData, CompanyTheme postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.DesktopHeight = postData.DesktopHeight;
+            preData.ExtThemeName = postData.ExtThemeName;
+            preData.ImageRatio = postData.ImageRatio;
+            preData.MobileHeight = postData.MobileHeight;
+            preData.NoOfHomePanels = postData.NoOfHomePanels;
+            preData.ThemeName = postData.ThemeName;
+            preData.Colour = postData.Colour;
+            preData.MobileHeight = postData.MobileHeight;
+            preData.IsActive = postData.IsActive;
+            preData.IsDefault = postData.IsDefault;
+            return preData;
+        }
+        private Branch MapBranch(Branch preData, BranchInfo postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.Address1 = postData.Address1;
+            preData.Address2 = postData.Address2;
+            preData.Code = postData.Code;
+            preData.Country = postData.Country;
+            preData.District = postData.District;
+            preData.Email = postData.Email;
+            preData.IsActive = postData.IsActive;
+            preData.Name = postData.Name;
+            preData.Phone = postData.Phone;
+            preData.PostalCode = postData.PostalCode;
+            preData.State = postData.State;
+            return preData;
+        }
+        private CompanySetting MapCompanySetting(CompanySetting preData, CompanySettingInfo postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.DataText = postData.DataText;
+            preData.DataValue = postData.DataValue;
+            preData.Option1 = postData.Option1;
+            preData.Option2 = postData.Option2;
+            preData.Option3 = postData.Option3;
+            preData.IsActive = postData.IsActive;
+            preData.SettingType = postData.SettingType;
+            return preData;
+        }
+        private Template MapTemplate(Template preData, GetCompanyTemplate postData)
+        {
+            preData.CompanyId = postData.CompanyId;
+            preData.HTMLData = postData.HTMLData;
+            preData.Name = postData.Name;
+            preData.Title = postData.Title;
+            preData.TemplateType = postData.TemplateType;
+            preData.IsActive = postData.IsActive;
+            return preData;
+        }
+
+
+        public async Task<ResponseCompanyId> SaveOnBoardProcess(OnBoardProcessinfo process, UserInfo user)
+        {
+            ResponseCompanyId response = new ResponseCompanyId();
+            response.CompanyId = 0;
+            try
+            {
+                if(process != null && process.OnBoardCompanyInfo != null && process.OnBoardCompanyInfo.CompanyInfo != null)
+                {
+                    var companyData = MapCompany(new Company(),process.OnBoardCompanyInfo.CompanyInfo);
+                    if(companyData.CompanyId == 0)
+                    {
+                        companyData.CreatedBy = user.UserId;
+                        companyData.CreatedDate = DateTime.Now;
+                        _context.Company.Add(companyData);
+
+                        response.CompanyId = companyData.CompanyId;
+                        _context.SaveChanges();
+                        if (process.OnBoardCompanyInfo.MailServerInfo != null)
+                        {
+                            var mail = MapMailServer(new MailServer(), process.OnBoardCompanyInfo.MailServerInfo);
+                            mail.CreatedBy = user.UserId;
+                            mail.CreatedDate = DateTime.Now;
+                            mail.CompanyId = companyData.CompanyId;
+                            _context.MailServer.Add(mail);
+                        }
+                        if(process.OnBoardCompanyInfo.BranchInfo != null && process.OnBoardCompanyInfo.BranchInfo.Count>0)
+                        {
+                            foreach(var item in process.OnBoardCompanyInfo.BranchInfo)
+                            {
+                                var branch = MapBranch(new Branch(),item);
+                                branch.CreatedBy = user.UserId;
+                                branch.CreatedDate = DateTime.Now;
+                                branch.CompanyId = companyData.CompanyId;
+                                _context.Branch.Add(branch);
+                            }
+                        }
+                        if(process.OnBoardCompanyInfo.CompanySettingInfo != null && process.OnBoardCompanyInfo.CompanySettingInfo.Count>0)
+                        {
+                            foreach (var item in process.OnBoardCompanyInfo.CompanySettingInfo)
+                            {
+                                var setting = MapCompanySetting(new CompanySetting(), item);
+                                setting.CreatedBy = user.UserId;
+                                setting.CreatedDate = DateTime.Now;
+                                setting.CompanyId = companyData.CompanyId;
+                                _context.CompanySetting.Add(setting);
+                            }
+                        }
+                        if(process.OnBoardCompanyInfo.CompanyTemplate != null && process.OnBoardCompanyInfo.CompanyTemplate.Count>0)
+                        {
+                            foreach (var item in process.OnBoardCompanyInfo.CompanyTemplate)
+                            {
+                                var template = MapTemplate(new Template(), item);
+                                template.CreatedBy = user.UserId;
+                                template.CreatedDate = DateTime.Now;
+                                template.CompanyId = companyData.CompanyId;
+                                _context.Template.Add(template);
+                            }
+                        }
+                        if(process.OnBoardCompanyInfo.CompanyTheme != null && process.OnBoardCompanyInfo.CompanyTheme.Count>0)
+                        {
+                            foreach (var item in process.OnBoardCompanyInfo.CompanyTheme)
+                            {
+                                var theme = MapTheme(new Theme(), item);
+                                theme.CreatedBy = user.UserId;
+                                theme.CreatedDate = DateTime.Now;
+                                theme.CompanyId = companyData.CompanyId;
+                                _context.Company.Add(companyData);
+                            }
+                        }
+                        _context.SaveChanges();
+                    }
+
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return response;
+            }
         }
     }
 }
