@@ -280,9 +280,10 @@ namespace CompanyManagement.Api.Service
                     {
                         companyData.CreatedBy = user.UserId;
                         companyData.CreatedDate = DateTime.Now;
+                        response.CompanyId = companyData.CompanyId;
                         _context.Company.Add(companyData);
 
-                        response.CompanyId = companyData.CompanyId;
+                        
                         _context.SaveChanges();
                         if (process.OnBoardCompanyInfo.MailServerInfo != null)
                         {
