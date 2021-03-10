@@ -70,7 +70,7 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1) 
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     responce.Data = await _companyService.GetCompany(request);
                 }
@@ -85,7 +85,25 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+        [HttpPost("GetCompanyDtlFrontEnd")]
+        public async Task<IActionResult> GetCompanyDtlFrontEnd(RequestBase request)
+        {
+            var responce = new Response<CompanyInfo>();
+            try
+            {
 
+                responce.Data = await _companyService.GetCompany(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
 
 
         [Authorize]
@@ -172,7 +190,7 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce = await _companyService.EditSTMPServer(request);
                 }
-                responce.Status = responce != null ?responce.Status :false;
+                responce.Status = responce != null ? responce.Status : false;
                 responce.Message = responce == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
