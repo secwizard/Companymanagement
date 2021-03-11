@@ -2,6 +2,7 @@
 using CompanyManagement.Api.Data;
 using CompanyManagement.Api.Mapper;
 using CompanyManagement.Api.Models;
+using CompanyManagement.Api.Models.Request;
 using log4net;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -250,7 +251,7 @@ namespace CompanyManagement.Api.Service
                     _context.MailServer.Add(data);
                     _context.SaveChanges();
                     request.CompanyId = data.CompanyId;
-                    retVal.Data = request.IsActive == true? request:null;
+                    retVal.Data = request.IsActive == true ? request : null;
                     retVal.Message = "OK";
                     retVal.Status = true;
                 }
@@ -289,7 +290,7 @@ namespace CompanyManagement.Api.Service
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
                 var dataList = _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToList();
-                    return dataList;
+                return dataList;
             }
             catch (Exception ex)
             {
@@ -413,8 +414,8 @@ namespace CompanyManagement.Api.Service
                 var data = await _context.Branch
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).ToListAsync();
-                    res = _mapper.Map<List<Branch>, List<BranchInfo>>(data);
-                    return res;
+                res = _mapper.Map<List<Branch>, List<BranchInfo>>(data);
+                return res;
             }
             catch (Exception ex)
             {
@@ -782,5 +783,27 @@ namespace CompanyManagement.Api.Service
             return preData;
         }
 
+        public async Task<CompanyInfo> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request)
+        {
+            try
+            {
+                var data =await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.ShortName == request.CompShortName
+                && x.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    var ret = new CompanyInfo
+                    {
+                        CompanyId = data.CompanyId
+                    };
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+            return null;
+        }
     }
 }

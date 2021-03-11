@@ -1,6 +1,7 @@
 ﻿using CompanyManagement.Api.Data;
 using CompanyManagement.Api.Helpers;
 using CompanyManagement.Api.Models;
+using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Service;
 using log4net;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,7 @@ namespace CompanyManagement.Api.Controllers
             return Ok("Company API connected.");
         }
 
+        #region ===== Frontend =====
 
         [HttpPost("GetCompanyIdFromUrl")]
         public async Task<IActionResult> GetCompanyIdFromUrl(RequestCompanyUrl request)
@@ -60,7 +62,6 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-
 
         [Authorize]
         [HttpPost("GetCompany")]
@@ -85,6 +86,7 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+
         [HttpPost("GetCompanyDtlFrontEnd")]
         public async Task<IActionResult> GetCompanyDtlFrontEnd(RequestBase request)
         {
@@ -104,6 +106,28 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+
+        [HttpPost("CheckCompanyUrlAndShortName")]
+        public async Task<IActionResult> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request)
+        {
+            var responce = new Response<CompanyInfo>();
+            try
+            {
+
+                responce.Data = await _companyService.CheckCompanyUrlAndShortName(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        #endregion
 
 
         [Authorize]
