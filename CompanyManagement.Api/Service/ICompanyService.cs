@@ -12,6 +12,7 @@ namespace CompanyManagement.Api.Service
         Task<CompanyInfo> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request);
         Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request);
         Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
+        Task<bool> GetIsPINRequired(RequestBase request);
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
         Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();

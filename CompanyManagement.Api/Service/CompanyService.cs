@@ -872,5 +872,24 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<bool> GetIsPINRequired(RequestBase request)
+        {
+            try
+            {
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    return Convert.ToBoolean(data.PINRequired);
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
     }
 }

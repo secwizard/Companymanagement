@@ -168,6 +168,25 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
+        [HttpPost("GetIsPINRequired")]
+        public async Task<IActionResult> GetIsPINRequired(RequestBase request)
+        {
+            var responce = new Response<bool>();
+            try
+            {
+                responce.Data = await _companyService.GetIsPINRequired(request);
+                responce.Status = responce.Data == true;
+                responce.Message = responce.Data != true ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
         #endregion
 
 
