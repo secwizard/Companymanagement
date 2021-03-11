@@ -1,5 +1,6 @@
 ﻿using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Request;
+using CompanyManagement.Api.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace CompanyManagement.Api.Service
     {
         Task<CompanyInfo> GetCompany(RequestBase request);
         Task<CompanyInfo> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request);
+        Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request);
+        Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
         Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();

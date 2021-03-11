@@ -3,6 +3,7 @@ using CompanyManagement.Api.Data;
 using CompanyManagement.Api.Mapper;
 using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Request;
+using CompanyManagement.Api.Models.Response;
 using log4net;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -787,8 +788,8 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var data =await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.ShortName == request.CompShortName
-                && x.IsActive == true).FirstOrDefaultAsync();
+                var data = await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.ShortName == request.CompShortName
+                 && x.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
                 {
                     var ret = new CompanyInfo
@@ -804,6 +805,72 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
             return null;
+        }
+
+        public async Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request)
+        {
+            try
+            {
+                var data = await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    var ret = new CompanyInfo
+                    {
+                        CompanyId = data.CompanyId
+                    };
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+            return null;
+        }
+        public async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request)
+        {
+            try
+            {
+                var res = new ResponseCompanyDtlByIdFrontend();
+
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    _mapper.Map(data, res);
+
+                    var themeData = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (themeData != null)
+                    {
+                        var theme = new ThemeData();
+                        _mapper.Map(themeData, theme);
+                        res.ThemeData = theme;
+                    }
+
+                    var templateData = await _context.Template
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).ToListAsync();
+                    if (templateData != null)
+                    {
+                        var footer = new List<FooterData>();
+                        _mapper.Map(templateData, footer);
+                        res.FooterList = footer;
+                    }
+
+
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
         }
     }
 }

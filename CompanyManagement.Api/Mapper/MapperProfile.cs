@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CompanyManagement.Api.Models;
+using CompanyManagement.Api.Models.Response;
 
 namespace CompanyManagement.Api.Mapper
 {
@@ -15,6 +16,13 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<Theme, CompanyTheme>(MemberList.None);
             this.CreateMap<BranchInfo, Branch>(MemberList.None);
             this.CreateMap<Branch, BranchInfo>(MemberList.None);
+            this.CreateMap<ResponseCompanyDtlByIdFrontend, Company>(MemberList.None);
+            this.CreateMap<Company, ResponseCompanyDtlByIdFrontend>(MemberList.None);
+            this.CreateMap<ThemeData, Theme>(MemberList.None);
+            this.CreateMap<Theme, ThemeData>(MemberList.None);
+            this.CreateMap<Template, FooterData>(MemberList.None);
+            this.CreateMap<FooterData, Template>(MemberList.None);
+
         }
     }
 }
