@@ -11,7 +11,9 @@ namespace CompanyManagement.UI.Models.Response
         public List<OnBoardSubscriptions> OnBoardSubscriptionInfo { get; set; }
         public List<OnBoardAddOns> OnBoardAddOn { get; set; }
         public OnBoardConfiguration OnBoardConfiguration { get; set; }
-}
+        public List<SelectedSubscription> Subscriptions { get; set; }
+        public List<SelectedAddOn> AddOns { get; set; }
+    }
     public class OnBoardCompany
     {
         public RequestCompanyInfo CompanyInfo { get; set; }
@@ -58,5 +60,13 @@ namespace CompanyManagement.UI.Models.Response
         public RequestCompanyInfo CompanyDtl { get; set; }
         public List<OnBoardSubscriptions> SubscriptionDtl { get; set; }
         public List<OnBoardAddOns> AddOnDtl { get; set; }
+    }
+    public class SelectedSubscription
+    {
+        public Int64 SubscriptionId { get; set; }
+    }
+    public class SelectedAddOn
+    {
+        public Int64 AddOnId { get; set; }
     }
 }

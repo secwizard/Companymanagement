@@ -152,6 +152,8 @@ namespace CompanyManagement.Api.Models
         public List<OnBoardSubscriptions> OnBoardSubscriptionInfo { get; set; }
         public List<OnBoardAddOns> OnBoardAddOn { get; set; }
         public OnBoardConfiguration OnBoardConfiguration { get; set; }
+        public List<SelectedSubscription> Subscriptions { get; set; }
+        public List<SelectedAddOn> AddOns { get; set; }
     }
     public class OnBoardCompany
     {
@@ -190,6 +192,14 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class SelectedSubscription
+    {
+        public Int64 SubscriptionId { get; set; }
+    }
+    public class SelectedAddOn
+    {
+        public Int64 AddOnId { get; set; }
+    }
     public class OnBoardConfiguration
     {
 
@@ -200,4 +210,5 @@ namespace CompanyManagement.Api.Models
         public List<OnBoardSubscriptions> SubscriptionDtl { get; set; }
         public List<OnBoardAddOns> AddOnDtl { get; set; }
     }
+
 }
