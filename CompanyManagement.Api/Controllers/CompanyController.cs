@@ -186,6 +186,24 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+        [HttpPost("GetCompanyCurrencyCode")]
+        public async Task<IActionResult> GetCompanyCurrencyCode(RequestBase request)
+        {
+            var responce = new Response<string>();
+            try
+            {
+                responce.Data = await _companyService.GetCompanyCurrencyCode(request);
+                responce.Status = responce.Data != "";
+                responce.Message = responce.Data == "" ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
 
         #endregion
 
