@@ -6,6 +6,20 @@
     <div class="row">
         <div class="col p-0">
             <div class="custom-table mt-3">
+                @*<input type="text" onkeyup="SearchSubscription()" id="srchSub" />*@
+                <div class="row">
+                    <div class="col-md-6 pl-0">
+                        <p class="all-textlabel">Choose Base Subscription</p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control textbox-custom" placeholder="Search" onkeyup="SearchSubscription()" id="srchSub">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-search p-control-icon right-icon-style color456b6b" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-md-6">
+                </div>
+            </div>
                 <table class="table table-responsive table-bordered border-0 mb-3">
                     <thead class="custom-table-thead">
                         <tr class="text-leftt-thtd">
@@ -25,7 +39,7 @@
                                 <tr id="tr_@item.SubscriptionId">
                                     <td style="width:10%">
                                         <label class="font11 all-textlabel l-p-initial cus-chkbox">
-                                            <input class="permissionCheckbox" id="subscriptions_@item.SubscriptionId" name="Subscription" type="checkbox" value="@item.SubscriptionId"/>
+                                            <input class="permissionCheckbox" id="subscriptions_@item.SubscriptionId" name="Subscription" type="checkbox" value="@item.SubscriptionId" />
                                             <span class="checkmark"></span>
                                         </label>
                                     </td>
@@ -37,6 +51,7 @@
                                 </tr>
                             }
                         }
+
                     </tbody>
                 </table>
             </div>
