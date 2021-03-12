@@ -8,10 +8,12 @@ namespace CompanyManagement.UI.Models.Response
     public class OnBoardProcessinfo
     {
         public OnBoardCompany OnBoardCompanyInfo { get; set; }
-        public OnBoardSubscriptions OnBoardSubscriptionInfo { get; set; }
-        public OnBoardAddOns OnBoardAddOn { get; set; }
+        public List<OnBoardSubscriptions> OnBoardSubscriptionInfo { get; set; }
+        public List<OnBoardAddOns> OnBoardAddOn { get; set; }
         public OnBoardConfiguration OnBoardConfiguration { get; set; }
-}
+        public List<SelectedSubscription> Subscriptions { get; set; }
+        public List<SelectedAddOn> AddOns { get; set; }
+    }
     public class OnBoardCompany
     {
         public RequestCompanyInfo CompanyInfo { get; set; }
@@ -23,14 +25,48 @@ namespace CompanyManagement.UI.Models.Response
     }
     public class OnBoardSubscriptions
     {
-
+        public long SubscriptionId { get; set; }
+        public string SubscriptionName { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
     }
     public class OnBoardAddOns
     {
-
+        public long AddOnId { get; set; }
+        public string PartNo { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
     }
     public class OnBoardConfiguration
     {
 
+    }
+    public class CompanyAllDetails
+    {
+        public RequestCompanyInfo CompanyDtl { get; set; }
+        public List<OnBoardSubscriptions> SubscriptionDtl { get; set; }
+        public List<OnBoardAddOns> AddOnDtl { get; set; }
+    }
+    public class SelectedSubscription
+    {
+        public Int64 SubscriptionId { get; set; }
+    }
+    public class SelectedAddOn
+    {
+        public Int64 AddOnId { get; set; }
     }
 }

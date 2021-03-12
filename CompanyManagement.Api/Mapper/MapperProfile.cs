@@ -22,7 +22,10 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<Theme, ThemeData>(MemberList.None);
             this.CreateMap<Template, FooterData>(MemberList.None);
             this.CreateMap<FooterData, Template>(MemberList.None);
-
+            this.CreateMap<OnBoardSubscriptions, SubscriptionMaster>(MemberList.None);
+            this.CreateMap<OnBoardAddOns, AddOnMaster>(MemberList.None);
+            this.CreateMap<SubscriptionMaster, OnBoardSubscriptions > (MemberList.None);
+            this.CreateMap<AddOnMaster, OnBoardAddOns > (MemberList.None);
         }
     }
 }

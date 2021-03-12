@@ -25,6 +25,16 @@ function focusstep1() {
     $("#step-4").hide();
     $("#step-5").hide();
 }
+function focusstep2() {
+    $("#step-1").hide();
+    $("#step-2").show();
+    $("#step-3").hide();
+    $("#step-4").hide();
+    $("#step-5").hide();
+}
+function FocusSubscription() {
+    $("#OnBoardSubscriptionError").text("");
+}
 function FocusCompany() {
     $("#companyDetails").show();
     $("#branch").hide();
@@ -147,84 +157,9 @@ function AddCompany() {
         err = err != "" ? err + ", GST " : " GST ";
     }
     if (!flag) {
-        //$("#OnompanyDetailsError").text("* " + err + "is Not Correct");
         alert("no");
     }
-    //else {
-
-    //}
-    //else {
-    //    var myJsVariable = newCompanyId;
-    //    var companyId = parseInt($("#txtCompanyId").val());
-    //    var name = $("#txtName").val();
-    //    var shortName = $("#txtShortname").val();
-    //    var address1 = $("#txtAddress1").val();
-    //    var address2 = $("#txtAddress2").val();
-    //    var pin = $("#txtPIN").val();
-    //    var districtCode = $("#txtDistrictCode").val();
-    //    var stateCode = $("#txtStateCode").val();
-    //    var countryCode = $("#txtCountryCode").val();
-    //    var adminPhone = $("#txtAdminPhone").val();
-    //    var servicePhone = $("#txtServicePhone").val();
-    //    var buisnessType = $("#ddlBusinessType").val();
-    //    var adminEmail = $("#txtAdminEmail").val();
-    //    var serviceEmail = $("#txtServiceEmail").val();
-    //    var secondaryEmail = $("#txtSecondaryEmail").val();
-    //    var gstNumber = $("#txtGSTNumber").val();
-    //    var panNumber = $("#txtPanNumber").val();
-    //    var currencyCode = $("#txtCurrencyCode").val();
-    //    var imageFilePath = $("#txtImageFilePath").val();
-    //    var website = $("#txtWebsite").val();
-    //    var logoFileName = $("#txtLogoFileName").val();
-    //    var fabiconFileName = $("#txtFabiconFileName").val();
-    //    var loginImageFileName = $("#txtLoginImageFileName").val();
-    //    var isActive = $('#IsActive').is(':checked');
-    //    var pinRequired = $('#PinRequired').is(':checked');
-
-
-    //    var companyInfo = {
-    //        CompanyId: companyId,
-    //        Name: name,
-    //        ShortName: shortName,
-    //        Address1: address1,
-    //        Address2: address2,
-    //        PIN: pin,
-    //        DistrictCode: districtCode,
-    //        StateCode: stateCode,
-    //        CountryCode: countryCode,
-    //        AdminPhone: adminPhone,
-    //        ServicePhone: servicePhone,
-    //        AdminEmail: adminEmail,
-    //        ServiceEmail: serviceEmail,
-    //        SecondaryEmail: secondaryEmail,
-    //        GSTNumber: gstNumber,
-    //        PanNumber: panNumber,
-    //        BusinessType: buisnessType,
-    //        CurrencyCode: currencyCode,
-    //        ImageFilePath: imageFilePath,
-    //        LogoFileName: logoFileName,
-    //        FavIconFileName: fabiconFileName,
-    //        LoginImageFileName: loginImageFileName,
-    //        Website: website,
-    //        PINRequired: pinRequired,
-    //        IsActive: isActive
-    //    }
-    //    $.ajax({
-    //        url: baseURL + "OnBoard/AddCompany",
-    //        type: "GET",
-    //        dataType: "json",
-    //        data: companyInfo,
-    //        contentType: "application/json; charset=utf-8",
-    //        success: function (data) {
-    //            HideLoader();
-    //        },
-    //        error: function (data) {
-    //            console.log("error");
-    //            console.log(data);
-    //            HideLoader();
-    //        }
-    //    });
-    //}
+   
 }
 function phonenumber(inputtxt) {
     var phoneno = /^\d{10}$/;
@@ -721,7 +656,6 @@ function SaveOnBoard() {
 
         if (flag2) {
             //--company--
-
             var name = $("#txtName").val();
             var shortName = $("#txtShortname").val();
             var address1 = $("#txtAddress1").val();
@@ -745,7 +679,7 @@ function SaveOnBoard() {
             var fabiconFileName = $("#txtFabiconFileName").val();
             var loginImageFileName = $("#txtLoginImageFileName").val();
             var pinRequired = $('#PinRequired').is(':checked');
-            var suggCompanyId = $('txtCompanyId').val();
+            var suggCompanyId = $('#txtCompanyId').val();
             var companyInfo = {
                 CompanyId: 0,
                 Name: name,
@@ -774,7 +708,6 @@ function SaveOnBoard() {
                 PINRequired: pinRequired,
                 IsActive: true
             }
-
             //Branch
             var branchRows = [];
             $('#tbl_OnBoard_Branch_body tr').each(function (e) {
@@ -859,48 +792,86 @@ function SaveOnBoard() {
 
                 });
             });
-            var OnBoardCompanyInfo = {
-                CompanyInfo: companyInfo,
-                BranchInfo: branchRows,
-                MailServerInfo: stmpInfo,
-                CompanySettingInfo: settingRows,
-                CompanyTemplate: templateRows,
-                CompanyTheme: themeRows
-            }
-            var OnBoardSubscriptionInfo = {};
-            var OnBoardAddOn = {};
-            var OnBoardConfiguration = {};
-            var OnBoardProcessinfo = {
-                OnBoardCompanyInfo: OnBoardCompanyInfo,
-                OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
-                OnBoardAddOn: OnBoardAddOn,
-                OnBoardConfiguration: OnBoardConfiguration
-            }
-            console.log(OnBoardProcessinfo);
-            $.ajax({
-                url: baseURL + "OnBoard/SaveOnBoardProcess",
-                type: "POST",
-                dataType: "html",
-                data: OnBoardProcessinfo,
-                success: function (data) {
-                    if (data == "login") {
-                        window.location.href = baseURL + 'Login/Index'
-                    }
-                    else if (data == "NO") {
-                        MessageShow('', 'working in process', 'success');
-                    }
-                    else {
-                        MessageShow('', 'working in process', 'success');
-                    }
-                    HideLoader();
-                },
-                error: function (data) {
-                    MessageShow('', 'working in process', 'success');
-                    console.log("error");
-                    console.log(data);
-                    HideLoader();
+
+            //Subscription
+            var subRows = [];
+            $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                var dt = $('#subscriptions_' + count[1]).is(':checked');
+                if ($('#subscriptions_' + count[1]).is(':checked')) {
+                    subRows.push({
+                        SubscriptionId: $('#subscriptions_' + count[1]).val()
+
+                    });
                 }
             });
+            //AddOns
+            var addRows = [];
+            $('#tbl_OnBoard_AddOn_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                var dt = $('#addons_' + count[1]).is(':checked');
+                if ($('#addons_' + count[1]).is(':checked')) {
+                    addRows.push({
+                        AddOnId: $('#addons_' + count[1]).val()
+
+                    });
+                }
+            });
+            if (subRows.length > 0) {
+
+
+                var OnBoardCompanyInfo = {
+                    CompanyInfo: companyInfo,
+                    BranchInfo: branchRows,
+                    MailServerInfo: stmpInfo,
+                    CompanySettingInfo: settingRows,
+                    CompanyTemplate: templateRows,
+                    CompanyTheme: themeRows
+                }
+                var OnBoardSubscriptionInfo = {};
+                var OnBoardAddOn = {};
+                var OnBoardConfiguration = {};
+                var OnBoardProcessinfo = {
+                    OnBoardCompanyInfo: OnBoardCompanyInfo,
+                    OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
+                    OnBoardAddOn: OnBoardAddOn,
+                    OnBoardConfiguration: OnBoardConfiguration,
+                    Subscriptions: subRows,
+                    AddOns: addRows
+                }
+
+                console.log(OnBoardProcessinfo);
+                $.ajax({
+                    url: baseURL + "OnBoard/SaveOnBoardProcess",
+                    type: "POST",
+                    dataType: "json",
+                    data: OnBoardProcessinfo,
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = baseURL + 'Login/Index'
+                        }
+                        else if (data.status == true) {
+                            MessageShow('', 'Company Saved', 'success');
+                        }
+                        else {
+                            MessageShow('', 'Company not saved', 'error');
+                        }
+                        HideLoader();
+                    },
+                    error: function (data) {
+                        MessageShow('', 'working in process', 'success');
+                        console.log("error");
+                        console.log(data);
+                        HideLoader();
+                    }
+                });
+            }
+            else {
+                $("#OnBoardSubscriptionError").text("* one subscription is required.");
+                focusstep2();
+            }
         }
         else {
             $("#companymailDetailsError").text("* " + err2 + "is required.");
@@ -914,4 +885,36 @@ function SaveOnBoard() {
         focusstep1();
     }
 
+}
+function SearchSubscription() {
+    var search = $("#srchSub").val();
+    $('#tbl_OnBoard_Subscription_body tr').hide();
+    var len = $('#tbl_OnBoard_Subscription_body tr:not(.notfound) td:nth-child(2):contains("' + search + '")').length;
+
+    if (len > 0) {
+        $('#tbl_OnBoard_Subscription_body tr td:contains("' + search + '")').each(function () {
+            $(this).closest('tr').show();
+        });
+    }
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
+}
+function SearchAddOns() {
+    var search = $("#srchadd").val();
+    $('#tbl_OnBoard_AddOn_body tr').hide();
+    var len = $('#tbl_OnBoard_AddOn_body tr:not(.notfound) td:nth-child(2):contains("' + search + '")').length;
+
+    if (len > 0) {
+        $('#tbl_OnBoard_AddOn_body tr td:contains("' + search + '")').each(function () {
+            $(this).closest('tr').show();
+        });
+    }
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
 }

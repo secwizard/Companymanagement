@@ -183,5 +183,62 @@ namespace CompanyManagement.Api.Models
         [Key]
         public Int64 CompanyId { get; set; }
     }
+    public class AddOnMaster
+    {
+        [Key]
+        public long AddOnId { get; set; }
+        public string PartNo { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
+    public class SubscriptionMaster
+    {
+        [Key]
+        public long SubscriptionId { get; set; }
+        public string SubscriptionName { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
+
+    public class AddOns
+    {
+        [Key]
+        public long CompanyAddOnId { get; set; }
+        public long CompanyId { get; set; }
+        public long AddOnId { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class Subscriptions
+    {
+        [Key]
+        public long CompanySubscriptionId { get; set; }
+        public long CompanyId { get; set; }
+        public long SubscriptionId { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
 
 }

@@ -34,7 +34,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyDetails")]
         public async Task<IActionResult> GetCompanyDetails(NewCompanyDetails request)
         {
-            var responce = new Response<CompanyInfo>();
+            var responce = new Response<CompanyAllDetails>();
             try
             {
                 //var user = (UserInfo)HttpContext.Items["User"];
@@ -136,7 +136,14 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _onBoardService.SaveOnBoardProcess(request,user);
                 }
-                responce.Status = responce.Data != null;
+                if(responce != null && responce.Data != null && responce.Data.CompanyId>0)
+                {
+                    responce.Status = true;
+                }
+                else
+                {
+                    responce.Status = false;
+                }
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
