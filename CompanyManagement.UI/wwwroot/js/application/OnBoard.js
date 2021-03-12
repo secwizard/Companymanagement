@@ -859,6 +859,28 @@ function SaveOnBoard() {
 
                 });
             });
+
+            //Subscription
+            var subRows = [];
+            $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                themeRows.push({
+                    ThemeId: 0,
+                    CompanyId: 0,
+                    ThemeName: $('#txtThemeName_' + count[1]).text(),
+                    ExtThemeName: $('#txtExtThemeName_' + count[1]).text(),
+                    ImageRatio: $('#txtImageRatio_' + count[1]).text(),
+                    NoOfHomePanels: $('#txtNoOfHomePanels_' + count[1]).text(),
+                    Colour: $('#txtColour_' + count[1]).text(),
+                    MobileHeight: $('#txtMobileHeight_' + count[1]).text(),
+                    DesktopHeight: $('#txtDesktopHeight_' + count[1]).text(),
+                    IsDefault: isDefault,
+                    IsActive: true
+
+                });
+            });
+
             var OnBoardCompanyInfo = {
                 CompanyInfo: companyInfo,
                 BranchInfo: branchRows,
@@ -876,6 +898,7 @@ function SaveOnBoard() {
                 OnBoardAddOn: OnBoardAddOn,
                 OnBoardConfiguration: OnBoardConfiguration
             }
+
             console.log(OnBoardProcessinfo);
             $.ajax({
                 url: baseURL + "OnBoard/SaveOnBoardProcess",

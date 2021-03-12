@@ -54,11 +54,16 @@ namespace CompanyManagement.UI.Controllers
             List<ResponseCompanyTemplate> tempalte = new List<ResponseCompanyTemplate>();
             List<ResponseThemeDetails> theme = new List<ResponseThemeDetails>();
             OnBoardCompany onCompany = new OnBoardCompany();
+            List<OnBoardSubscriptions> subscription = new List<OnBoardSubscriptions>();
+            List<OnBoardAddOns> addons = new List<OnBoardAddOns>();
             NewCompanyDetails details = new NewCompanyDetails();
             details.CompanyId = user.CompanyId;
             details.UserId = user.Id;
             var compDtl = await _restAPI.NewCompanyDtl(JsonConvert.SerializeObject(details), user.token);
-            company = JsonConvert.DeserializeObject<Response<RequestCompanyInfo>>(compDtl).Data;
+            var alldtl = JsonConvert.DeserializeObject<Response<CompanyAllDetails>>(compDtl).Data;
+            subscription = alldtl.SubscriptionDtl;
+            addons = alldtl.AddOnDtl;
+            company = alldtl.CompanyDtl;
             onCompany.CompanyInfo = company;
             onCompany.BranchInfo = branch;
             onCompany.CompanySettingInfo = setting;
@@ -74,6 +79,10 @@ namespace CompanyManagement.UI.Controllers
             comp.CompanyTheme = theme;
             comp.MailServerInfo = mail;
             onBoardProcessinfo.OnBoardCompanyInfo = comp;
+            onBoardProcessinfo.OnBoardSubscriptionInfo = new List<OnBoardSubscriptions>();
+            onBoardProcessinfo.OnBoardAddOn = new List<OnBoardAddOns>();
+            onBoardProcessinfo.OnBoardSubscriptionInfo = subscription;
+            onBoardProcessinfo.OnBoardAddOn = addons;
 
 
 

@@ -31,11 +31,12 @@ namespace CompanyManagement.Api.Service
         {
             _context = context;
         }
-        public async Task<CompanyInfo> GetCompanyDetails(NewCompanyDetails request)
+        public async Task<CompanyAllDetails> GetCompanyDetails(NewCompanyDetails request)
         {
+            CompanyAllDetails details = new CompanyAllDetails();
             try
             {
-                var res = new CompanyInfo();
+                var com = new CompanyInfo();
 
                 var data = await _context.Company
                     .Where(c => c.CompanyId == request.NewCompanyId
@@ -44,20 +45,33 @@ namespace CompanyManagement.Api.Service
                     data = new Company();
                 if (data != null)
                 {
-                    _mapper.Map(data, res);
+                    _mapper.Map(data, com);
                     var reqlookUp = new RequestLookUp { CompanyId = request.CompanyId, LookUpType = "BusinessType" };
                     var lookup = GetCompanyLookUp(reqlookUp).Result;
-                    res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
-                    res.SelectedLookUp = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
-                    if (res.CompanyId <= 0)
+                    com.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
+                    com.SelectedLookUp = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
+                    if (com.CompanyId <= 0)
                     {
-                        var suggest = GetSuggestedCompanyId(res.SelectedLookUp.LookUpValue).Result;
-                        res.SuggestedCompanyId = suggest.CompanyId;
+                        var suggest = GetSuggestedCompanyId(com.SelectedLookUp.LookUpValue).Result;
+                        com.SuggestedCompanyId = suggest.CompanyId;
                     }
 
                 }
+                var sub = new List<OnBoardSubscriptions>();
+                var add = new List<OnBoardAddOns>();
 
-                return res;
+                var subData = _context.SubscriptionMaster
+                    .Where(c => c.IsActive == true).ToList();
+                var addData = _context.AddOnMaster
+                     .Where(c => c.IsActive == true).ToList();
+                _mapper.Map(subData, sub);
+                _mapper.Map(addData, add);
+                details.CompanyDtl = com;
+                details.AddOnDtl = add;
+                details.SubscriptionDtl = sub;
+
+
+                return details;
             }
             catch (Exception ex)
             {
@@ -65,6 +79,29 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        //public async Task<CompanyInfo> GetSubscriptionAndAddonDetails()
+        //{
+        //    try
+        //    {
+        //        var subMaster = new List<OnBoardSubscriptions>();
+        //        var addMaster = new List<OnBoardAddOns>();
+
+        //        var subData =_context.SubscriptionMaster
+        //            .Where(c =>  c.IsActive == true).ToList();
+        //        var addData = _context.AddOnMaster
+        //             .Where(c => c.IsActive == true).ToList();
+        //        _mapper.Map(subData, subMaster);
+        //        _mapper.Map(addData, addMaster);
+
+
+        //        return res;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+        //        throw;
+        //    }
+        //}
         public async Task<List<LookUpInfo>> GetRequiredDetails(RequestBase request)
         {
             try

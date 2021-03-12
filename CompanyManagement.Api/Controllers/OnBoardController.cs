@@ -34,7 +34,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyDetails")]
         public async Task<IActionResult> GetCompanyDetails(NewCompanyDetails request)
         {
-            var responce = new Response<CompanyInfo>();
+            var responce = new Response<CompanyAllDetails>();
             try
             {
                 //var user = (UserInfo)HttpContext.Items["User"];
