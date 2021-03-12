@@ -209,6 +209,7 @@ namespace CompanyManagement.UI.Controllers
             try
             {
                 var result = await _restAPI.SaveOnBoardProcess(JsonConvert.SerializeObject(request), user.token);
+                responce = JsonConvert.DeserializeObject<Response<ResponseCompanyId>>(result);
             }
             catch (Exception ex)
             {

@@ -136,7 +136,14 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce.Data = await _onBoardService.SaveOnBoardProcess(request,user);
                 }
-                responce.Status = responce.Data != null;
+                if(responce != null && responce.Data != null && responce.Data.CompanyId>0)
+                {
+                    responce.Status = true;
+                }
+                else
+                {
+                    responce.Status = false;
+                }
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)

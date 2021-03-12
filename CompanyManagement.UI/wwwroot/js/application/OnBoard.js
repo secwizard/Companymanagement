@@ -745,7 +745,7 @@ function SaveOnBoard() {
             var fabiconFileName = $("#txtFabiconFileName").val();
             var loginImageFileName = $("#txtLoginImageFileName").val();
             var pinRequired = $('#PinRequired').is(':checked');
-            var suggCompanyId = $('txtCompanyId').val();
+            var suggCompanyId = $('#txtCompanyId').val();
             var companyInfo = {
                 CompanyId: 0,
                 Name: name,
@@ -774,7 +774,7 @@ function SaveOnBoard() {
                 PINRequired: pinRequired,
                 IsActive: true
             }
-
+            debugger;
             //Branch
             var branchRows = [];
             $('#tbl_OnBoard_Branch_body tr').each(function (e) {
@@ -880,17 +880,18 @@ function SaveOnBoard() {
             $.ajax({
                 url: baseURL + "OnBoard/SaveOnBoardProcess",
                 type: "POST",
-                dataType: "html",
+                dataType: "json",
                 data: OnBoardProcessinfo,
                 success: function (data) {
+                    debugger;
                     if (data == "login") {
                         window.location.href = baseURL + 'Login/Index'
                     }
-                    else if (data == "NO") {
-                        MessageShow('', 'working in process', 'success');
+                    else if (data.status == true) {
+                        MessageShow('', 'Company Saved', 'success');
                     }
                     else {
-                        MessageShow('', 'working in process', 'success');
+                        MessageShow('', 'Company not saved', 'error');
                     }
                     HideLoader();
                 },

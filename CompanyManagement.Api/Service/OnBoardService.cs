@@ -276,14 +276,12 @@ namespace CompanyManagement.Api.Service
                 if(process != null && process.OnBoardCompanyInfo != null && process.OnBoardCompanyInfo.CompanyInfo != null)
                 {
                     var companyData = MapCompany(new Company(),process.OnBoardCompanyInfo.CompanyInfo);
-                    if(companyData.CompanyId == 0)
+                    if(companyData.CompanyId > 0)
                     {
                         companyData.CreatedBy = user.UserId;
                         companyData.CreatedDate = DateTime.Now;
                         response.CompanyId = companyData.CompanyId;
                         _context.Company.Add(companyData);
-
-                        
                         _context.SaveChanges();
                         if (process.OnBoardCompanyInfo.MailServerInfo != null)
                         {
@@ -334,11 +332,12 @@ namespace CompanyManagement.Api.Service
                                 theme.CreatedBy = user.UserId;
                                 theme.CreatedDate = DateTime.Now;
                                 theme.CompanyId = companyData.CompanyId;
-                                _context.Company.Add(companyData);
+                                _context.Theme.Add(theme);
                             }
                         }
                         _context.SaveChanges();
                     }
+
 
                 }
                 return response;
