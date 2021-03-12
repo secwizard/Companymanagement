@@ -796,7 +796,6 @@ function SaveOnBoard() {
             //Subscription
             var subRows = [];
             $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
-                debugger;
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
                 var dt = $('#subscriptions_' + count[1]).is(':checked');
@@ -810,7 +809,6 @@ function SaveOnBoard() {
             //AddOns
             var addRows = [];
             $('#tbl_OnBoard_AddOn_body tr').each(function (e) {
-                debugger;
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
                 var dt = $('#addons_' + count[1]).is(':checked');
@@ -889,7 +887,6 @@ function SaveOnBoard() {
 
 }
 function SearchSubscription() {
-    debugger;
     var search = $("#srchSub").val();
     $('#tbl_OnBoard_Subscription_body tr').hide();
     var len = $('#tbl_OnBoard_Subscription_body tr:not(.notfound) td:nth-child(2):contains("' + search + '")').length;
@@ -906,7 +903,6 @@ function SearchSubscription() {
     });
 }
 function SearchAddOns() {
-    debugger;
     var search = $("#srchadd").val();
     $('#tbl_OnBoard_AddOn_body tr').hide();
     var len = $('#tbl_OnBoard_AddOn_body tr:not(.notfound) td:nth-child(2):contains("' + search + '")').length;
