@@ -372,6 +372,32 @@ namespace CompanyManagement.Api.Service
                                 _context.Theme.Add(theme);
                             }
                         }
+                        if (process.Subscriptions != null && process.Subscriptions.Count > 0)
+                        {
+                            foreach (var item in process.Subscriptions)
+                            {
+                                var subs =new Subscriptions();
+                                subs.SubscriptionId = item.SubscriptionId;
+                                subs.CreatedBy = user.UserId;
+                                subs.IsActive = true;
+                                subs.CreatedDate = DateTime.Now;
+                                subs.CompanyId = companyData.CompanyId;
+                                _context.Subscriptions.Add(subs);
+                            }
+                        }
+                        if (process.AddOns != null && process.AddOns.Count > 0)
+                        {
+                            foreach (var item in process.AddOns)
+                            {
+                                var ads = new AddOns();
+                                ads.AddOnId = item.AddOnId;
+                                ads.IsActive = true;
+                                ads.CreatedBy = user.UserId;
+                                ads.CreatedDate = DateTime.Now;
+                                ads.CompanyId = companyData.CompanyId;
+                                _context.AddOns.Add(ads);
+                            }
+                        }
                         _context.SaveChanges();
                     }
 

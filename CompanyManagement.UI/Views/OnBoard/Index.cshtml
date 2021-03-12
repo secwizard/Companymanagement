@@ -270,8 +270,8 @@
     </div>
 
     <div class="panel panel-primary setup-content" id="step-2">
-        <div class="col-md-12 pl-2 pl-0-pr-0-mob" style="padding-bottom:20px">
-            <h3 class="page-label-header mb-4">Base Subscriptions</h3>
+        <div class="col-md-12 pl-2 pl-0-pr-0-mob" style="padding-bottom:20px"  onclick="FocusSubscription()">
+            <div class="row"><h3 class="page-label-header mb-4">Base Subscriptions</h3><span class="errormessage" id="OnBoardSubscriptionError"></span></div>
             <div class="col-md-12 tab-content mt-4 p-0">
                 <div class="tab-pane active" id="companyDetails">
                     <div class="row">
@@ -294,8 +294,9 @@
     </div>
 
     <div class="panel panel-primary setup-content" id="step-3">
-        <div class="col-md-12 pl-2 pl-0-pr-0-mob"  style="padding-bottom:20px">
-            <h3 class="page-label-header mb-4">Add Ons</h3>
+        <div class="col-md-12 pl-2 pl-0-pr-0-mob" style="padding-bottom:20px">
+            <div class="row"><h3 class="page-label-header mb-4">Add Ons</h3><span class="errormessage" id="OnBoardAddonError"></span></div>
+
             <div class="col-md-12 tab-content mt-4 p-0">
                 <div class="tab-pane active" id="companyDetails">
                     <div class="row">
