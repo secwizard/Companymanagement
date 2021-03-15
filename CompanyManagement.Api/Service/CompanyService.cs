@@ -860,7 +860,11 @@ namespace CompanyManagement.Api.Service
                         _mapper.Map(templateData, footer);
                         res.FooterList = footer;
                     }
+                    res.CompTermsConditionOrd = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name== "ORDER" && x.IsActive==true).FirstOrDefault()?.HTMLData;
 
+                    res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
 
                     return res;
                 }
