@@ -1,6 +1,4 @@
-﻿
-
-function numberValidation(e) {
+﻿function numberValidation(e) {
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
         (e.keyCode == 65 && e.ctrlKey === true) ||
         (e.keyCode >= 35 && e.keyCode <= 40)) {
@@ -885,7 +883,7 @@ function SaveOnBoard() {
                         AddOns: addRows,
                         Configuration: configuration
                     }
-                        = console.log(OnBoardProcessinfo);
+                    console.log(OnBoardProcessinfo);
                     $.ajax({
                         url: baseURL + "OnBoard/SaveOnBoardProcess",
                         type: "POST",
@@ -1136,6 +1134,36 @@ $(document).ready(function () {
             else {
                 $('#hdnConfguration').val(0);
                 $('#configurations').hide();
+            }
+        }
+        if (curStep.attr("id") == 'step-4') {
+            var conf = parseInt($('#hdnConfguration').val());
+
+            var Key = $('#txtConfigurationKey').val();
+            var secret = $('#txtConfigurationSecret').val();
+            if (conf == 1) {
+                var flag3 = true;
+                var err3 = "";
+
+                if (Key == '') {
+                    flag3 = false;
+                    err3 = err3 != "" ? err3 + ", Key " : " Key ";
+                }
+                if (secret == '') {
+                    flag3 = false;
+                    err3 = err3 != "" ? err3 + ", Secret " : " Secret ";
+                }
+                if (flag3) {
+                    goToNext = true;
+                }
+                else {
+                    goToNext = false;
+                    $("#OnBoardConfigurationError").text("* " + err3 + " is required.");
+                    focusstep4();
+                    focusstep4();
+                }
+
+
             }
         }
 
