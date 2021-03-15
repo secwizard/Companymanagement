@@ -910,5 +910,42 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+        public async Task<ResponseGetCompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request)
+        {
+            try
+            {
+                var data = await (from c in _context.Company
+                                  join m in _context.MailServer on c.CompanyId equals m.CompanyId
+                                  where c.CompanyId == request.CompanyId && c.IsActive == true && m.IsActive == true
+                                  select new ResponseGetCompanyDetailsForSentMail
+                                  {
+                                      CompImageFilePath = c.ImageFilePath,
+                                      CompLogoName = c.LogoFileName,
+                                      CompName = c.Name,
+                                      CompAdminEmail = c.AdminEmail,
+                                      CompCustServiceTel = "",
+                                      SMTPServer = m.SMTPServer,
+                                      FromEmailDisplayName = m.FromEmailDisplayName,
+                                      FromEmailId = m.FromEmailId,
+                                      FromEmailPwd = m.FromEmailPwd,
+                                      CompTermsConditionOrd = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "TermsCondition" && x.Name == "ORDER").FirstOrDefault().HTMLData,
+
+                                      CompanyTermsConditionPayment = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT").FirstOrDefault().HTMLData,
+
+                                      Ssl = m.EnableSSL,
+                                      Port = m.SMTPPort,
+                                      Template = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "Email" && x.Name== "Order").FirstOrDefault().HTMLData
+
+                                  }).FirstOrDefaultAsync();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
     }
 }
