@@ -56,8 +56,12 @@ namespace CompanyManagement.UI.Controllers
             OnBoardCompany onCompany = new OnBoardCompany();
             OnBoardConfiguration configuration = new OnBoardConfiguration();
             configuration.PaymentGateways = new List<PaymentGatewayResponse>();
-            var pGateway = await _restAPI.GetPaymentGateway("");
-            configuration.PaymentGateways = JsonConvert.DeserializeObject<List<PaymentGatewayResponse>>(pGateway);
+            try
+            {
+                var pGateway = await _restAPI.GetPaymentGateway("");
+                configuration.PaymentGateways = JsonConvert.DeserializeObject<List<PaymentGatewayResponse>>(pGateway);
+            }
+            catch { }
             List<OnBoardSubscriptions> subscription = new List<OnBoardSubscriptions>();
             List<OnBoardAddOns> addons = new List<OnBoardAddOns>();
             NewCompanyDetails details = new NewCompanyDetails();
@@ -229,7 +233,11 @@ namespace CompanyManagement.UI.Controllers
                     request.Configuration.CreatedAt = DateTime.Now;
                     request.Configuration.CreatedBy = 1;
                     request.Configuration.IsActive = true;
-                    await _restAPI.SavePamentGateway(JsonConvert.SerializeObject(request.Configuration));
+                    try
+                    {
+                        await _restAPI.SavePamentGateway(JsonConvert.SerializeObject(request.Configuration));
+                    }
+                    catch { }
                 }
             }
             catch (Exception ex)
