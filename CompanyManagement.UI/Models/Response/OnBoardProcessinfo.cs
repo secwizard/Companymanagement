@@ -13,6 +13,7 @@ namespace CompanyManagement.UI.Models.Response
         public OnBoardConfiguration OnBoardConfiguration { get; set; }
         public List<SelectedSubscription> Subscriptions { get; set; }
         public List<SelectedAddOn> AddOns { get; set; }
+        public GatewayCompanyMapping Configuration { get; set; }
     }
     public class OnBoardCompany
     {
@@ -53,7 +54,7 @@ namespace CompanyManagement.UI.Models.Response
     }
     public class OnBoardConfiguration
     {
-
+        public List<PaymentGatewayResponse> PaymentGateways { get; set; }
     }
     public class CompanyAllDetails
     {
@@ -68,5 +69,22 @@ namespace CompanyManagement.UI.Models.Response
     public class SelectedAddOn
     {
         public Int64 AddOnId { get; set; }
+    }
+    public class PaymentGatewayResponse
+    {
+        public int PaymentGatewayId { get; set; }
+        public string Name { get; set; }
+    }
+    public class GatewayCompanyMapping
+    {
+        public long GatewayCompanyMappingId { get; set; }
+        public int PaymentGatewayId { get; set; }
+        public int CompanyId { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public long CreatedBy { get; set; }
+        public long RazoyPaymentDetailId { get; set; }
+        public string Key { get; set; }
+        public string Secret { get; set; }
     }
 }

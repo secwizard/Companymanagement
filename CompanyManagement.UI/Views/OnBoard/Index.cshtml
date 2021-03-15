@@ -318,8 +318,22 @@
         </div>
     </div>
     <div class="panel panel-primary setup-content" id="step-4">
-        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-            <h3 class="page-label-header mb-4">Configuration</h3>
+        <div class="col-md-12 pl-2 pl-0-pr-0-mob" style="padding-bottom:20px">
+            <div class="row"><h3 class="page-label-header mb-4">Configuration</h3><span class="errormessage" id="OnBoardConfigurationError"></span></div>
+
+            <div class="col-md-12 tab-content mt-4 p-0">
+                <div class="tab-pane active" id="companyDetails">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row mt-15px-mob" id="configurations">
+                                    @await Html.PartialAsync("_Partial_OnBoard_Configuration", Model)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="panel-body">
 
@@ -340,66 +354,5 @@
 </div>
 
 <script>
-    $(document).ready(function () {
 
-
-        var navListItems = $('div.setup-panel div a'),
-            allWells = $('.setup-content'),
-            allNextBtn = $('.nextBtn');
-        allPrevBtn = $('.prevBtn');
-
-        allWells.hide();
-
-        navListItems.click(function (e) {
-            e.preventDefault();
-            var $target = $($(this).attr('href')),
-                $item = $(this);
-
-            if (!$item.hasClass('disabled')) {
-                navListItems.removeClass('btn-successa').addClass('btn-default');
-                $item.addClass('btn-successa');
-                allWells.hide();
-                $target.show();
-                $target.find('input:eq(0)').focus();
-            }
-        });
-
-        allNextBtn.click(function () {
-
-            var curStep = $(this).closest(".setup-content"),
-                curStepBtn = curStep.attr("id"),
-                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                curInputs = curStep.find("input[type='text'],input[type='url']"),
-                isValid = true;
-
-            $(".form-group").removeClass("has-error");
-            for (var i = 0; i < curInputs.length; i++) {
-                if (!curInputs[i].validity.valid) {
-                    isValid = false;
-                    $(curInputs[i]).closest(".form-group").addClass("has-error");
-                }
-            }
-
-            if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
-        });
-        allPrevBtn.click(function () {
-
-            var curStep = $(this).closest(".setup-content"),
-                curStepBtn = curStep.attr("id"),
-                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
-                curInputs = curStep.find("input[type='text'],input[type='url']"),
-                isValid = true;
-
-            $(".form-group").removeClass("has-error");
-            for (var i = 0; i < curInputs.length; i++) {
-                if (!curInputs[i].validity.valid) {
-                    isValid = false;
-                    $(curInputs[i]).closest(".form-group").addClass("has-error");
-                }
-            }
-
-            if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
-        });
-        $('div.setup-panel div a.btn-successa').trigger('click');
-    });
 </script>

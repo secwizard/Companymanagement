@@ -350,6 +350,24 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+        public async Task<string> GetPaymentGateway(string postdata)
+        {
+            string url = $"{_appSettings.PaymentGatewayHost}/GetPaymentGateway";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> SavePamentGateway(string postdata)
+        {
+            string url = $"{_appSettings.PaymentGatewayHost}/InsertGatewayCompanyMapping";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
         #endregion
 
         #region Generic

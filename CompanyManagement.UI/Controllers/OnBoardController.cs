@@ -54,6 +54,10 @@ namespace CompanyManagement.UI.Controllers
             List<ResponseCompanyTemplate> tempalte = new List<ResponseCompanyTemplate>();
             List<ResponseThemeDetails> theme = new List<ResponseThemeDetails>();
             OnBoardCompany onCompany = new OnBoardCompany();
+            OnBoardConfiguration configuration = new OnBoardConfiguration();
+            configuration.PaymentGateways = new List<PaymentGatewayResponse>();
+            var pGateway = await _restAPI.GetPaymentGateway("");
+            configuration.PaymentGateways = JsonConvert.DeserializeObject<List<PaymentGatewayResponse>>(pGateway);
             List<OnBoardSubscriptions> subscription = new List<OnBoardSubscriptions>();
             List<OnBoardAddOns> addons = new List<OnBoardAddOns>();
             NewCompanyDetails details = new NewCompanyDetails();
@@ -83,7 +87,7 @@ namespace CompanyManagement.UI.Controllers
             onBoardProcessinfo.OnBoardAddOn = new List<OnBoardAddOns>();
             onBoardProcessinfo.OnBoardSubscriptionInfo = subscription;
             onBoardProcessinfo.OnBoardAddOn = addons;
-
+            onBoardProcessinfo.OnBoardConfiguration = configuration;
 
 
             return View(onBoardProcessinfo);
@@ -219,6 +223,14 @@ namespace CompanyManagement.UI.Controllers
             {
                 var result = await _restAPI.SaveOnBoardProcess(JsonConvert.SerializeObject(request), user.token);
                 responce = JsonConvert.DeserializeObject<Response<ResponseCompanyId>>(result);
+                if(responce != null && responce.Status == true && responce.Data != null && responce.Data.CompanyId >0 && request.Configuration != null)
+                {
+                    request.Configuration.CompanyId = Convert.ToInt32(responce.Data.CompanyId);
+                    request.Configuration.CreatedAt = DateTime.Now;
+                    request.Configuration.CreatedBy = 1;
+                    request.Configuration.IsActive = true;
+                    await _restAPI.SavePamentGateway(JsonConvert.SerializeObject(request.Configuration));
+                }
             }
             catch (Exception ex)
             {

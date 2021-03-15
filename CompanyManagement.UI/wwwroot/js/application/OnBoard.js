@@ -1,4 +1,6 @@
-﻿function numberValidation(e) {
+﻿
+
+function numberValidation(e) {
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
         (e.keyCode == 65 && e.ctrlKey === true) ||
         (e.keyCode >= 35 && e.keyCode <= 40)) {
@@ -30,6 +32,13 @@ function focusstep2() {
     $("#step-2").show();
     $("#step-3").hide();
     $("#step-4").hide();
+    $("#step-5").hide();
+}
+function focusstep4() {
+    $("#step-1").hide();
+    $("#step-2").hide();
+    $("#step-3").hide();
+    $("#step-4").show();
     $("#step-5").hide();
 }
 function FocusSubscription() {
@@ -159,7 +168,7 @@ function AddCompany() {
     if (!flag) {
         alert("no");
     }
-   
+
 }
 function phonenumber(inputtxt) {
     var phoneno = /^\d{10}$/;
@@ -278,7 +287,9 @@ function TemplateOnFocus() {
 function ThemesOnFocus() {
     $("#companyThemesDetailsError").text("");
 }
-
+function ConfigurationOnFocus() {
+    $("#OnBoardConfigurationError").text("");
+}
 function AddEditBranch() {
     var count = $('#hdnRowCntBranch').val();
     var flag = true;
@@ -574,6 +585,15 @@ function DeleteCompanysetting(e) {
 function SaveOnBoard() {
     var flag = true;
     var stmpInfo = {};
+    var branchRows = [];
+    var settingRows = [];
+    var templateRows = [];
+    var themeRows = [];
+    var subRows = [];
+    var addRows = [];
+    var configuration = {};
+
+
     var err = "";
     if ($("#txtName").val() == '') {
         flag = false;
@@ -605,11 +625,11 @@ function SaveOnBoard() {
     }
     if (flag) {
         var flag2 = true;
+        var err2 = "";
         if (($("#txtSTMPServer").val() == '') && ($("#txtSTMPPort").val() == '') && ($("#txtFromEmailDisplayName").val() == '') && ($("#txtFromEmailId").val() == '') && ($("#txtFromEmailIdPwd").val() == '')) {
             flag2 = true;
         }
         else {
-            var err2 = "";
             if ($("#txtSTMPServer").val() == '') {
                 flag2 = false;
                 err2 = err2 != "" ? err2 + ", SMTP Server " : " SMTP Server ";
@@ -709,7 +729,7 @@ function SaveOnBoard() {
                 IsActive: true
             }
             //Branch
-            var branchRows = [];
+
             $('#tbl_OnBoard_Branch_body tr').each(function (e) {
                 var id = $(this).index();
                 var trID = $(this).attr("id");
@@ -733,7 +753,6 @@ function SaveOnBoard() {
             });
 
             //Setting
-            var settingRows = [];
             $('#tbl_OnBoard_Setting_body tr').each(function (e) {
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
@@ -752,7 +771,6 @@ function SaveOnBoard() {
             });
 
             //Template
-            var templateRows = [];
             $('#tbl_OnBoard_Template_body tr').each(function (e) {
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
@@ -769,7 +787,6 @@ function SaveOnBoard() {
             });
 
             //Theme
-            var themeRows = [];
             $('#tbl_OnBoard_Theme_body tr').each(function (e) {
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
@@ -794,7 +811,6 @@ function SaveOnBoard() {
             });
 
             //Subscription
-            var subRows = [];
             $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
@@ -807,7 +823,6 @@ function SaveOnBoard() {
                 }
             });
             //AddOns
-            var addRows = [];
             $('#tbl_OnBoard_AddOn_body tr').each(function (e) {
                 var trID = $(this).attr("id");
                 var count = trID.split('_');
@@ -819,54 +834,89 @@ function SaveOnBoard() {
                     });
                 }
             });
+
+            //Configuration
+            var Key = $('#txtConfigurationKey').val();
+            var secret = $('#txtConfigurationSecret').val();
             if (subRows.length > 0) {
-
-
-                var OnBoardCompanyInfo = {
-                    CompanyInfo: companyInfo,
-                    BranchInfo: branchRows,
-                    MailServerInfo: stmpInfo,
-                    CompanySettingInfo: settingRows,
-                    CompanyTemplate: templateRows,
-                    CompanyTheme: themeRows
-                }
-                var OnBoardSubscriptionInfo = {};
-                var OnBoardAddOn = {};
-                var OnBoardConfiguration = {};
-                var OnBoardProcessinfo = {
-                    OnBoardCompanyInfo: OnBoardCompanyInfo,
-                    OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
-                    OnBoardAddOn: OnBoardAddOn,
-                    OnBoardConfiguration: OnBoardConfiguration,
-                    Subscriptions: subRows,
-                    AddOns: addRows
-                }
-
-                console.log(OnBoardProcessinfo);
-                $.ajax({
-                    url: baseURL + "OnBoard/SaveOnBoardProcess",
-                    type: "POST",
-                    dataType: "json",
-                    data: OnBoardProcessinfo,
-                    success: function (data) {
-                        if (data == "login") {
-                            window.location.href = baseURL + 'Login/Index'
-                        }
-                        else if (data.status == true) {
-                            MessageShow('', 'Company Saved', 'success');
-                        }
-                        else {
-                            MessageShow('', 'Company not saved', 'error');
-                        }
-                        HideLoader();
-                    },
-                    error: function (data) {
-                        MessageShow('', 'working in process', 'success');
-                        console.log("error");
-                        console.log(data);
-                        HideLoader();
+                var flag3 = true;
+                var err3 = "";
+                if (Key == '' && secret == '')
+                    flag3 = true;
+                else {
+                    if (Key == '') {
+                        flag3 = false;
+                        err3 += "Key";
                     }
-                });
+                    if (secret == '') {
+                        flag3 = false;
+                        err3 += "Secret";
+                    }
+                }
+                if (flag3) {
+                    configuration = {
+                        GatewayCompanyMappingId: 0,
+                        PaymentGatewayId: $('#ddlPaymentGateway').val(),
+                        CompanyId: 0,
+                        IsActive: true,
+                        CreatedAt: null,
+                        CreatedBy: 0,
+                        RazoyPaymentDetailId: 0,
+                        Key: Key,
+                        Secret: secret
+                    }
+                    var OnBoardCompanyInfo = {
+                        CompanyInfo: companyInfo,
+                        BranchInfo: branchRows,
+                        MailServerInfo: stmpInfo,
+                        CompanySettingInfo: settingRows,
+                        CompanyTemplate: templateRows,
+                        CompanyTheme: themeRows
+                    }
+                    var OnBoardSubscriptionInfo = {};
+                    var OnBoardAddOn = {};
+                    var OnBoardConfiguration = {};
+                    var OnBoardProcessinfo = {
+                        OnBoardCompanyInfo: OnBoardCompanyInfo,
+                        OnBoardSubscriptionInfo: OnBoardSubscriptionInfo,
+                        OnBoardAddOn: OnBoardAddOn,
+                        OnBoardConfiguration: OnBoardConfiguration,
+                        Subscriptions: subRows,
+                        AddOns: addRows,
+                        Configuration: configuration
+                    }
+                        = console.log(OnBoardProcessinfo);
+                    $.ajax({
+                        url: baseURL + "OnBoard/SaveOnBoardProcess",
+                        type: "POST",
+                        dataType: "json",
+                        data: OnBoardProcessinfo,
+                        success: function (data) {
+                            if (data == "login") {
+                                window.location.href = baseURL + 'Login/Index'
+                            }
+                            else if (data.status == true) {
+                                MessageShow('', 'Company Saved', 'success');
+                            }
+                            else {
+                                MessageShow('', 'Company not saved', 'error');
+                            }
+                            HideLoader();
+                        },
+                        error: function (data) {
+                            MessageShow('', 'working in process', 'success');
+                            console.log("error");
+                            console.log(data);
+                            HideLoader();
+                        }
+                    });
+                }
+                else {
+                    $("#OnBoardConfigurationError").text("* " + err3 + " is required.");
+                    focusstep4();
+                    focusstep4();
+                }
+
             }
             else {
                 $("#OnBoardSubscriptionError").text("* one subscription is required.");
@@ -918,3 +968,196 @@ function SearchAddOns() {
         };
     });
 }
+
+$(document).ready(function () {
+    var navListItems = $('div.setup-panel div a'),
+        allWells = $('.setup-content'),
+        allNextBtn = $('.nextBtn');
+    allPrevBtn = $('.prevBtn');
+
+    allWells.hide();
+
+    navListItems.click(function (e) {
+        e.preventDefault();
+        var $target = $($(this).attr('href')),
+            $item = $(this);
+
+        if (!$item.hasClass('disabled')) {
+            navListItems.removeClass('btn-successa').addClass('btn-default');
+            $item.addClass('btn-successa');
+            allWells.hide();
+            $target.show();
+            $target.find('input:eq(0)').focus();
+        }
+    });
+
+    allNextBtn.click(function () {
+        var goToNext = true;
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+            curInputs = curStep.find("input[type='text'],input[type='url']"),
+            isValid = true;
+
+        $(".form-group").removeClass("has-error");
+        for (var i = 0; i < curInputs.length; i++) {
+            if (!curInputs[i].validity.valid) {
+                isValid = false;
+                $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }
+        if (curStep.attr("id") == 'step-1') {
+            var flag = true;
+            var err = "";
+            if ($("#txtName").val() == '') {
+                flag = false;
+                err = err != "" ? err + ", Name " : " Name ";
+            }
+            if (!phonenumber($("#txtAdminPhone").val())) {
+                flag = false;
+                err = err != "" ? err + ", Admin Phone " : " Admin Phone ";
+            }
+            if (!IsEmail($("#txtAdminEmail").val())) {
+                flag = false;
+                err = err != "" ? err + ", Admin Email " : " Admin Email ";
+            }
+            if ($("#txtCurrencyCode").val() == '') {
+                flag = false;
+                err = err != "" ? err + ", Currency Code " : " Currency Code ";
+            }
+            if ($("#txtImageFilePath").val() == '') {
+                flag = false;
+                err = err != "" ? err + ", Image File Path " : " Image File Path ";
+            }
+            if ($("#txtShortname").val() == '') {
+                flag = false;
+                err = err != "" ? err + ", Short Name " : " Short Name ";
+            }
+            if ($("#txtGSTNumber").val() != '' && !IsGST($("#txtGSTNumber").val())) {
+                flag = false;
+                err = err != "" ? err + ", GST " : " GST ";
+            }
+            if (flag) {
+                var flag2 = true;
+                var err2 = "";
+                if (($("#txtSTMPServer").val() == '') && ($("#txtSTMPPort").val() == '') && ($("#txtFromEmailDisplayName").val() == '') && ($("#txtFromEmailId").val() == '') && ($("#txtFromEmailIdPwd").val() == '')) {
+                    flag2 = true;
+                }
+                else {
+                    if ($("#txtSTMPServer").val() == '') {
+                        flag2 = false;
+                        err2 = err2 != "" ? err2 + ", SMTP Server " : " SMTP Server ";
+                    }
+                    if ($("#txtSTMPPort").val() == '') {
+                        flag2 = false;
+                        err2 = err2 != "" ? err2 + ", SMTP Port " : " SMTP Port ";
+                    }
+                    if ($("#txtFromEmailDisplayName").val() == '') {
+                        flag2 = false;
+                        err2 = err2 != "" ? err2 + ", Display Email Name " : " Display Email Name ";
+                    }
+                    if ($("#txtFromEmailId").val() == '') {
+                        flag2 = false;
+                        err2 = err2 != "" ? err2 + ", Email " : " Email ";
+                    }
+                    if ($("#txtFromEmailIdPwd").val() == '') {
+                        flag2 = false;
+                        err2 = err2 != "" ? err2 + ", Password " : " Password ";
+                    }
+                }
+                if (flag2) {
+                    goToNext = true;
+                }
+                else {
+                    goToNext = false;
+                    $("#companymailDetailsError").text("* " + err2 + "is required.");
+                    FocusMail();
+                    focusstep1();
+                }
+
+
+            }
+            else {
+                goToNext = false;
+                $("#companyDetailsError").text("* " + err + "is Not Correct");
+                FocusCompany();
+                focusstep1();
+            }
+        }
+        if (curStep.attr("id") == 'step-2') {
+            var subRows = [];
+            $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                var dt = $('#subscriptions_' + count[1]).is(':checked');
+                if ($('#subscriptions_' + count[1]).is(':checked')) {
+                    subRows.push({
+                        SubscriptionId: $('#subscriptions_' + count[1]).val()
+
+                    });
+                }
+            });
+            if (subRows.length > 0) {
+                goToNext = true;
+
+            }
+            else {
+                goToNext = false;
+                $("#OnBoardSubscriptionError").text("* one subscription is required.");
+                focusstep2();
+            }
+        }
+        if (curStep.attr("id") == 'step-3') {
+            var addRows = [];
+            $('#tbl_OnBoard_AddOn_body tr').each(function (e) {
+                var trID = $(this).attr("id");
+                var count = trID.split('_');
+                var dt = $('#addons_' + count[1]).is(':checked');
+                if ($('#addons_' + count[1]).is(':checked')) {
+                    addRows.push({
+                        AddOnId: $('#addons_' + count[1]).val(),
+                        AddOnText: $('#partNo_' + count[1]).text()
+
+                    });
+                }
+            });
+            if (addRows.length > 0) {
+                for (var i = 0; i < addRows.length; i++) {
+                    if (addRows[i].AddOnText == 'ADDON-1003') {
+                        $('#hdnConfguration').val(1);
+                        $('#configurations').show();
+                    }
+                    else {
+                        $('#hdnConfguration').val(0);
+                        $('#configurations').hide();
+                    }
+                }
+            }
+            else {
+                $('#hdnConfguration').val(0);
+                $('#configurations').hide();
+            }
+        }
+
+        if (isValid && goToNext) nextStepWizard.removeAttr('disabled').trigger('click');
+    });
+    allPrevBtn.click(function () {
+
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+            curInputs = curStep.find("input[type='text'],input[type='url']"),
+            isValid = true;
+
+        $(".form-group").removeClass("has-error");
+        for (var i = 0; i < curInputs.length; i++) {
+            if (!curInputs[i].validity.valid) {
+                isValid = false;
+                $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }
+
+        if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
+    });
+    $('div.setup-panel div a.btn-successa').trigger('click');
+});

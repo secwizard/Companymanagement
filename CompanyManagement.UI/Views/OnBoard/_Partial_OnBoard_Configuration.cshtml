@@ -1,0 +1,38 @@
+﻿@using System.Data
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+
+@if (Model != null && Model.OnBoardConfiguration != null && Model.OnBoardConfiguration.PaymentGateways != null && Model.OnBoardConfiguration.PaymentGateways.Count >0)
+{
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
+                    <select class="customselect" id="ddlPaymentGateway">
+                        @foreach (var item in Model.OnBoardConfiguration.PaymentGateways)
+                        {
+
+                                <option value="@item.PaymentGatewayId">@item.Name</option>
+
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Key<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtConfigurationKey" onfocus="ConfigurationOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Secret<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtConfigurationSecret" value="" onfocus="ConfigurationOnFocus()">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+}
+<input type="hidden" value="0" id="hdnConfguration"/>

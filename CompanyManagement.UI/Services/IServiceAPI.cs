@@ -43,6 +43,8 @@ namespace CompanyManagement.UI.Services
         Task<string> GetRequiredDetails(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> GetSuggestedCompanyId(string postdata, string authorizationToken, bool bearerToken = true);
         Task<string> SaveOnBoardProcess(string postdata, string authorizationToken, bool bearerToken = true);
+        Task<string> GetPaymentGateway(string postdata);
+        Task<string> SavePamentGateway(string postdata);
         #endregion
     }
 
