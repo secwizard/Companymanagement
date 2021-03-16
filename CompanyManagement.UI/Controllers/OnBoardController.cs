@@ -41,7 +41,7 @@ namespace CompanyManagement.UI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(user?.token)) return Ok("login");
+            if (string.IsNullOrEmpty(user?.token)) return RedirectToAction("Index","Login");
             user.CompanyId = 0;
             user.Logo = null;
             Session.Set("CompanyConfiguration", user);

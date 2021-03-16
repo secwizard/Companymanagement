@@ -342,8 +342,22 @@
         </div>
     </div>
     <div class="panel panel-primary setup-content" id="step-5">
-        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
-            <h3 class="page-label-header mb-4">Summary</h3>
+        <div class="col-md-12 pl-2 pl-0-pr-0-mob" style="padding-bottom:20px">
+            <div class="row"><h3 class="page-label-header mb-4">Summary</h3><span class="errormessage" id="OnSummaryConfigurationError"></span></div>
+
+            <div class="col-md-12 tab-content mt-4 p-0">
+                <div class="tab-pane active" id="companyDetails">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row mt-15px-mob" id="summary">
+                                    @await Html.PartialAsync("_Partial_OnBoard_Summary", Model)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="panel-body">
             <button class="btn btn-primary prevBtn pull-right" type="button">Prev</button>

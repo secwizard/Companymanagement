@@ -118,9 +118,13 @@ function GetSuggestedCompanyId() {
         dataType: "json",
         data: postData,
         success: function (data) {
-
-            $("#txtCompanyId").val(data.companyId);
-            HideLoader();
+            if (data == "login") {
+                window.location.href = baseURL + 'Login/Index'
+            }
+            else {
+                $("#txtCompanyId").val(data.companyId);
+                HideLoader();
+            }
         },
         error: function (data) {
 
@@ -581,6 +585,7 @@ function DeleteCompanysetting(e) {
 }
 
 function SaveOnBoard() {
+    ShowLoader();
     var flag = true;
     var stmpInfo = {};
     var branchRows = [];
@@ -852,16 +857,19 @@ function SaveOnBoard() {
                     }
                 }
                 if (flag3) {
-                    configuration = {
-                        GatewayCompanyMappingId: 0,
-                        PaymentGatewayId: $('#ddlPaymentGateway').val(),
-                        CompanyId: 0,
-                        IsActive: true,
-                        CreatedAt: null,
-                        CreatedBy: 0,
-                        RazoyPaymentDetailId: 0,
-                        Key: Key,
-                        Secret: secret
+                    var isConfiguration = parseInt($('#hdnConfguration').val());
+                    if (isConfiguration) {
+                        configuration = {
+                            GatewayCompanyMappingId: 0,
+                            PaymentGatewayId: $('#ddlPaymentGateway').val(),
+                            CompanyId: 0,
+                            IsActive: true,
+                            CreatedAt: null,
+                            CreatedBy: 0,
+                            RazoyPaymentDetailId: 0,
+                            Key: Key,
+                            Secret: secret
+                        }
                     }
                     var OnBoardCompanyInfo = {
                         CompanyInfo: companyInfo,
@@ -894,6 +902,9 @@ function SaveOnBoard() {
                                 window.location.href = baseURL + 'Login/Index'
                             }
                             else if (data.status == true) {
+
+                                MessageShow('', 'Company Saved', 'success');
+                                window.location.href = "/OnBoard/Index";
                                 MessageShow('', 'Company Saved', 'success');
                             }
                             else {
@@ -913,24 +924,28 @@ function SaveOnBoard() {
                     $("#OnBoardConfigurationError").text("* " + err3 + " is required.");
                     focusstep4();
                     focusstep4();
+                    HideLoader();
                 }
 
             }
             else {
                 $("#OnBoardSubscriptionError").text("* one subscription is required.");
                 focusstep2();
+                HideLoader();
             }
         }
         else {
             $("#companymailDetailsError").text("* " + err2 + "is required.");
             FocusMail();
             focusstep1();
+            HideLoader();
         }
     }
     else {
         $("#companyDetailsError").text("* " + err + "is Not Correct");
         FocusCompany();
         focusstep1();
+        HideLoader();
     }
 
 }
@@ -1120,18 +1135,28 @@ $(document).ready(function () {
                 }
             });
             if (addRows.length > 0) {
+                var flagconf = false;
                 for (var i = 0; i < addRows.length; i++) {
                     if (addRows[i].AddOnText == 'ADDON-1003') {
-                        $('#hdnConfguration').val(1);
-                        $('#configurations').show();
-                    }
-                    else {
-                        $('#hdnConfguration').val(0);
-                        $('#configurations').hide();
+                        flagconf = true;
                     }
                 }
+                if (flagconf) {
+                    $('#hdnConfguration').val(1);
+                    $('#configurations').show();
+                }
+                else {
+
+                    $('#txtConfigurationKey').val("");
+                    $('#txtConfigurationSecret').val("");
+                    $('#hdnConfguration').val(0);
+                    $('#configurations').hide();
+                }
+
             }
             else {
+                $('#txtConfigurationKey').val("");
+                $('#txtConfigurationSecret').val("");
                 $('#hdnConfguration').val(0);
                 $('#configurations').hide();
             }
@@ -1163,9 +1188,98 @@ $(document).ready(function () {
                     focusstep4();
                 }
 
+            }
 
+            if (goToNext) {
+                var name = $("#txtName").val();
+                var shortName = $("#txtShortname").val();
+                var address1 = $("#txtAddress1").val();
+                var address2 = $("#txtAddress2").val();
+                var pin = $("#txtPIN").val();
+                var adminPhone = $("#txtAdminPhone").val();
+                var buisnessType = $("#ddlBusinessType option:selected").text();
+                var adminEmail = $("#txtAdminEmail").val();
+                var suggCompanyId = $('#txtCompanyId').val();
+                var stmpServer = $("#txtSTMPServer").val();
+                var branchRows = [];
+                var subRow = [];
+                var addRow = [];
+
+                var branch = '';
+                $('#tbl_OnBoard_Branch_body tr').each(function (e) {
+                    var trID = $(this).attr("id");
+                    var count = trID.split('_');
+                    branchRows.push({
+                        BranchId: 0,
+                        CompanyId: 0,
+                        Name: $('#txtNameBranch_' + count[1]).text()
+                    });
+                });
+                if (branchRows.length > 0) {
+                    for (var i = 0; i < branchRows.length; i++) {
+                        branch += branch == '' ? branchRows[i].Name : ' , ' + branchRows[i].Name;
+                    }
+                }
+                else {
+                    branch = 'none';
+                }
+                var address = '';
+                if (address1 != '')
+                    address += address == '' ? address1 : ' , ' + address1;
+                if (address2 != '')
+                    address += address == '' ? address2 : ' , ' + address2;
+                if (pin != '')
+                    address += address == '' ? pin : ' , ' + pin;
+                var contact = '';
+                contact += adminPhone;
+                contact += ' , ' + adminEmail;
+                $('#tbl_OnBoard_Subscription_body tr').each(function (e) {
+                    var trID = $(this).attr("id");
+                    var count = trID.split('_');
+                    if ($('#subscriptions_' + count[1]).is(':checked')) {
+                        subRow.push({
+                            Subscription: $('#sub_' + count[1]).text()
+
+                        });
+                    }
+                });
+                var subs = '';
+                if (subRow.length > 0) {
+                    for (var i = 0; i < subRow.length; i++) {
+                        subs += subs == '' ? subRow[i].Subscription : ' , ' + subRow[i].Subscription;
+                    }
+                }
+
+                //AddOns
+                $('#tbl_OnBoard_AddOn_body tr').each(function (e) {
+                    var trID = $(this).attr("id");
+                    var count = trID.split('_');
+                    if ($('#addons_' + count[1]).is(':checked')) {
+                        addRow.push({
+                            AddOn: $('#partNo_' + count[1]).text()
+
+                        });
+                    }
+                });
+                var adds = '';
+                if (addRow.length > 0) {
+                    for (var i = 0; i < addRow.length; i++) {
+                        adds += adds == '' ? addRow[i].AddOn : ' , ' + addRow[i].AddOn;
+                    }
+                }
+                $('#summarybusinesstype').text(buisnessType);
+                $('#summarycompanyid').text(suggCompanyId);
+                $('#summarycompanyName').text(name + '(' + shortName + ')');
+                $('#summaryaddress').text(address);
+                $('#summarycontact').text(contact);
+                $('#summarysmtp').text(stmpServer == '' ? 'none' : stmpServer);
+                $('#summarybranch').text(branch);
+                $('#summarysubscription').text(subs);
+                $('#summaryaddon').text(adds);
             }
         }
+
+
 
         if (isValid && goToNext) nextStepWizard.removeAttr('disabled').trigger('click');
     });

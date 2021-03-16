@@ -407,6 +407,7 @@ namespace CompanyManagement.Api.Service
             }
             catch (Exception ex)
             {
+                response.CompanyId = 0;
                 return response;
             }
         }
