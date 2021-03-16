@@ -902,7 +902,7 @@ function SaveOnBoard() {
                             HideLoader();
                         },
                         error: function (data) {
-                            MessageShow('', 'working in process', 'success');
+                            MessageShow('', 'Something Went Wrong', 'error');
                             console.log("error");
                             console.log(data);
                             HideLoader();

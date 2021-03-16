@@ -317,9 +317,9 @@ namespace CompanyManagement.Api.Service
                     {
                         companyData.CreatedBy = user.UserId;
                         companyData.CreatedDate = DateTime.Now;
-                        response.CompanyId = companyData.CompanyId;
                         _context.Company.Add(companyData);
                         _context.SaveChanges();
+                        response.CompanyId = companyData.CompanyId;
                         if (process.OnBoardCompanyInfo.MailServerInfo != null)
                         {
                             var mail = MapMailServer(new MailServer(), process.OnBoardCompanyInfo.MailServerInfo);
