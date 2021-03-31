@@ -8,6 +8,13 @@ namespace CompanyManagement.Api.Models
         [JsonProperty("companyid")]
         public long CompanyId { get; set; }
     }
+    public class RequestCompany
+    {
+        [JsonProperty("companyid")]
+        public long CompanyId { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+    }
     public class RequestCompanyUrl
     {
         [JsonProperty("companyUrl")]

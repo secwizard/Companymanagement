@@ -14,7 +14,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
         Task<bool> GetIsPINRequired(RequestBase request);
         Task<string> GetCompanyCurrencyCode(RequestBase request); 
-        Task<ResponseGetCompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request); 
+        Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request); 
          Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
         Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();

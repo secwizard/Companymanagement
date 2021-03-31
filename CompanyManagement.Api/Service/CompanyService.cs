@@ -915,35 +915,22 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<ResponseGetCompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request)
+        public async Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request)
         {
             try
             {
-                var data = await (from c in _context.Company
-                                  join m in _context.MailServer on c.CompanyId equals m.CompanyId
-                                  where c.CompanyId == request.CompanyId && c.IsActive == true && m.IsActive == true
-                                  select new ResponseGetCompanyDetailsForSentMail
-                                  {
-                                      CompImageFilePath = c.ImageFilePath,
-                                      CompLogoName = c.LogoFileName,
-                                      CompName = c.Name,
-                                      CompAdminEmail = c.AdminEmail,
-                                      CompCustServiceTel = "",
-                                      SMTPServer = m.SMTPServer,
-                                      FromEmailDisplayName = m.FromEmailDisplayName,
-                                      FromEmailId = m.FromEmailId,
-                                      FromEmailPwd = m.FromEmailPwd,
-                                      CompTermsConditionOrd = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "TermsCondition" && x.Name == "ORDER").FirstOrDefault().HTMLData,
+                var parms = new SqlParameter[]
+                 {
+                       new SqlParameter("@CompanyId", request.CompanyId),
+                 };
 
-                                      CompanyTermsConditionPayment = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT").FirstOrDefault().HTMLData,
+                string sqlText = $"dbo.GetCompanyMailInfo @CompanyId";
+                var mailInfo = await _context.CompanyDetailsForSentMail
+                    .FromSqlRaw(sqlText, parms)
+                    .ToListAsync();
 
-                                      Ssl = m.EnableSSL,
-                                      Port = m.SMTPPort,
-                                      Template = _context.Template.Where(x => x.IsActive == true && x.CompanyId == request.CompanyId && x.TemplateType == "Email" && x.Name== "Order").FirstOrDefault().HTMLData
-
-                                  }).FirstOrDefaultAsync();
-
-                return data;
+                if (mailInfo?.Count > 0) return mailInfo.FirstOrDefault();
+                else return null;
             }
             catch (Exception ex)
             {

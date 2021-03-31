@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Api.Models;
+using CompanyManagement.Api.Models.Response;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,5 +30,8 @@ namespace CompanyManagement.Api.Data
         public DbSet<AddOnMaster> AddOnMaster { get; set; }
         public DbSet<Subscriptions> Subscriptions { get; set; }
         public DbSet<AddOns> AddOns { get; set; }
+        public DbSet<CompanyDetailsForSentMail> CompanyDetailsForSentMail { get; set; }
+
+        
     }
 }

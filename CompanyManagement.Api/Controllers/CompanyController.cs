@@ -209,7 +209,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyDetailsForSentMail")]
         public async Task<IActionResult> GetCompanyDetailsForSentMail(RequestBase request)
         {
-            var responce = new Response<ResponseGetCompanyDetailsForSentMail>();
+            var responce = new Response<CompanyDetailsForSentMail>();
             try
             {
                 responce.Data = await _companyService.GetCompanyDetailsForSentMail(request);
