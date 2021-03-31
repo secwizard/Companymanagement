@@ -63,6 +63,7 @@ namespace CompanyManagement.Api.Models
         public List<LookUpInfo> LookUps { get; set; }
         public LookUpInfo SelectedLookUp { get; set; }
         public Int64 SuggestedCompanyId { get; set; }
+        public string CompanySiteUrl { get; set; }
     }
 
     public class CompanyMailServer

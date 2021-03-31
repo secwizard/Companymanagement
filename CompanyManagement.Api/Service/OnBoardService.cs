@@ -234,6 +234,7 @@ namespace CompanyManagement.Api.Service
             preData.ShortName = postData.ShortName == null ? "" : postData.ShortName;
             preData.StateCode = postData.StateCode == null ? "" : postData.StateCode;
             preData.Website = postData.Website == null ? "" : postData.Website;
+            preData.CompanySiteUrl = postData.CompanySiteUrl;
             return preData;
         }
 

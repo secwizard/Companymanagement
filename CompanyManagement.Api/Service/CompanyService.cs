@@ -150,6 +150,7 @@ namespace CompanyManagement.Api.Service
             preData.ShortName = postData.ShortName;
             preData.StateCode = postData.StateCode;
             preData.Website = postData.Website;
+            preData.CompanySiteUrl = postData.CompanySiteUrl;
             return preData;
         }
 
