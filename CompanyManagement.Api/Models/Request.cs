@@ -88,4 +88,15 @@ namespace CompanyManagement.Api.Models
         public string Subject { get; set; }
         public string Body { get; set; }
     }
+
+    public class RequestSendMail
+    {
+        public Guid UserId { get; set; }
+        public long CompanyId { get; set; }
+        public string EmailFrom { get; set; }
+        public string EmailCC { get; set; }
+        public string EmailTo { get; set; }
+        public string Message { get; set; }
+        public string Subject { get; set; }
+    }
 }

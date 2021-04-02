@@ -633,23 +633,23 @@ namespace CompanyManagement.Api.Controllers
 
         [Authorize]
         [HttpPost("SendMail")]
-        public async Task<IActionResult> SendEmail(string emailAddressTo, string emailAddressFrom, string emailAddressCC, string message, string subject, long companyId)
+        public async Task<IActionResult> SendEmail(RequestSendMail requestSendMail)
         {
             var responce = new ResponseMail();
             responce.Status = false;
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == companyId || user?.CompanyId == -1)
+                if (user?.CompanyId == requestSendMail.CompanyId || user?.CompanyId == -1)
                 {
-                    var compMailServer = await _companyService.GetCompanySmtp(new RequestBase() { CompanyId = companyId });
+                    var compMailServer = await _companyService.GetCompanySmtp(new RequestBase() { CompanyId = requestSendMail.CompanyId });
                     var requestMail = new RequestMail();
-                    requestMail.From = emailAddressFrom;
-                    requestMail.To = emailAddressTo;
-                    requestMail.CC = emailAddressCC;
+                    requestMail.From = string.IsNullOrEmpty(requestSendMail.EmailFrom) ? compMailServer.FromEmailId : requestSendMail.EmailFrom;
+                    requestMail.To = requestSendMail.EmailTo;
+                    requestMail.CC = requestSendMail.EmailCC;
                     requestMail.DisplayName = compMailServer.FromEmailDisplayName;
-                    requestMail.Subject = subject;
-                    requestMail.Body = message;
+                    requestMail.Subject = requestSendMail.Subject;
+                    requestMail.Body = requestSendMail.Message;
                     requestMail.password = compMailServer.FromEmailPwd;
                     requestMail.host = compMailServer.SMTPServer;
                     requestMail.port = compMailServer.SMTPPort?? 0;
