@@ -211,5 +211,9 @@ namespace CompanyManagement.Api.Models
         public List<OnBoardSubscriptions> SubscriptionDtl { get; set; }
         public List<OnBoardAddOns> AddOnDtl { get; set; }
     }
-
+    public class ResponseMail
+    {
+        public bool Status { get; set; }
+        public string Message { get; set; }
+    }
 }

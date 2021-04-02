@@ -75,4 +75,17 @@ namespace CompanyManagement.Api.Models
         public Int64 CompanyId { get; set; }
     }
 
+    public class RequestMail
+    {
+        public string To { get; set; }
+        public string From { get; set; }
+        public string password { get; set; }
+        public string host { get; set; }
+        public int port { get; set; }
+        public bool EnableSsl { get; set; }
+        public string DisplayName { get; set; }
+        public string CC { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+    }
 }

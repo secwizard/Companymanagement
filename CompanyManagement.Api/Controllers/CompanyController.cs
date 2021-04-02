@@ -630,6 +630,44 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+
+        [Authorize]
+        [HttpPost("SendMail")]
+        public async Task<IActionResult> SendEmail(string emailAddressTo, string emailAddressFrom, string emailAddressCC, string message, string subject, long companyId)
+        {
+            var responce = new ResponseMail();
+            responce.Status = false;
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == companyId || user?.CompanyId == -1)
+                {
+                    var compMailServer = await _companyService.GetCompanySmtp(new RequestBase() { CompanyId = companyId });
+                    var requestMail = new RequestMail();
+                    requestMail.From = emailAddressFrom;
+                    requestMail.To = emailAddressTo;
+                    requestMail.CC = emailAddressCC;
+                    requestMail.DisplayName = compMailServer.FromEmailDisplayName;
+                    requestMail.Subject = subject;
+                    requestMail.Body = message;
+                    requestMail.password = compMailServer.FromEmailPwd;
+                    requestMail.host = compMailServer.SMTPServer;
+                    requestMail.port = compMailServer.SMTPPort?? 0;
+                    requestMail.EnableSsl = requestMail.port == 0 ? false : compMailServer.EnableSSL?? false;
+
+                    responce = Common.SendEmail(requestMail);
+                    return Ok(responce);
+                }
+                responce.Message = "User company not match";
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                responce.Message = ex.Message;
+            }
+            return Ok(responce);
+        }
+
     }
 }
 
