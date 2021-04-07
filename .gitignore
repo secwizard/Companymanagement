@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 /CompanyManagement.Api/.config
 /CompanyManagement.UI/.config
-/CompanyManagement.UI/appsettings.json
+**/appsettings.json
