@@ -35,6 +35,7 @@ namespace CompanyManagement.Api.Models
         public Guid? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
+        public string CompanySiteUrl { get; set; }
     }
 
     public class Branch
@@ -130,4 +131,114 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class GetCompanyTemplate
+    {
+        [Key]
+        public long TemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public string TemplateType { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public string HTMLData { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class GetLookUpType
+    {
+        [Key]
+        public long LookUpId { get; set; }
+        public string LookUpType { get; set; }
+        public string LookUpValue { get; set; }
+        public string LookUpDescription { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+    }
+
+    public class GetCompanyTheme
+    {
+        [Key]
+        public long ThemeId { get; set; }
+        public long CompanyId { get; set; }
+        public string ThemeName { get; set; }
+        public string ExtThemeName { get; set; }
+        public decimal? ImageRatio { get; set; }
+        public int? NoOfHomePanels { get; set; }
+        public string Colour { get; set; }
+        public int? MobileHeight { get; set; }
+        public int? DesktopHeight { get; set; }
+        public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class GetSuggestedCompanyId
+    {
+        [Key]
+        public Int64 CompanyId { get; set; }
+    }
+    public class AddOnMaster
+    {
+        [Key]
+        public long AddOnId { get; set; }
+        public string PartNo { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
+    public class SubscriptionMaster
+    {
+        [Key]
+        public long SubscriptionId { get; set; }
+        public string SubscriptionName { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
+
+    public class AddOns
+    {
+        [Key]
+        public long CompanyAddOnId { get; set; }
+        public long CompanyId { get; set; }
+        public long AddOnId { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class Subscriptions
+    {
+        [Key]
+        public long CompanySubscriptionId { get; set; }
+        public long CompanyId { get; set; }
+        public long SubscriptionId { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+
 }

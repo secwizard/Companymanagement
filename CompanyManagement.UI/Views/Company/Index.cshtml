@@ -2,7 +2,7 @@
 @using Microsoft.Extensions.Options;
 @inject IOptions<AppSettings> Settings
 @{
-    ViewData["Title"] = "On-Board";
+    ViewData["Title"] = "Information";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/js/application/Company.js?v=@Settings.Value.JSVersion"></script>
@@ -16,121 +16,109 @@
 </script>
 
 
-<title>Company On-Boarding</title>
-
-<div class="container mainpannel">
-</div>
+<title>Company</title>
 
 <div class="container">
-    <div class="panel-group" id="accordion">
-        <div id="divPanelList">
+    <div class="row pb-3" id="AddEditUserDiv" >
+        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+            <h3 class="page-label-header mb-4">Company Information</h3>
+        </div>
+        <div class="tab-section menunav mt-1 w-100">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs pl-2 pl-0-pr-0-mob" id="AddEditTabs">
+                <li  class="nav-item ">
+                    <a id="liCompany" class="nav-link " data-toggle="tab" href="#companyDetails" onclick="GetCompanyDetails()">Company</a>
+                </li>
+                <li  class="nav-item ">
+                    <a id="liBranch" class="nav-link " data-toggle="tab" href="#branch" onclick="GetBranchDetails()">Branch</a>
+                </li>
+                <li  class="nav-item">
+                    <a id="liMail"class="nav-link" data-toggle="tab" href="#mailServerinfo" onclick="GetMailDetails()">Mail Server</a>
+                </li>
+                <li class="nav-item">
+                    <a id="liSettings" class="nav-link " data-toggle="tab" href="#settings" onclick="GetCompanySettingsDetails()">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a id="liTemplates" class="nav-link" data-toggle="tab" href="#templates" onclick="GetTemplateDetails()">Templates</a>
+                </li>
+                <li class="nav-item">
+                    <a id="liThemes" class="nav-link" data-toggle="tab" href="#themes" onclick="GetThemeDetails()">Themes</a>
+                </li>
+            </ul>
 
-
-
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_1" onclick="GetCompanyDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_1" aria-expanded="true">Company</a>
+            <!-- Tab panes -->
+            <div class="col-md-12 tab-content mt-4 p-0">
+                <div class="tab-pane active" id="companyDetails" >
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Company Details</h2><span class="errormessage" id="companyDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="Company">
+                                </div>
                             </div>
-
                         </div>
-                    </h4>
+                    </div>
                 </div>
-                <div id="collapse_1" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="Company">
-
+                <div class="tab-pane active" id="branch" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Branch Details</h2><span class="errormessage" id="branchDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="Branch">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane active" id="mailServerinfo" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Mail Details</h2><span class="errormessage" id="companymailDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="MailServer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane active" id="settings" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Settings</h2><span class="errormessage" id="companySettingsDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="CompanySettings">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane active" id="templates" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Templates</h2><span class="errormessage" id="companyTemplateDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="Template">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane active" id="themes" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12 pl-2 pl-0-pr-0-mob">
+                            <div class="article-box" style="min-height:325px;">
+                                <div class="row"><h2 class="article-header pl-1 mb-0">Themes</h2><span class="errormessage" id="companyThemesDetailsError"></span></div>
+                                <div class="row mt-15px-mob" id="Theme">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2" onclick="GetBranchDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_2" aria-expanded="true">Branches</a>
-                            </div>
-
-                        </div>
-                    </h4>
-                </div>
-                <div id="collapse_2" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="Branch">
-
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_3" onclick="GetMailDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_3" aria-expanded="true">MailServer</a>
-                            </div>
-
-                        </div>
-                    </h4>
-                </div>
-                <div id="collapse_3" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="MailServer">
-
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_4" onclick="GetCompanySettingsDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_4" aria-expanded="true">Company Settings</a>
-                            </div>
-
-                        </div>
-                    </h4>
-                </div>
-                <div id="collapse_4" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="CompanySettings">
-
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_5" onclick="GetTemplateDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_5" aria-expanded="true">Template</a>
-                            </div>
-
-                        </div>
-                    </h4>
-                </div>
-                <div id="collapse_5" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="Template">
-
-                    </div>
-                </div>
-            </div>
-            @*<div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_2" onclick="GetBranchDetails()">
-                    <h4 class="panel-title">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class='accordion-toggle collapsed' data-toggle="collapse" style="color:#333;text-decoration:none;" data-parent="#accordion" href="#collapse_2" aria-expanded="true">Branches</a>
-                            </div>
-
-                        </div>
-                    </h4>
-                </div>
-                <div id="collapse_2" class="panel-collapse collapse" style="">
-                    <div class="panel-body" id="Branch">
-
-                    </div>
-                </div>
-            </div>*@
-
         </div>
 
+        <div class="col-md-12 pl-2 pr-2">
+
+        </div>
     </div>
 </div>

@@ -6,27 +6,33 @@
             CompanyId: strCompany
         };
 
-        $.ajax({
-            url: baseURL + "Login/LogVerify",
-            type: "POST",
-            dataType: "json",
-            data: PostSecurityManagerData,
-            success: function (data) {
-                if (data.errorMessage == "OK") {
-                    window.location = baseURL + data.returnUrl;
-                    LogonHideLoader();
-                }
-                else {
-                    document.getElementById('spanDatasaved').innerHTML = data.errorMessage;
-                    LogonHideLoader();
-                }
-            },
-            error: function (data) {
-                alert(2);
-                LogonHideLoader();
-            }
+        if (strCompany == 0) {
+            window.location = baseURL + "OnBoard/Index";
+        }
+        else {
 
-        });
+            $.ajax({
+                url: baseURL + "Login/LogVerify",
+                type: "POST",
+                dataType: "json",
+                data: PostSecurityManagerData,
+                success: function (data) {
+                    if (data.errorMessage == "OK") {
+                        window.location = baseURL + data.returnUrl;
+                        LogonHideLoader();
+                    }
+                    else {
+                        document.getElementById('spanDatasaved').innerHTML = data.errorMessage;
+                        LogonHideLoader();
+                    }
+                },
+                error: function (data) {
+                    alert(2);
+                    LogonHideLoader();
+                }
+
+            });
+        }
     }
     catch (e) {
         console.log("catch", e);

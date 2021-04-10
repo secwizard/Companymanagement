@@ -46,20 +46,16 @@
                             <span class="input-group-addon">
                                 <i class="fa fa-user"></i>  Company
                                 @*<input type="text" class="form-control text-lowercase" required name="Company" placeholder="Select Company" id="userid" onkeypress="hidemsg();">*@
-                                <select class="customselect" id="ddlCompany" name="Company">
-                                    @if (Model == null || Model.Count() < 1)
+                            <select class="customselect" id="ddlCompany" name="Company">
+                                <option value="0">Company OnBoard</option>
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    @foreach (var item in Model)
                                     {
-                                        <option value="0">Company Not Available</option>
+                                        <option value="@item.CompanyId">@item.Name</option>
                                     }
-                                    else
-                                    {
-
-                                        @foreach (var item in Model)
-                                        {
-                                            <option value="@item.CompanyId">@item.Name</option>
-                                        }
-                                    }
-                                </select>
+                                }
+                            </select>
                             </span>
                         </div>
                         <input type="button" class="btn btn-lg btn-primary btn-block" onclick="LogAfterValidate()" value="Submit" />

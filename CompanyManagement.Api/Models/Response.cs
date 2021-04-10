@@ -60,6 +60,10 @@ namespace CompanyManagement.Api.Models
         public Guid? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
+        public List<LookUpInfo> LookUps { get; set; }
+        public LookUpInfo SelectedLookUp { get; set; }
+        public Int64 SuggestedCompanyId { get; set; }
+        public string CompanySiteUrl { get; set; }
     }
 
     public class CompanyMailServer
@@ -88,6 +92,8 @@ namespace CompanyManagement.Api.Models
         public int? MobileHeight { get; set; }
         public int? DesktopHeight { get; set; }
         public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class CompanySettingInfo
@@ -121,6 +127,93 @@ namespace CompanyManagement.Api.Models
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class ResponseCompanyId
+    {
+        public long CompanyId { get; set; }
     }
 
+    public class LookUpInfo
+    {
+        public string LookUpValue { get; set; }
+        public string LookUpText { get; set; }
+
+
+    }
+
+
+    public class OnBoardProcessinfo
+    {
+        public OnBoardCompany OnBoardCompanyInfo { get; set; }
+        public List<OnBoardSubscriptions> OnBoardSubscriptionInfo { get; set; }
+        public List<OnBoardAddOns> OnBoardAddOn { get; set; }
+        public OnBoardConfiguration OnBoardConfiguration { get; set; }
+        public List<SelectedSubscription> Subscriptions { get; set; }
+        public List<SelectedAddOn> AddOns { get; set; }
+    }
+    public class OnBoardCompany
+    {
+        public CompanyInfo CompanyInfo { get; set; }
+        public List<BranchInfo> BranchInfo { get; set; }
+        public CompanyMailServer MailServerInfo { get; set; }
+        public List<CompanySettingInfo> CompanySettingInfo { get; set; }
+        public List<GetCompanyTemplate> CompanyTemplate { get; set; }
+        public List<CompanyTheme> CompanyTheme { get; set; }
+    }
+    public class OnBoardSubscriptions
+    {
+        public long SubscriptionId { get; set; }
+        public string SubscriptionName { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class OnBoardAddOns
+    {
+        public long AddOnId { get; set; }
+        public string PartNo { get; set; }
+        public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public string Metric { get; set; }
+        public string Inclusion { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+    }
+    public class SelectedSubscription
+    {
+        public Int64 SubscriptionId { get; set; }
+    }
+    public class SelectedAddOn
+    {
+        public Int64 AddOnId { get; set; }
+    }
+    public class OnBoardConfiguration
+    {
+
+    }
+    public class CompanyAllDetails
+    {
+        public CompanyInfo CompanyDtl { get; set; }
+        public List<OnBoardSubscriptions> SubscriptionDtl { get; set; }
+        public List<OnBoardAddOns> AddOnDtl { get; set; }
+    }
+    public class ResponseMail
+    {
+        public bool Status { get; set; }
+        public string Message { get; set; }
+    }
 }

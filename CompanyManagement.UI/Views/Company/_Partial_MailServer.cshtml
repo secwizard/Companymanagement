@@ -1,61 +1,134 @@
 ﻿@using System.Data
 @model Response<CompanyManagement.UI.Models.Response.ResponseMailServerDetails>
+@if (Model != null && Model.Data != null)
+{
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Server<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Port<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Display Email Name<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName" onfocus="MailOnFocus()">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Email<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Password<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="EnableSSL" checked="@Model.Data.EnableSSL" name="EnableSSL">
+                        <span class="checkmark"></span>Enable SSL
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="IsActiveMail" checked="@Model.Data.IsActive" name="IsActive">
+                        <span class="checkmark"></span>Is Active
+                    </label>
+                </div>
+            </div>
+        </div>
+        <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
+        <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
+        <div class="row text-right mt-3">
+            <div class="col p-0">
+                @*<button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>*@
+                <button class="primary-button min-w-80px" onclick="EditMailServer()">Save</button>
+            </div>
+        </div>
 
-<div class="table-responsive">
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">STMP Server</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtSTMPServer" value="@Model.Data.SMTPServer" disabled>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Server<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Port<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Display Email Name<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">STMP Port</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtSTMPPort" value="@Model.Data.SMTPPort">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Email<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Password<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="EnableSSL"  name="EnableSSL">
+                        <span class="checkmark"></span>Enable SSL
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="IsActiveMail"  name="IsActive">
+                        <span class="checkmark"></span>Is Active
+                    </label>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">From EmailDisplay Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailDisplayName" value="@Model.Data.FromEmailDisplayName">
+        <input type='hidden' id='hdnCompanyId' value='0' />
+        <input type='hidden' id='hdnStmpServerId' value='0' />
+        <div class="row text-right mt-3">
+            <div class="col p-0">
+                @*<button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>*@
+                <button class="primary-button min-w-80px" onclick="EditMailServer()">Save</button>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">From Email Id</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailId" value="@Model.Data.FromEmailId">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">From Email Id Pwd</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtFromEmailIdPwd" value="@Model.Data.FromEmailPwd">
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="EnableSSL" checked="@Model.Data.EnableSSL" name="EnableSSL">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable SSL
-            </label>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="IsActive" checked="@Model.Data.IsActive" name="IsActive">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
-            </label>
-        </div>
-    </div>
-    <input type='hidden' id='hdnCompanyId' value='@Model.Data.CompanyId' />
-    <input type='hidden' id='hdnStmpServerId' value='@Model.Data.MailServerId' />
-    <div class="mb-10 text-right">
-        <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="EditMailServer()">Save</button>
-    </div>
 
-</div>
+    </div>
+}

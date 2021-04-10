@@ -11,5 +11,6 @@ namespace CompanyManagement.UI.Helpers
         public string BaseUrl { get; set; }
         public string JSVersion { get; set; }
         public string UserManagementAPI { get; set; }
+        public string PaymentGatewayHost { get; set; }
     }
 }

@@ -134,6 +134,7 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+        
         public async Task<string> CompanyList(string authorizationToken, bool bearerToken)
         {
             string url = $"{_appSettings.ApiHost}/company/GetCompanyList";
@@ -205,7 +206,170 @@ namespace CompanyManagement.UI.Services
             client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
             return await client.UploadStringTaskAsync(uri, "POST", postdata);
         }
+        public async Task<string> DeleteCompanySetting(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/DeleteCompanySetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetTemplateDetails(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompanyTemplate";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> EditTemplate(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/EditTemplateSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> DeleteTemplate(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/DeleteTemplateSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetThemeDetails(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompanyTheme";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> EditTheme(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/EditThemeSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> DeleteTheme(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/DeleteThemeSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+
+        public async Task<string> GetBranchDetails(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/GetCompanyBranch";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> EditBranch(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/EditBranchSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> DeleteBranch(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/company/DeleteBranchSetting";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
         #endregion
+
+        #region OnBoard
+        public async Task<string> NewCompanyDtl(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/onBoard/GetCompanyDetails";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetRequiredDetails(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/onBoard/GetRequiredDetails";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetSuggestedCompanyId(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/onBoard/GetSuggestedCompanyId";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> SaveOnBoardProcess(string postdata, string authorizationToken, bool bearerToken)
+        {
+            string url = $"{_appSettings.ApiHost}/OnBoard/SaveOnBoardProcess";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            client.Headers["Authorization"] = (bearerToken) ? "Bearer " + authorizationToken : authorizationToken;
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> GetPaymentGateway(string postdata)
+        {
+            string url = $"{_appSettings.PaymentGatewayHost}/GetPaymentGateway";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        public async Task<string> SavePamentGateway(string postdata)
+        {
+            string url = $"{_appSettings.PaymentGatewayHost}/InsertGatewayCompanyMapping";
+            using var client = new WebClient();
+            Uri uri = new Uri(url);
+            client.Headers.Add("Content-Type:application/json");
+            client.Headers.Add("Accept:application/json");
+            return await client.UploadStringTaskAsync(uri, "POST", postdata);
+        }
+        #endregion
+
         #region Generic
         public async Task<string> APIRequest(string url, string method, string postdata, string token = "")
         {

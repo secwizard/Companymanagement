@@ -1,0 +1,62 @@
+﻿@using System.Data
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+@if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.MailServerInfo != null)
+{
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Server<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPServer" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">SMTP Port<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSTMPPort" value="" onfocus="MailOnFocus()" onkeydown="numberValidation(event)">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Display Email Name<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailDisplayName" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Email<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailId" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Password<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFromEmailIdPwd" value="" onfocus="MailOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="EnableSSL" checked="" name="EnableSSL">
+                        <span class="checkmark"></span>Enable SSL
+                    </label>
+                </div>
+            </div>
+            @*<div class="col-md-2">
+                <div class="mb-15">
+                    <p class="all-textlabel">&nbsp;</p>
+                    <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                        <input class="permissionCheckbox" type="checkbox" id="IsActive" checked="" name="IsActive">
+                        <span class="checkmark"></span>Is Active
+                    </label>
+                </div>
+            </div>*@
+        </div>
+        <input type='hidden' id='hdnStmpServerId' value='' />
+        
+
+    </div>
+}

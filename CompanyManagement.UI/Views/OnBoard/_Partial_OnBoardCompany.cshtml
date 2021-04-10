@@ -1,173 +1,179 @@
 ﻿@using System.Data
-@model CompanyManagement.UI.Models.Response.RequestCompanyInfo
-
-
-@if(Model != null)
+@model CompanyManagement.UI.Models.Response.OnBoardProcessinfo
+@if (Model != null && Model.OnBoardCompanyInfo != null && Model.OnBoardCompanyInfo.CompanyInfo != null)
 {
+    var data = Model.OnBoardCompanyInfo.CompanyInfo;
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
+                    <select class="customselect" id="ddlBusinessType" onchange="GetSuggestedCompanyId()">
+                        @foreach (var item in Model.OnBoardCompanyInfo.CompanyInfo.LookUps)
+                        {
+                            if (item.LookUpValue.ToLower() == Model.OnBoardCompanyInfo.CompanyInfo.SelectedLookUp.LookUpValue.ToLower())
+                            {
+                                <option value="@item.LookUpValue" selected>@item.LookUpText</option>
+                            }
+                            else
+                            {
+                                <option value="@item.LookUpValue">@item.LookUpText</option>
+                            }
 
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Company Id</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="@data.SuggestedCompanyId" disabled>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Name<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtName" value="" onfocus="CompanyOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Short Name<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtShortname" value="" onfocus="CompanyOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Address 1</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Address 2</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Pin / Zip </p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="" onkeydown="numberValidationWithoutDot(event)">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">District</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrictCode" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">State</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtStateCode" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Country</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountryCode" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Admin Phone<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="" onfocus="CompanyOnFocus()" onkeydown="numberValidationWithoutDot(event)">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Service Phone</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="" onkeydown="numberValidationWithoutDot(event)">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Admin Email<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminEmail" value="" onfocus="CompanyOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Service Email</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServiceEmail" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Secondary Email</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSecondaryEmail" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">GST Number</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtGSTNumber" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Pan Number</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPanNumber" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Currency Code<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCurrencyCode" value=""  onfocus="CompanyOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Image File Path<span style="color:red">*</span></p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageFilePath" value=""  onfocus="CompanyOnFocus()">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">WebSite</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtWebsite" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Logo File Name</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLogoFileName" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Favicon File Name</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFabiconFileName" value="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-05">
+                    <p class="all-textlabel">Login Image File Name</p>
+                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLoginImageFileName" value="">
+                </div>
+            </div>
+            <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+                <p class="all-textlabel"> </p>
+                <br />
+                <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                    <input class="permissionCheckbox" id="PinRequired" checked="" name="PINRequired" type="checkbox" />Pin Required
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            @*<div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
+                <p class="all-textlabel"> </p>
+                <br />
+                <label class="font11 all-textlabel l-p-initial cus-chkbox">
+                    <input class="permissionCheckbox" type="checkbox" id="IsActive" checked="" name="IsActive" />Is Active
+                    <span class="checkmark"></span>
+                </label>
+            </div>*@
+        </div>
+
+    </div>
 }
-<div class="table-responsive">
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Company Id</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCompanyId">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtName">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Short Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtShortname">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Address 1</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtAddress1"">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Address 2</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtAddress2">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">PIN</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtPIN">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">District Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtDistrictCode">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">State Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtStateCode">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Country Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCountryCode">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Admin Phone</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtAdminPhone">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Service Phone</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtServicePhone">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Business Type</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtBusinessType">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Admin Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txt">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Service Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtServiceEmail">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Secondary Email</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtSecondaryEmail">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">GST Number</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtGSTNumber">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Pan Number</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtPanNumber">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Currency Code</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtCurrencyCode">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Image File Path</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtImageFilePath">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">WebSite</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtWebsite">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Logo File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txt">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Favicon File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtLogoFileName">
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="mb-05">
-            <p class="field-label-text">Login Image File Name</p>
-            <input type="text" class="textboxclass" placeholder="" id="txtLoginImageFileName">
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="PinRequired">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pin Required
-            </label>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-15">
-            <p class="field-label-text">&nbsp;</p>
-            <label class="cus-chk-containerall">
-                <input type="checkbox" id="IsActive">
-                <span class="checkmarkall"></span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is Active
-            </label>
-        </div>
-    </div>
-
-    <div class="mb-10 text-right">
-        <button class="primary-type-button input-height-button" id="btnSaveItem" onclick="AddCompany()">Save</button>
-    </div>
-
-</div>
