@@ -17,8 +17,8 @@ namespace CompanyManagement.Api.Models
     }
     public class RequestCompanyUrl
     {
-        [JsonProperty("companyUrl")]
-        public string CompanyUrl { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
     public class RequestCompanySetting
     {

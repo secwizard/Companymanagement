@@ -9,14 +9,11 @@ namespace CompanyManagement.Api.Service
     public interface ICompanyService
     {
         Task<CompanyInfo> GetCompany(RequestBase request);
-        Task<CompanyInfo> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request);
-        Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request);
-        Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
         Task<bool> GetIsPINRequired(RequestBase request);
-        Task<string> GetCompanyCurrencyCode(RequestBase request); 
-        Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request); 
-         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
-        Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
+        Task<string> GetCompanyCurrencyCode(RequestBase request);
+        Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request);
+        Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
+        Task<ResponseCompanyDtlByIdFrontend> GetCompanyByUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();
         Task<CompanyMailServer> GetCompanySmtp(RequestBase request);
         Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request);
