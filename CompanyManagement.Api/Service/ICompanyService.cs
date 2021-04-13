@@ -9,6 +9,9 @@ namespace CompanyManagement.Api.Service
     public interface ICompanyService
     {
         Task<CompanyInfo> GetCompany(RequestBase request);
+        Task<CompanyInfo> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request);
+        Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request);
+        Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
         Task<bool> GetIsPINRequired(RequestBase request);
         Task<string> GetCompanyCurrencyCode(RequestBase request);
         Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request);

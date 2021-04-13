@@ -33,7 +33,54 @@ namespace CompanyManagement.Api.Service
         {
             _context = context;
         }
+        public async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request)
+        {
+            try
+            {
+                var res = new ResponseCompanyDtlByIdFrontend();
 
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    _mapper.Map(data, res);
+
+                    var themeData = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (themeData != null)
+                    {
+                        var theme = new ThemeData();
+                        _mapper.Map(themeData, theme);
+                        res.ThemeData = theme;
+                    }
+
+                    var templateData = await _context.Template
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).ToListAsync();
+                    if (templateData != null)
+                    {
+                        var footer = new List<FooterData>();
+                        _mapper.Map(templateData, footer);
+                        res.FooterList = footer;
+                    }
+                    res.CompTermsConditionOrd = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "ORDER" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+                    res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<CompanyInfo> GetCompany(RequestBase request)
         {
             try
@@ -154,7 +201,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetLookUpType] @LookUpType";
-                var dataList = _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
 
                 if (dataList?.Count > 0)
                 {
@@ -281,7 +328,7 @@ namespace CompanyManagement.Api.Service
                  };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
-                var dataList = _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -535,7 +582,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
-                var dataList = _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -663,7 +710,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
-                var dataList = _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)

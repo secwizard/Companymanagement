@@ -99,6 +99,65 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
+        [HttpPost("CheckCompanyUrlAndShortName")]
+        public async Task<IActionResult> CheckCompanyUrlAndShortName(RequestCheckCompanyUrlAndShortName request)
+        {
+            var responce = new Response<CompanyInfo>();
+            try
+            {
+
+                responce.Data = await _companyService.CheckCompanyUrlAndShortName(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [HttpPost("CheckCompanyUrlFrontend")]
+        public async Task<IActionResult> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request)
+        {
+            var responce = new Response<CompanyInfo>();
+            try
+            {
+
+                responce.Data = await _companyService.CheckCompanyUrlFrontend(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+
+        [HttpPost("GetCompanyDtlByIdFrontend")]
+        public async Task<IActionResult> GetCompanyDtlByIdFrontend(RequestBase request)
+        {
+            var responce = new Response<ResponseCompanyDtlByIdFrontend>();
+            try
+            {
+
+                responce.Data = await _companyService.GetCompanyDtlByIdFrontend(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
 
         [HttpPost("GetIsPINRequired")]
         public async Task<IActionResult> GetIsPINRequired(RequestBase request)
