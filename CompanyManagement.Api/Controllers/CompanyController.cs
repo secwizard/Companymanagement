@@ -39,7 +39,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyByUrl")]
         public async Task<IActionResult> GetCompanyByUrl(RequestCompanyUrl request)
         {
-            var responce = new Response<ResponseCompanyDtlByIdFrontend>();
+            var responce = new Response<ResponseCompanyDtlByIdFrontend>(); 
             try
             {
                 responce.Data = await _companyService.GetCompanyByUrl(request);
