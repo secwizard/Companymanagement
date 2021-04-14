@@ -636,21 +636,28 @@ namespace CompanyManagement.Api.Controllers
                 if (user?.CompanyId == requestSendMail.CompanyId || user?.CompanyId == -1)
                 {
                     var compMailServer = await _companyService.GetCompanySmtp(new RequestBase() { CompanyId = requestSendMail.CompanyId });
-                    var requestMail = new RequestMail
+                    
+                    if (string.IsNullOrEmpty(requestSendMail.EmailFrom)) requestSendMail.EmailFrom = compMailServer.FromEmailId;
+                    
+                    var notificationMetadata = new NotificationMetadata();
+                    notificationMetadata.Sender = requestSendMail.EmailFrom;
+                    notificationMetadata.Reciever = requestSendMail.EmailTo;
+                    if (compMailServer == null || string.IsNullOrEmpty(compMailServer.SMTPServer))
                     {
-                        From = string.IsNullOrEmpty(requestSendMail.EmailFrom) ? compMailServer.FromEmailId : requestSendMail.EmailFrom,
-                        To = requestSendMail.EmailTo,
-                        CC = requestSendMail.EmailCC,
-                        DisplayName = compMailServer.FromEmailDisplayName,
-                        Subject = requestSendMail.Subject,
-                        Body = requestSendMail.Message,
-                        password = compMailServer.FromEmailPwd,
-                        host = compMailServer.SMTPServer,
-                        port = compMailServer.SMTPPort ?? 0
-                    };
-                    requestMail.EnableSsl = requestMail.port != 0 && (compMailServer.EnableSSL?? false);
+                        notificationMetadata.SmtpServer = "smtp.gmail.com";
+                        notificationMetadata.Port = 465;
+                        notificationMetadata.UserName = "wizardcomm.mail@gmail.com";
+                        notificationMetadata.Password = "wizard!@#";
+                    }
+                    else
+                    {
+                        notificationMetadata.SmtpServer = compMailServer.SMTPServer;
+                        notificationMetadata.Port = 465;
+                        notificationMetadata.UserName = compMailServer.FromEmailId;
+                        notificationMetadata.Password = compMailServer.FromEmailPwd;
+                    }
 
-                    responce = Common.SendEmail(requestMail);
+                    responce = await _companyService.SendMail(notificationMetadata, requestSendMail);
                     return Ok(responce);
                 }
                 responce.Message = "User company not match";

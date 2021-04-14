@@ -33,5 +33,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request);
         Task<ResponseList<GetCompanyTemplate>> DeleteTemplate(DeleteCompanyTemplate request);
         Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request);
+
+        Task<ResponseMail> SendMail(NotificationMetadata notificationMetadata, RequestSendMail requestSendMail);
     }
 }

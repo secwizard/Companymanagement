@@ -5,6 +5,8 @@ using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Models.Response;
 using log4net;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -1013,6 +1015,55 @@ namespace CompanyManagement.Api.Service
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
                 throw;
             }
+        }
+
+        public async Task<ResponseMail> SendMail(NotificationMetadata notificationMetadata, RequestSendMail requestSendMail)
+        {
+            var responce = new ResponseMail();
+            responce.Status = false;
+            try
+            {
+                var mimeMessage = CreateMimeMessage(requestSendMail);
+                using (SmtpClient smtpClient = new SmtpClient())
+                {
+                    await smtpClient.ConnectAsync(notificationMetadata.SmtpServer,
+                    notificationMetadata.Port, true);
+                    await smtpClient.AuthenticateAsync(notificationMetadata.UserName,
+                    notificationMetadata.Password);
+                    await smtpClient.SendAsync(mimeMessage);
+                    await smtpClient.DisconnectAsync(true);
+                }
+                responce.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                responce.Message = ex.Message;
+            }
+            return responce;
+        }
+        private MimeMessage CreateMimeMessage(RequestSendMail requestSendMail)
+        {
+            var mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("Admin", requestSendMail.EmailFrom));
+            if (!string.IsNullOrEmpty(requestSendMail.EmailTo))
+            {
+                foreach (var address in requestSendMail.EmailTo.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    mimeMessage.To.Add(new MailboxAddress(address));
+                }
+            }
+            if (!string.IsNullOrEmpty(requestSendMail.EmailCC))
+            {
+                foreach (var address in requestSendMail.EmailCC.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    mimeMessage.Cc.Add(new MailboxAddress(address));
+                }
+            }
+            mimeMessage.Subject = requestSendMail.Subject;
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            { Text = requestSendMail.Message };
+            return mimeMessage;
         }
     }
 }
