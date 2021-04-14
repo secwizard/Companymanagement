@@ -437,6 +437,16 @@ button, input {
     overflow: hidden;
 }
 
+.article-sub-header {
+    color: #3f3f37;
+    font-size: 13px;
+    //text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    height: 35px;
+    overflow: hidden;
+}
+
 .amount-large {
     font-size: 36px;
     color: #827d79;

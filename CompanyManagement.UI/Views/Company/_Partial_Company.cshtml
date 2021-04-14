@@ -6,157 +6,195 @@
 {
     <div class="table-responsive">
         <div class="row">
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
-                    <select class="customselect" id="ddlBusinessType">
-                        @foreach (var item in Model.Data.LookUps)
-                        {
-                            if (item.LookUpValue.ToLower() == Model.Data.SelectedLookUp.LookUpValue.ToLower())
-                            {
-                                <option value="@item.LookUpValue" selected>@item.LookUpText</option>
-                            }
-                            else
-                            {
-                                <option value="@item.LookUpValue">@item.LookUpText</option>
-                            }
+            <div class="card col-md-12">
+                <h2 class="article-sub-header pl-1 mb-0 mt-2"> Basic Information</h2>
+                <div class="card-body p-0 pb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Business Type<span style="color:red">*</span></p>
+                                <select class="customselect" id="ddlBusinessType">
+                                    @foreach (var item in Model.Data.LookUps)
+                                    {
+                                        if (item.LookUpValue.ToLower() == Model.Data.SelectedLookUp.LookUpValue.ToLower())
+                                        {
+                                            <option value="@item.LookUpValue" selected>@item.LookUpText</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.LookUpValue">@item.LookUpText</option>
+                                        }
 
-                        }
+                                    }
 
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Company Id</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="@Model.Data.CompanyId" disabled>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Name<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtName" value="@Model.Data.Name" onfocus="CompanyOnFocus()">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Short Name<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtShortname" value="@Model.Data.ShortName" onfocus="CompanyOnFocus()">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Address 1</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1" value="@Model.Data.Address1">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Address 2</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2" value="@Model.Data.Address2">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Pin / Zip </p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="@Model.Data.PIN">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">District</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrictCode" value="@Model.Data.DistrictCode">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">State</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtStateCode" value="@Model.Data.StateCode">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Country</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountryCode" value="@Model.Data.CountryCode">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Admin Phone<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="@Model.Data.AdminPhone"  onfocus="CompanyOnFocus()">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Service Phone</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="@Model.Data.ServicePhone">
-                </div>
-            </div>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Company Id</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCompanyId" value="@Model.Data.CompanyId" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Name<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtName" value="@Model.Data.Name" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Short Name<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtShortname" value="@Model.Data.ShortName" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
 
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Admin Email<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminEmail" value="@Model.Data.AdminEmail"  onfocus="CompanyOnFocus()">
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Service Email</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtServiceEmail" value="@Model.Data.ServiceEmail">
+            <div class="card col-md-12 mt-4">
+                <h2 class="article-sub-header pl-1 mb-0 mt-2"> Address</h2>
+                <div class="card-body p-0 pb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Address 1</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress1" value="@Model.Data.Address1">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Address 2</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAddress2" value="@Model.Data.Address2">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Pin / Zip </p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPIN" value="@Model.Data.PIN">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">District</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtDistrictCode" value="@Model.Data.DistrictCode">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">State</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtStateCode" value="@Model.Data.StateCode">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Country</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCountryCode" value="@Model.Data.CountryCode">
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Secondary Email</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtSecondaryEmail" value="@Model.Data.SecondaryEmail">
+            <div class="card col-md-12 mt-4">
+                <h2 class="article-sub-header pl-1 mb-0 mt-2"> Contact</h2>
+                <div class="card-body p-0 pb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Admin Phone<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminPhone" value="@Model.Data.AdminPhone" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Service Phone</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtServicePhone" value="@Model.Data.ServicePhone">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Admin Email<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtAdminEmail" value="@Model.Data.AdminEmail" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Service Email</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtServiceEmail" value="@Model.Data.ServiceEmail">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Secondary Email</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtSecondaryEmail" value="@Model.Data.SecondaryEmail">
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">GST Number</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtGSTNumber" value="@Model.Data.GSTNumber">
+            <div class="card col-md-12 mt-4">
+                <h2 class="article-sub-header pl-1 mb-0 mt-2"> Tax Information</h2>
+                <div class="card-body p-0 pb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">GST Number</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtGSTNumber" value="@Model.Data.GSTNumber">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Pan Number</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtPanNumber" value="@Model.Data.PanNumber">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Currency Code<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtCurrencyCode" value="@Model.Data.CurrencyCode" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Pan Number</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtPanNumber" value="@Model.Data.PanNumber">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Currency Code<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtCurrencyCode" value="@Model.Data.CurrencyCode" onfocus="CompanyOnFocus()">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Image File Path<span style="color:red">*</span></p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageFilePath" value="@Model.Data.ImageFilePath"  onfocus="CompanyOnFocus()">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">WebSite</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtWebsite" value="@Model.Data.Website">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Logo File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLogoFileName" value="@Model.Data.LogoFileName">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Favicon File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtFabiconFileName" value="@Model.Data.FavIconFileName">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-05">
-                    <p class="all-textlabel">Login Image File Name</p>
-                    <input type="text" class="form-control textbox-custom" placeholder="" id="txtLoginImageFileName" value="@Model.Data.LoginImageFileName">
+            <div class="card col-md-12 mt-4">
+                <h2 class="article-sub-header pl-1 mb-0 mt-2"> Others</h2>
+                <div class="card-body p-0 pb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Image File Path<span style="color:red">*</span></p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtImageFilePath" value="@Model.Data.ImageFilePath" onfocus="CompanyOnFocus()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">WebSite</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtWebsite" value="@Model.Data.Website">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Logo File Name</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtLogoFileName" value="@Model.Data.LogoFileName">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Favicon File Name</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtFabiconFileName" value="@Model.Data.FavIconFileName">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-05">
+                                <p class="all-textlabel">Login Image File Name</p>
+                                <input type="text" class="form-control textbox-custom" placeholder="" id="txtLoginImageFileName" value="@Model.Data.LoginImageFileName">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-2 pl-2 pr-0 pl-0-pr-0-mob mt-15px-mob">
@@ -171,16 +209,16 @@
                 <p class="all-textlabel"> </p>
                 <br />
                 <label class="font11 all-textlabel l-p-initial cus-chkbox">
-                    <input class="permissionCheckbox" type="checkbox" id="IsActive" checked="@Model.Data.PINRequired" name="IsActive"/>Is Active
+                    <input class="permissionCheckbox" type="checkbox" id="IsActive" checked="@Model.Data.PINRequired" name="IsActive" />Is Active
                     <span class="checkmark"></span>
                 </label>
             </div>
         </div>
-        <div class="row text-right mt-3">
-            <div class="col p-0">
-                @*<button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>*@
-                <button class="primary-button min-w-80px" onclick="EditCompany()">Save</button>
-            </div>
-        </div>
-    </div>
-}
+                    <div class="row text-right mt-3">
+                        <div class="col p-0">
+                            @*<button class="secondary-button mr-2 min-w-80px" onclick="">Cancel</button>*@
+                            <button class="primary-button min-w-80px" onclick="EditCompany()">Save</button>
+                        </div>
+                    </div>
+                </div>
+                }
