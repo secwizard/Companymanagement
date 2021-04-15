@@ -13,10 +13,10 @@ namespace CompanyManagement.Api.Service
         Task<CompanyInfo> CheckCompanyUrlFrontend(RequestCheckCompanyUrlAndShortName request);
         Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request);
         Task<bool> GetIsPINRequired(RequestBase request);
-        Task<string> GetCompanyCurrencyCode(RequestBase request); 
-        Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request); 
-         Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
-        Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request);
+        Task<string> GetCompanyCurrencyCode(RequestBase request);
+        Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request);
+        Task<Response<CompanyInfo>> EditCompany(CompanyInfo request);
+        Task<ResponseCompanyDtlByIdFrontend> GetCompanyByUrl(RequestCompanyUrl request);
         Task<List<CompanyInfo>> GetCompanyList();
         Task<CompanyMailServer> GetCompanySmtp(RequestBase request);
         Task<Response<CompanyMailServer>> EditSTMPServer(CompanyMailServer request);
@@ -33,5 +33,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request);
         Task<ResponseList<GetCompanyTemplate>> DeleteTemplate(DeleteCompanyTemplate request);
         Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request);
+
+        Task<ResponseMail> SendMail(NotificationMetadata notificationMetadata, RequestSendMail requestSendMail);
     }
 }

@@ -5,6 +5,8 @@ using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Models.Response;
 using log4net;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,7 +35,54 @@ namespace CompanyManagement.Api.Service
         {
             _context = context;
         }
+        public async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request)
+        {
+            try
+            {
+                var res = new ResponseCompanyDtlByIdFrontend();
 
+                var data = await _context.Company
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                if (data != null)
+                {
+                    _mapper.Map(data, res);
+
+                    var themeData = await _context.Theme
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+                    if (themeData != null)
+                    {
+                        var theme = new ThemeData();
+                        _mapper.Map(themeData, theme);
+                        res.ThemeData = theme;
+                    }
+
+                    var templateData = await _context.Template
+                    .Where(c => c.CompanyId == request.CompanyId
+                    && c.IsActive == true).ToListAsync();
+                    if (templateData != null)
+                    {
+                        var footer = new List<FooterData>();
+                        _mapper.Map(templateData, footer);
+                        res.FooterList = footer;
+                    }
+                    res.CompTermsConditionOrd = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "ORDER" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+                    res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<CompanyInfo> GetCompany(RequestBase request)
         {
             try
@@ -61,23 +110,12 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        public async Task<ResponseCompanyId> GetCompanyIdFromUrl(RequestCompanyUrl request)
+        public async Task<ResponseCompanyDtlByIdFrontend> GetCompanyByUrl(RequestCompanyUrl request)
         {
             try
             {
-                var res = new CompanyInfo();
-
-                var data = await _context.Company
-                    .Where(c => c.CompanySiteUrl == request.CompanyUrl
-                    && c.IsActive == true).FirstOrDefaultAsync();
-
-                if (data != null)
-                {
-                    ResponseCompanyId retVal = new ResponseCompanyId();
-                    retVal.CompanyId = data.CompanyId;
-                    return retVal;
-                }
-                return null;
+                long companyId = CheckCompanyUrl(request.Url);
+                return await GetCompanyDtlByIdFrontend(companyId);
             }
             catch (Exception ex)
             {
@@ -85,6 +123,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+       
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
@@ -164,7 +203,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetLookUpType] @LookUpType";
-                var dataList = _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
 
                 if (dataList?.Count > 0)
                 {
@@ -291,7 +330,7 @@ namespace CompanyManagement.Api.Service
                  };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
-                var dataList = _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -545,7 +584,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
-                var dataList = _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -673,7 +712,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
-                var dataList = _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToList();
+                var dataList =await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -829,21 +868,59 @@ namespace CompanyManagement.Api.Service
             }
             return null;
         }
-        public async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(RequestBase request)
+        private long CheckCompanyUrl(string url)
+        {
+            String[] strlist = url.Split('?');
+            long companyid = 0;
+            try
+            {
+                if (strlist.Count() > 1)
+                {
+                    var urlpart = strlist[1].Split('=')[1];
+                    var compUrl = strlist[0];
+                    var data = _context.Company.Where(x => x.CompanySiteUrl == compUrl && x.ShortName == urlpart && x.IsActive == true).FirstOrDefault();
+                    if (data != null)
+                    {
+                        return data.CompanyId;
+                    }
+                }
+                else
+                {
+                    var compUrl = strlist[0];
+                    var split = compUrl.IndexOf(".com/");
+                    if (split > 0)
+                    {
+                        var x = compUrl.Substring(0, split + 5);
+                        compUrl = x;
+                    }
+                    var data = _context.Company.Where(x => x.CompanySiteUrl == compUrl && x.IsActive == true).FirstOrDefault();
+                    if (data != null)
+                    {
+                        return data.CompanyId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return companyid;
+        }
+        private async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(long CompanyId)
         {
             try
             {
                 var res = new ResponseCompanyDtlByIdFrontend();
 
                 var data = await _context.Company
-                    .Where(c => c.CompanyId == request.CompanyId
+                    .Where(c => c.CompanyId == CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
                 {
                     _mapper.Map(data, res);
 
                     var themeData = await _context.Theme
-                    .Where(c => c.CompanyId == request.CompanyId
+                    .Where(c => c.CompanyId == CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                     if (themeData != null)
                     {
@@ -853,7 +930,7 @@ namespace CompanyManagement.Api.Service
                     }
 
                     var templateData = await _context.Template
-                    .Where(c => c.CompanyId == request.CompanyId
+                    .Where(c => c.CompanyId == CompanyId
                     && c.IsActive == true).ToListAsync();
                     if (templateData != null)
                     {
@@ -861,10 +938,10 @@ namespace CompanyManagement.Api.Service
                         _mapper.Map(templateData, footer);
                         res.FooterList = footer;
                     }
-                    res.CompTermsConditionOrd = _context.Template.Where(x => x.CompanyId == request.CompanyId
-                     && x.TemplateType == "TermsCondition" && x.Name== "ORDER" && x.IsActive==true).FirstOrDefault()?.HTMLData;
+                    res.CompTermsConditionOrd = _context.Template.Where(x => x.CompanyId == CompanyId
+                     && x.TemplateType == "TermsCondition" && x.Name == "ORDER" && x.IsActive == true).FirstOrDefault()?.HTMLData;
 
-                    res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == request.CompanyId
+                    res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == CompanyId
                      && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
 
                     return res;
@@ -938,6 +1015,55 @@ namespace CompanyManagement.Api.Service
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
                 throw;
             }
+        }
+
+        public async Task<ResponseMail> SendMail(NotificationMetadata notificationMetadata, RequestSendMail requestSendMail)
+        {
+            var responce = new ResponseMail();
+            responce.Status = false;
+            try
+            {
+                var mimeMessage = CreateMimeMessage(requestSendMail);
+                using (SmtpClient smtpClient = new SmtpClient())
+                {
+                    await smtpClient.ConnectAsync(notificationMetadata.SmtpServer,
+                    notificationMetadata.Port, true);
+                    await smtpClient.AuthenticateAsync(notificationMetadata.UserName,
+                    notificationMetadata.Password);
+                    await smtpClient.SendAsync(mimeMessage);
+                    await smtpClient.DisconnectAsync(true);
+                }
+                responce.Status = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                responce.Message = ex.Message;
+            }
+            return responce;
+        }
+        private MimeMessage CreateMimeMessage(RequestSendMail requestSendMail)
+        {
+            var mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("Admin", requestSendMail.EmailFrom));
+            if (!string.IsNullOrEmpty(requestSendMail.EmailTo))
+            {
+                foreach (var address in requestSendMail.EmailTo.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    mimeMessage.To.Add(new MailboxAddress(address));
+                }
+            }
+            if (!string.IsNullOrEmpty(requestSendMail.EmailCC))
+            {
+                foreach (var address in requestSendMail.EmailCC.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    mimeMessage.Cc.Add(new MailboxAddress(address));
+                }
+            }
+            mimeMessage.Subject = requestSendMail.Subject;
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            { Text = requestSendMail.Message };
+            return mimeMessage;
         }
     }
 }

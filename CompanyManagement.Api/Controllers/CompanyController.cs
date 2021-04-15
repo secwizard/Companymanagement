@@ -19,39 +19,30 @@ namespace CompanyManagement.Api.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly CompanyDBContext _context;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly ICompanyService _companyService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        //private ISession Session => _httpContextAccessor.HttpContext.Session;
 
-        public CompanyController(CompanyDBContext context
-            , ICompanyService companyService
-            , IHttpContextAccessor httpContextAccessor)
+        public CompanyController( ICompanyService companyService)
         {
-            _context = context;
             _companyService = companyService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> TestConnection()
+        public IActionResult TestConnection()
         {
             return Ok("Company API connected.");
         }
 
-        #region ===== Frontend =====
+        #region ===== Frontend ===== 
 
-        [HttpPost("GetCompanyIdFromUrl")]
-        public async Task<IActionResult> GetCompanyIdFromUrl(RequestCompanyUrl request)
+        [HttpPost("GetCompanyByUrl")]
+        public async Task<IActionResult> GetCompanyByUrl(RequestCompanyUrl request)
         {
-            var responce = new Response<ResponseCompanyId>();
+            var responce = new Response<ResponseCompanyDtlByIdFrontend>(); 
             try
             {
-
-                responce.Data = await _companyService.GetCompanyIdFromUrl(request);
+                responce.Data = await _companyService.GetCompanyByUrl(request);
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
@@ -314,7 +305,7 @@ namespace CompanyManagement.Api.Controllers
                 {
                     responce = await _companyService.EditSTMPServer(request);
                 }
-                responce.Status = responce != null ? responce.Status : false;
+                responce.Status = responce != null && responce.Status;
                 responce.Message = responce == null ? "Data not found." : string.Empty;
             }
             catch (Exception ex)
@@ -635,27 +626,38 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("SendMail")]
         public async Task<IActionResult> SendEmail(RequestSendMail requestSendMail)
         {
-            var responce = new ResponseMail();
-            responce.Status = false;
+            var responce = new ResponseMail
+            {
+                Status = false
+            };
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
                 if (user?.CompanyId == requestSendMail.CompanyId || user?.CompanyId == -1)
                 {
                     var compMailServer = await _companyService.GetCompanySmtp(new RequestBase() { CompanyId = requestSendMail.CompanyId });
-                    var requestMail = new RequestMail();
-                    requestMail.From = string.IsNullOrEmpty(requestSendMail.EmailFrom) ? compMailServer.FromEmailId : requestSendMail.EmailFrom;
-                    requestMail.To = requestSendMail.EmailTo;
-                    requestMail.CC = requestSendMail.EmailCC;
-                    requestMail.DisplayName = compMailServer.FromEmailDisplayName;
-                    requestMail.Subject = requestSendMail.Subject;
-                    requestMail.Body = requestSendMail.Message;
-                    requestMail.password = compMailServer.FromEmailPwd;
-                    requestMail.host = compMailServer.SMTPServer;
-                    requestMail.port = compMailServer.SMTPPort?? 0;
-                    requestMail.EnableSsl = requestMail.port == 0 ? false : compMailServer.EnableSSL?? false;
+                    
+                    if (string.IsNullOrEmpty(requestSendMail.EmailFrom)) requestSendMail.EmailFrom = compMailServer.FromEmailId;
+                    
+                    var notificationMetadata = new NotificationMetadata();
+                    notificationMetadata.Sender = requestSendMail.EmailFrom;
+                    notificationMetadata.Reciever = requestSendMail.EmailTo;
+                    if (compMailServer == null || string.IsNullOrEmpty(compMailServer.SMTPServer))
+                    {
+                        notificationMetadata.SmtpServer = "smtp.gmail.com";
+                        notificationMetadata.Port = 465;
+                        notificationMetadata.UserName = "wizardcomm.mail@gmail.com";
+                        notificationMetadata.Password = "wizard!@#";
+                    }
+                    else
+                    {
+                        notificationMetadata.SmtpServer = compMailServer.SMTPServer;
+                        notificationMetadata.Port = 465;
+                        notificationMetadata.UserName = compMailServer.FromEmailId;
+                        notificationMetadata.Password = compMailServer.FromEmailPwd;
+                    }
 
-                    responce = Common.SendEmail(requestMail);
+                    responce = await _companyService.SendMail(notificationMetadata, requestSendMail);
                     return Ok(responce);
                 }
                 responce.Message = "User company not match";
