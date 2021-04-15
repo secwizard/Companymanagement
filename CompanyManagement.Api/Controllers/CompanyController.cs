@@ -622,7 +622,6 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
-        [Authorize]
         [HttpPost("SendMail")]
         public async Task<IActionResult> SendEmail(RequestSendMail requestSendMail)
         {
