@@ -26,5 +26,6 @@ namespace CompanyManagement.Api.Models.Response
         public int? Port { get; set; }
         public string OrderEmailTemplate { get; set; }
         public string InvoiceEmailTemplate { get; set; }
+        public string GSTIN { get; set; }
     }
 }
