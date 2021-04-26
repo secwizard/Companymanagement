@@ -6,9 +6,9 @@ using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Models.Response;
 using log4net;
 using MailKit.Net.Smtp;
-using MimeKit;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1065,5 +1065,7 @@ namespace CompanyManagement.Api.Service
             { Text = requestSendMail.Message };
             return mimeMessage;
         }
+
+       
     }
 }
