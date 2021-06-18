@@ -1,0 +1,41 @@
+﻿-- =============================================
+-- Author:		Rajib Mukhopadhyay
+-- Create date: 19 Feb 2021
+-- Description:	Get company mail info
+-- =============================================
+alter PROCEDURE [dbo].[GetCompanyMailInfo]
+(
+	@CompanyId Bigint
+)
+AS
+--DECLARE @CompanyId Bigint = 1
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT
+	   CompanyId = c.[CompanyId]
+		, CompImageFilePath = c.[ImageFilePath]
+		, CompLogoName = c.[LogoFileName]
+		, CompName = c.[Name]
+		, CompAdminEmail = c.[AdminEmail]
+		, CompCustServiceTel =  c.[ServicePhone]
+		, SMTPServer =  m.[SMTPServer]
+		, FromEmailDisplayName =  m.[FromEmailDisplayName]
+		, FromEmailId =  m.[FromEmailId]
+		, FromEmailPwd =  m.[FromEmailPwd]
+		, [Ssl] =  m.[EnableSSL]
+		, [Port] =  m.[SMTPPort]
+		, GSTIN=ISNULL(GSTNumber,'')
+		, CompTermsConditionOrder = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='TermsCondition' AND [Name]='ORDER' AND CompanyId = @CompanyId AND IsActive =1)
+		, CompTermsConditionInvoice = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='TermsCondition' AND [Name]='INVOICE' AND CompanyId = @CompanyId AND IsActive =1)
+		, CompanyTermsConditionPayment = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='TermsCondition' AND [Name]='PAYMENT' AND CompanyId = @CompanyId AND IsActive =1)
+		, OrderEmailTemplate = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='EMAIL' AND [Name]='ORDER' AND CompanyId = @CompanyId AND IsActive =1)
+		, InvoiceEmailTemplate = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='EMAIL' AND [Name]='INVOICE' AND CompanyId = @CompanyId AND IsActive =1)
+		, ReminderEmailTemplate = (SELECT TOP 1 [HTMLData] FROM [dbo].[Template] WHERE [TemplateType]='Reminder' AND [Name]='StockReminder' AND CompanyId = @CompanyId AND IsActive =1)
+	FROM [dbo].[Company] c
+	INNER JOIN [dbo].MailServer m ON c.CompanyId = m.CompanyId 
+	AND c.CompanyId = @CompanyId 
+	AND c.IsActive = 1
+END
+GO
+
