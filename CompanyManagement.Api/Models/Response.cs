@@ -216,4 +216,73 @@ namespace CompanyManagement.Api.Models
         public bool Status { get; set; }
         public string Message { get; set; }
     }
+
+    public class FrontEndTemplate
+    {
+        [JsonProperty("template_id")]
+        public long TemplateId { get; set; }
+
+        [JsonProperty("template_name")]
+        public string TemplateName { get; set; }
+
+        [JsonProperty("web_view_name")]
+        public string WebViewName { get; set; }
+
+        [JsonProperty("mobile_view_name")]
+        public string MobileViewName { get; set; }
+
+        [JsonProperty("primary_color")]
+        public string PrimaryColor { get; set; }
+
+        [JsonProperty("secondary_color")]
+        public string SecondaryColor { get; set; }
+
+        [JsonProperty("tertiary_color")]
+        public string TertiaryColor { get; set; }
+
+        [JsonProperty("company_name")]
+        public string CompanyName { get; set; }
+
+        [JsonProperty("company_logo")]
+        public string CompanyLogo { get; set; }
+
+        [JsonProperty("sections")]
+        public List<Section> Sections { get; set; }
+    }
+
+    public class Section
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("api_url")]
+        public string ApiUrl { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("primary_text")]
+        public string PrimaryText { get; set; }
+
+        [JsonProperty("secondary_text")]
+        public string SecondaryText { get; set; }
+
+        [JsonProperty("tertiary_text")]
+        public string TertiaryText { get; set; }
+
+        [JsonProperty("next_page")]
+        public string NextPage { get; set; }
+
+        [JsonProperty("images")]
+        public List<Image> Images { get; set; }
+    }
+
+    public class Image
+    {
+        [JsonProperty("image_path")]
+        public string ImagePath { get; set; }
+
+        [JsonProperty("display_order")]
+        public long DisplayOrder { get; set; }
+    }
 }

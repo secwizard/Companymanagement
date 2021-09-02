@@ -40,6 +40,7 @@ namespace CompanyManagement.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IOnBoardService, OnBoardService>();
+            services.AddScoped<ITemplateService, TemplateService>();
 
         }
 
