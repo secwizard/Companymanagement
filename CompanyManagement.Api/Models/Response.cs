@@ -219,31 +219,31 @@ namespace CompanyManagement.Api.Models
 
     public class FrontEndTemplate
     {
-        [JsonProperty("template_id")]
+        [JsonProperty("templateid")]
         public long TemplateId { get; set; }
 
-        [JsonProperty("template_name")]
+        [JsonProperty("templatename")]
         public string TemplateName { get; set; }
 
-        [JsonProperty("web_view_name")]
+        [JsonProperty("webviewname")]
         public string WebViewName { get; set; }
 
-        [JsonProperty("mobile_view_name")]
+        [JsonProperty("mobileviewname")]
         public string MobileViewName { get; set; }
 
-        [JsonProperty("primary_color")]
+        [JsonProperty("primarycolor")]
         public string PrimaryColor { get; set; }
 
-        [JsonProperty("secondary_color")]
+        [JsonProperty("secondarycolor")]
         public string SecondaryColor { get; set; }
 
-        [JsonProperty("tertiary_color")]
+        [JsonProperty("tertiarycolor")]
         public string TertiaryColor { get; set; }
 
-        [JsonProperty("company_name")]
+        [JsonProperty("companyname")]
         public string CompanyName { get; set; }
 
-        [JsonProperty("company_logo")]
+        [JsonProperty("companylogo")]
         public string CompanyLogo { get; set; }
 
         [JsonProperty("sections")]
@@ -252,37 +252,41 @@ namespace CompanyManagement.Api.Models
 
     public class Section
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("api_url")]
+        [JsonProperty("apiurl")]
         public string ApiUrl { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty("primary_text")]
+        [JsonProperty("primarytext")]
         public string PrimaryText { get; set; }
 
-        [JsonProperty("secondary_text")]
+        [JsonProperty("secondarytext")]
         public string SecondaryText { get; set; }
 
-        [JsonProperty("tertiary_text")]
+        [JsonProperty("tertiarytext")]
         public string TertiaryText { get; set; }
 
-        [JsonProperty("next_page")]
+        [JsonProperty("nextpage")]
         public string NextPage { get; set; }
 
         [JsonProperty("images")]
         public List<Image> Images { get; set; }
+        [JsonProperty("displayorder")]
+        public int DisplayOrder { get; set; }
     }
 
     public class Image
     {
-        [JsonProperty("image_path")]
+        [JsonProperty("imagepath")]
         public string ImagePath { get; set; }
 
-        [JsonProperty("display_order")]
+        [JsonProperty("displayorder")]
         public long DisplayOrder { get; set; }
     }
 }

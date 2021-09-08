@@ -50,7 +50,7 @@ namespace CompanyManagement.Api.Service
                 string sqlText = $"EXECUTE dbo.[GetTemplate] @Url, @CompanyId, @Type";
                 var dataTemplte = await _context.GetTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
                 if (dataTemplte != null && dataTemplte.Count > 0)
-                    BindTemplateData(template, dataTemplte.FirstOrDefault());
+                    template = await BindTemplateData (template, dataTemplte.FirstOrDefault());
                 return template;
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        private void BindTemplateData(FrontEndTemplate template, GetTemplate dataTemplte)
+        private async Task<FrontEndTemplate> BindTemplateData(FrontEndTemplate template, GetTemplate dataTemplte)
         {
             template = new FrontEndTemplate();
             template.CompanyLogo = dataTemplte.CompanyLogo;
@@ -72,33 +72,39 @@ namespace CompanyManagement.Api.Service
             template.TertiaryColor = dataTemplte.TertiaryColor;
             template.WebViewName = dataTemplte.WebViewName;
             template.MobileViewName = dataTemplte.MobileViewName;
-            GetTemplateSection(template, dataTemplte.TemplateId);
+            template = await GetTemplateSection(template, dataTemplte.TemplateId);
+            return template;
         }
-        private async void GetTemplateSection(FrontEndTemplate template, int templateId)
+        private async Task<FrontEndTemplate> GetTemplateSection(FrontEndTemplate template, int templateId)
         {
             var sections = await _context.CompanyTemplateSection.Where(x => x.CompanyTemplateId == templateId && x.IsActive == true).ToListAsync();
             if (sections != null && sections.Count > 0)
             {
-                BindSections(template, sections);
+                template = await  BindSections(template, sections);
             }
+            return template;
         }
-        private void BindSections(FrontEndTemplate template, List<CompanyTemplateSection> sections)
+        private async Task<FrontEndTemplate> BindSections(FrontEndTemplate template, List<CompanyTemplateSection> sections)
         {
             List<Section> listsection = new List<Section>();
             foreach (var item in sections)
             {
                 Section section = new Section();
+                section.Id = item.CompanyTemplateSectionId;
                 section.Name = item.SectionName;
                 section.PrimaryText = item.PrimaryText;
                 section.SecondaryText = item.SecondaryText;
                 section.TertiaryText = item.TertiaryText;
                 section.Type = item.SectionType.ToString();
-                BindSectionImages(section, item.CompanyTemplateSectionId);
+                section.DisplayOrder = item.DisplayOrder;
+                section = await BindSectionImages(section, item.CompanyTemplateSectionId);
                 listsection.Add(section);
             }
             template.Sections = new List<Section>();
+            template.Sections = listsection;
+            return template;
         }
-        private async void BindSectionImages(Section section, int companyTemplateSectionId)
+        private async Task<Section> BindSectionImages(Section section, int companyTemplateSectionId)
         {
             List<Image> listImage = new List<Image>();
             var images = await _context.CompanyTemplateSectionImageMapping.Where(x => x.CompanyTemplateSectionId == companyTemplateSectionId && x.IsActive == true).ToListAsync();
@@ -114,6 +120,7 @@ namespace CompanyManagement.Api.Service
                 section.Images = new List<Image>();
                 section.Images = listImage;
             }
+            return section;
         }
     }
 }
