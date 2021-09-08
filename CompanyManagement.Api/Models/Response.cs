@@ -216,4 +216,77 @@ namespace CompanyManagement.Api.Models
         public bool Status { get; set; }
         public string Message { get; set; }
     }
+
+    public class FrontEndTemplate
+    {
+        [JsonProperty("templateid")]
+        public long TemplateId { get; set; }
+
+        [JsonProperty("templatename")]
+        public string TemplateName { get; set; }
+
+        [JsonProperty("webviewname")]
+        public string WebViewName { get; set; }
+
+        [JsonProperty("mobileviewname")]
+        public string MobileViewName { get; set; }
+
+        [JsonProperty("primarycolor")]
+        public string PrimaryColor { get; set; }
+
+        [JsonProperty("secondarycolor")]
+        public string SecondaryColor { get; set; }
+
+        [JsonProperty("tertiarycolor")]
+        public string TertiaryColor { get; set; }
+
+        [JsonProperty("companyname")]
+        public string CompanyName { get; set; }
+
+        [JsonProperty("companylogo")]
+        public string CompanyLogo { get; set; }
+
+        [JsonProperty("sections")]
+        public List<Section> Sections { get; set; }
+    }
+
+    public class Section
+    {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("apiurl")]
+        public string ApiUrl { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("primarytext")]
+        public string PrimaryText { get; set; }
+
+        [JsonProperty("secondarytext")]
+        public string SecondaryText { get; set; }
+
+        [JsonProperty("tertiarytext")]
+        public string TertiaryText { get; set; }
+
+        [JsonProperty("nextpage")]
+        public string NextPage { get; set; }
+
+        [JsonProperty("images")]
+        public List<Image> Images { get; set; }
+        [JsonProperty("displayorder")]
+        public int DisplayOrder { get; set; }
+    }
+
+    public class Image
+    {
+        [JsonProperty("imagepath")]
+        public string ImagePath { get; set; }
+
+        [JsonProperty("displayorder")]
+        public long DisplayOrder { get; set; }
+    }
 }

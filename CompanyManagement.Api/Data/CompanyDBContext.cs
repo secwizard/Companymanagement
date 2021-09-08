@@ -31,7 +31,9 @@ namespace CompanyManagement.Api.Data
         public DbSet<Subscriptions> Subscriptions { get; set; }
         public DbSet<AddOns> AddOns { get; set; }
         public DbSet<CompanyDetailsForSentMail> CompanyDetailsForSentMail { get; set; }
-
+        public DbSet<GetTemplate> GetTemplate { get; set; }
+        public DbSet<CompanyTemplateSection> CompanyTemplateSection { get; set; }
+        public DbSet<CompanyTemplateSectionImageMapping> CompanyTemplateSectionImageMapping { get; set; }
         
     }
 }

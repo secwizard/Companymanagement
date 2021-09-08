@@ -99,4 +99,15 @@ namespace CompanyManagement.Api.Models
         public string Message { get; set; }
         public string Subject { get; set; }
     }
+    public class RequestCompanyTemplate
+    {
+        [JsonProperty("companyid")]
+        public long CompanyId { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+    }
+
 }

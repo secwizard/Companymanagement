@@ -240,5 +240,111 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
+    public class FronEndTemplate
+    {
+        [Key]
+        public int TemplateId { get; set; }
+        public string TemplateName { get; set; }
+        public string TemplateView { get; set; }
+        public string ViewName { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
+        public string TertiaryColor { get; set; }
+        public bool IsActive { get; set; }
+        public string MobileViewName { get; set; }
+    }
+    public class TemplateDefaultSection
+    {
+        [Key]
+        public int TemplateDefaultSectionId { get; set; }
+        public int TemplateId { get; set; }
+        public int SectionType { get; set; }
+        public string SectionName { get; set; }
+        public string SectionBackgrounColor { get; set; }
+    }
+    public class CompanyTemplate
+    {
+        [Key]
+        public int CompanyTemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public int TemplateId { get; set; }
+        public string TemplateName { get; set; }
+        public bool IsDefault { get; set; }
+        public string Url { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
+        public string TertiaryColor { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public string Type { get; set; }
+        public bool IsForB2C { get; set; }
+    }
+    public class CompanyTemplateSection
+    {
+        [Key]
+        public int CompanyTemplateSectionId { get; set; }
+        public int CompanyTemplateId { get; set; }
+        public int SectionType { get; set; }
+        public string SectionName { get; set; }
+        public string SectionBackgrounColor { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+    }
+    public class CompanyTemplateSectionImageMapping
+    {
+        [Key]
+        public long CompanyTemplateSectionImageMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public string ImagePath { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
+    public class CompanyTemplateSectionItemMapping
+    {
+        [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public long ItemId { get; set; }
+        public long VariantId { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
+    public class GetTemplate
+    {
+        [Key]
+        public int CompanyTemplateId { get; set; }
+        public int TemplateId { get; set; }
+        public string TemplateName { get; set; }
+        public string WebViewName { get; set; }
+        public string MobileViewName { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
+        public string TertiaryColor { get; set; }
+        public string Name { get; set; }
+        public string CompanyLogo { get; set; }
+    }
+
+
 
 }
