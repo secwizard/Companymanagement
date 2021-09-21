@@ -345,6 +345,12 @@ namespace CompanyManagement.Api.Models
         public string CompanyLogo { get; set; }
     }
 
-
+    public class GetTemplateBySectionId
+    {
+        [Key]
+        public long VariantId { get; set; }
+        public long ItemId { get; set; }
+        
+    }
 
 }

@@ -34,6 +34,7 @@ namespace CompanyManagement.Api.Data
         public DbSet<GetTemplate> GetTemplate { get; set; }
         public DbSet<CompanyTemplateSection> CompanyTemplateSection { get; set; }
         public DbSet<CompanyTemplateSectionImageMapping> CompanyTemplateSectionImageMapping { get; set; }
-        
+        public DbSet<GetTemplateBySectionId> GetTemplateBySectionId { get; set; }
+
     }
 }

@@ -122,5 +122,44 @@ namespace CompanyManagement.Api.Service
             }
             return section;
         }
+
+
+
+        public async Task<List<ItemIdBySection>> GetTemplateBySectionID(RequestItemBySectionId request)
+        {
+            try
+            {
+                List<ItemIdBySection> listData = new List<ItemIdBySection>();
+                var parms = new SqlParameter[]
+                 {
+
+                    new SqlParameter("@SectionId", Convert.ToInt64(request.SectionId))
+
+                 };
+
+                string sqlText = $"EXECUTE dbo.[GetTemplateBySectionId] @SectionId";
+                var data = await _context.GetTemplateBySectionId.FromSqlRaw(sqlText, parms).ToListAsync();
+                BindItemData(listData, data);
+                return listData;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        private void BindItemData(List<ItemIdBySection> listData, List<GetTemplateBySectionId> data)
+        {
+            if(data != null && data.Count > 0)
+            {
+                foreach(var item in data)
+                {
+                    ItemIdBySection id = new ItemIdBySection();
+                    id.VariantId = item.VariantId;
+                    id.ItemId = item.ItemId;
+                    listData.Add(id);
+                }
+            }
+        }
     }
 }

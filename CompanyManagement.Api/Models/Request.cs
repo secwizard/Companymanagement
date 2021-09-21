@@ -109,5 +109,9 @@ namespace CompanyManagement.Api.Models
         public string Url { get; set; }
 
     }
+    public class RequestItemBySectionId
+    {
+        public int SectionId { get; set; }
+    }
 
 }
