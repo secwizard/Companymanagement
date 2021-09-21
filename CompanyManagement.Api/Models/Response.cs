@@ -289,4 +289,10 @@ namespace CompanyManagement.Api.Models
         [JsonProperty("displayorder")]
         public long DisplayOrder { get; set; }
     }
+
+    public class ItemIdBySection
+    {
+        public long VariantId { get; set; }
+        public long ItemId { get; set; }
+    }
 }

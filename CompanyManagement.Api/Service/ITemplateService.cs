@@ -9,5 +9,6 @@ namespace CompanyManagement.Api.Service
     public interface ITemplateService
     {
         Task<FrontEndTemplate> GetTemplate(RequestCompanyTemplate request);
+        Task<List<ItemIdBySection>> GetTemplateBySectionID(RequestItemBySectionId request);
     }
 }
