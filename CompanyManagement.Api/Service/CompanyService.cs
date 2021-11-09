@@ -721,6 +721,27 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<List<GetCompanyTemplate>> GetCompanyTemplateByTypeAndName(RequestGetCompanyTemplateByTypeAndName request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@TemplateType", request.TemplateType),
+                    new SqlParameter("@Name", request.Name),
+                };
+
+                string sqlText = $"EXECUTE dbo.[GetCompanyTemplateByTypeAndName] @CompanyId, @TemplateType, @Name";
+                var dataList = await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
+                return dataList;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request)
         {
             var retVal = new ResponseList<GetCompanyTemplate>();

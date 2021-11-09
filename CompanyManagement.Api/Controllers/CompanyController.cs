@@ -22,7 +22,7 @@ namespace CompanyManagement.Api.Controllers
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ICompanyService _companyService;
 
-        public CompanyController( ICompanyService companyService)
+        public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
@@ -39,7 +39,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyByUrl")]
         public async Task<IActionResult> GetCompanyByUrl(RequestCompanyUrl request)
         {
-            var responce = new Response<ResponseCompanyDtlByIdFrontend>(); 
+            var responce = new Response<ResponseCompanyDtlByIdFrontend>();
             try
             {
                 responce.Data = await _companyService.GetCompanyByUrl(request);
@@ -216,7 +216,24 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
-
+        [HttpPost("GetCompanyTemplateByTypeAndName")]
+        public async Task<IActionResult> GetCompanyTemplateByTypeAndName(RequestGetCompanyTemplateByTypeAndName request)
+        {
+            var responce = new ResponseList<GetCompanyTemplate>();
+            try
+            {
+                responce.Data = await _companyService.GetCompanyTemplateByTypeAndName(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data != null ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
 
         #endregion
 
