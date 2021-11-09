@@ -30,6 +30,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseList<CompanySettingInfo>> EditCompanySetting(CompanySettingInfo request);
         Task<ResponseList<CompanySettingInfo>> DeleteCompanySetting(DeleteCompanySettings request);
         Task<List<GetCompanyTemplate>> GetCompanyTemplate(RequestBase request);
+        Task<List<GetCompanyTemplate>> GetCompanyTemplateByTypeAndName(RequestGetCompanyTemplateByTypeAndName request);
         Task<ResponseList<GetCompanyTemplate>> EditTemplate(Template request);
         Task<ResponseList<GetCompanyTemplate>> DeleteTemplate(DeleteCompanyTemplate request);
         Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request);

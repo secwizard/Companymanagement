@@ -113,5 +113,10 @@ namespace CompanyManagement.Api.Models
     {
         public int SectionId { get; set; }
     }
-
+    public class RequestGetCompanyTemplateByTypeAndName
+    {
+        public long CompanyId { get; set; }
+        public string TemplateType { get; set; }
+        public string Name { get; set; }
+    }
 }
