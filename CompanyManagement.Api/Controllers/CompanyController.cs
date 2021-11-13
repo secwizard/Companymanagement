@@ -661,13 +661,15 @@ namespace CompanyManagement.Api.Controllers
                     notificationMetadata.Port = 465;
                     notificationMetadata.UserName = "wizardcomm.mail@gmail.com";
                     notificationMetadata.Password = "wizard!@#";
+                    notificationMetadata.EnableSSL = true;
                 }
                 else
                 {
-                    notificationMetadata.SmtpServer = compMailServer.SMTPServer;
-                    notificationMetadata.Port = 465;
-                    notificationMetadata.UserName = compMailServer.FromEmailId;
-                    notificationMetadata.Password = compMailServer.FromEmailPwd;
+                    notificationMetadata.SmtpServer = compMailServer.SMTPServer ?? "smtp.zoho.com";
+                    notificationMetadata.Port = compMailServer.SMTPPort ?? 465;
+                    notificationMetadata.UserName = compMailServer.FromEmailId ?? "do-not-reply@wizardcomm.net";
+                    notificationMetadata.Password = compMailServer.FromEmailPwd ?? "Admin@123$";
+                    notificationMetadata.EnableSSL = compMailServer.EnableSSL ?? true;
                 }
 
                 responce = await _companyService.SendMail(notificationMetadata, requestSendMail);
