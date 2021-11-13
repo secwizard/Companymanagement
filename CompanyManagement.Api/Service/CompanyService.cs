@@ -1048,7 +1048,7 @@ namespace CompanyManagement.Api.Service
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
                     await smtpClient.ConnectAsync(notificationMetadata.SmtpServer,
-                    notificationMetadata.Port, true);
+                    notificationMetadata.Port, notificationMetadata.EnableSSL);
                     await smtpClient.AuthenticateAsync(notificationMetadata.UserName,
                     notificationMetadata.Password);
                     await smtpClient.SendAsync(mimeMessage);
