@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagement.Api.Models
@@ -252,6 +253,8 @@ namespace CompanyManagement.Api.Models
         public string TertiaryColor { get; set; }
         public bool IsActive { get; set; }
         public string MobileViewName { get; set; }
+        public string ImagePath { get; set; }
+        public List<TemplateDefaultSection> TemplateDefaultSections { get; set; } = new List<TemplateDefaultSection>();
     }
     public class TemplateDefaultSection
     {
@@ -261,6 +264,7 @@ namespace CompanyManagement.Api.Models
         public int SectionType { get; set; }
         public string SectionName { get; set; }
         public string SectionBackgrounColor { get; set; }
+        public FronEndTemplate Template { get; set; }
     }
     public class CompanyTemplate
     {
@@ -281,6 +285,11 @@ namespace CompanyManagement.Api.Models
         public DateTime UpdatedAt { get; set; }
         public string Type { get; set; }
         public bool IsForB2C { get; set; }
+        public string TemplateView { get; set; }
+        public string ViewName { get; set; }
+        public string MobileViewName { get; set; }
+        public string ImagePath { get; set; }
+        public List<CompanyTemplateSection> CompanyTemplateSections { get; set; } = new List<CompanyTemplateSection>();
     }
     public class CompanyTemplateSection
     {
@@ -299,6 +308,7 @@ namespace CompanyManagement.Api.Models
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
+        public CompanyTemplate CompanyTemplate { get; set; }
     }
     public class CompanyTemplateSectionImageMapping
     {
@@ -352,5 +362,38 @@ namespace CompanyManagement.Api.Models
         public long ItemId { get; set; }
         
     }
+    public class TaxName
+    {
+        [Key]
+        public int TaxNameId { get; set; }
+        public string Tax1Name { get; set; }
+        public string Tax2Name { get; set; }
+        public string Tax3Name { get; set; }
+        public string Tax4Name { get; set; }
+        public string Tax5Name { get; set; }
+        public int CompanyId { get; set; }
+        public DateTime? CreatedOnUTC { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? UpdatedOnUTC { get; set; }
+        public Guid? UpdatedBy { get; set; }
+    }
 
+    public class TaxDetails
+    {
+        [Key]
+        public int TaxDetailsId { get; set; }
+        public string TaxName { get; set; }
+        public decimal Tax1Percentage { get; set; }
+        public decimal Tax2Percentage { get; set; }
+        public decimal Tax3Percentage { get; set; }
+        public decimal Tax4Percentage { get; set; }
+        public decimal Tax5Percentage { get; set; }
+        public Guid? CreatedById { get; set; }
+        public Guid? UpdatedById { get; set; }
+        public DateTime? CreatedOnUTC { get; set; }
+        public DateTime? UpdatedOnUTC { get; set; }
+        public int CompanyId { get; set; }
+        public bool IsDefault { get; set; }
+        public decimal Total { get; set; }
+    }
 }

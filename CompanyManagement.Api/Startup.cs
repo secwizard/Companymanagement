@@ -41,7 +41,7 @@ namespace CompanyManagement.Api
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IOnBoardService, OnBoardService>();
             services.AddScoped<ITemplateService, TemplateService>();
-
+            services.AddScoped<ITaxService, TaxService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

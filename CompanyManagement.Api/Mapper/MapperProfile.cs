@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Response;
+using CompanyManagement.Api.Models.Tax;
 
 namespace CompanyManagement.Api.Mapper
 {
@@ -26,6 +27,19 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<OnBoardAddOns, AddOnMaster>(MemberList.None);
             this.CreateMap<SubscriptionMaster, OnBoardSubscriptions > (MemberList.None);
             this.CreateMap<AddOnMaster, OnBoardAddOns > (MemberList.None);
+            this.CreateMap<CompanyTemplate, ResponseCompanyTemplate>(MemberList.None)
+             .ForMember(s => s.ResponseCompanyTemplateSections, c => c.MapFrom(m => m.CompanyTemplateSections));
+            this.CreateMap<FronEndTemplate, ResponseFrontendTemplate>(MemberList.None);
+
+            this.CreateMap<FronEndTemplate, CompanyTemplate>(MemberList.None)
+                .ForMember(s => s.CompanyTemplateSections, c => c.MapFrom(m => m.TemplateDefaultSections));
+            this.CreateMap<TemplateDefaultSection, CompanyTemplateSection>(MemberList.None);
+
+            this.CreateMap<CompanyTemplateSection, ResponseCompanyTemplateSection>(MemberList.None);
+
+            this.CreateMap<TaxName, TaxNameResponse>(MemberList.None).ReverseMap();
+            this.CreateMap<TaxName, TaxNameRequest>(MemberList.None).ReverseMap();
+            this.CreateMap<TaxDetails, TaxDetailsGet>(MemberList.None).ReverseMap();
         }
     }
 }

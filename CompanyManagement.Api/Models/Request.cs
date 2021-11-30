@@ -119,4 +119,29 @@ namespace CompanyManagement.Api.Models
         public string TemplateType { get; set; }
         public string Name { get; set; }
     }
+
+    public class RequestAddCompanyTemplate
+    {
+        public int TemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public bool IsForB2C { get; set; }
+        public Guid UserId { get; set; }
+    }
+
+    public class RequestEditCompanyTemplateSection
+    {
+        public int CompanyTemplateSectionId { get; set; }
+        public long CompanyId { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public Guid UserId { get; set; }
+    }
+
+    public class RequestEditCompanyTemplateSectionOrder
+    {
+        public string[] CompanyTemplateSectionIds { get; set; }
+        public long CompanyId { get; set; }
+    }
 }
