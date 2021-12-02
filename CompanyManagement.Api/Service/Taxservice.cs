@@ -167,5 +167,37 @@ namespace CompanyManagement.Api.Service
                 return false;
             }
         }
+
+        #region Item
+
+        public async Task<CompanyTaxDetailsResponse> GetAllTax(CompanyTaxDetailsRequest request)
+        {
+            try
+            {
+                var response = new CompanyTaxDetailsResponse();
+                var taxdetails = await _context.TaxDetails.Where(k => k.CompanyId == request.CompanyId ).ToListAsync();
+                if(taxdetails != null && taxdetails.Count > 0)
+                {
+                    response.AllTaxes = new List<TaxDetailsBase>();
+                    foreach(var details in taxdetails.OrderByDescending(x=>x.IsDefault))
+                    {
+                        response.AllTaxes.Add(_mapper.Map<TaxDetails, TaxDetailsGet>(details));
+                    }
+                    if(request.TaxId != 0 )
+                    {
+                        response.SelectedTax = response.AllTaxes.Where(x=>x.TaxDetailsId == request.TaxId).FirstOrDefault();
+                    }
+                }
+                return response;
+                    
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

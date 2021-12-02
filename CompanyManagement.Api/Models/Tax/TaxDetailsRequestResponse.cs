@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace CompanyManagement.Api.Models.Tax
 {
@@ -32,5 +33,16 @@ namespace CompanyManagement.Api.Models.Tax
     {
         public int CompanyId { get; set; }
         public int TaxDetailsId { get; set; }
+    }
+
+    public class CompanyTaxDetailsRequest
+    {
+        public int CompanyId { get; set; }
+        public int TaxId { get; set; }
+    }
+    public class CompanyTaxDetailsResponse
+    {
+        public List<TaxDetailsBase> AllTaxes { get; set; }
+        public TaxDetailsBase SelectedTax { get; set; }
     }
 }
