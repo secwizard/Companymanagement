@@ -40,6 +40,7 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<TaxName, TaxNameResponse>(MemberList.None).ReverseMap();
             this.CreateMap<TaxName, TaxNameRequest>(MemberList.None).ReverseMap();
             this.CreateMap<TaxDetails, TaxDetailsGet>(MemberList.None).ReverseMap();
+            this.CreateMap<GetTaxDetails, GetTaxDetailsResponse>(MemberList.None).ReverseMap();
         }
     }
 }

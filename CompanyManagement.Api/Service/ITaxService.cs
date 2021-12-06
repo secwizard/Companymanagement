@@ -16,6 +16,8 @@ namespace CompanyManagement.Api.Service
 
         #region Item
         Task<CompanyTaxDetailsResponse> GetAllTax(CompanyTaxDetailsRequest taxNameRequest);
+
+        Task<List<GetTaxDetailsResponse>> GetTaxDetailsWithCompanySetting(CompanyTaxDetailsListRequest request);
         #endregion
     }
 }

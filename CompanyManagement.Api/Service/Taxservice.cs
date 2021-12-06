@@ -175,21 +175,64 @@ namespace CompanyManagement.Api.Service
             try
             {
                 var response = new CompanyTaxDetailsResponse();
-                var taxdetails = await _context.TaxDetails.Where(k => k.CompanyId == request.CompanyId ).ToListAsync();
-                if(taxdetails != null && taxdetails.Count > 0)
+                var taxdetails = await _context.TaxDetails.Where(k => k.CompanyId == request.CompanyId).ToListAsync();
+                if (taxdetails != null && taxdetails.Count > 0)
                 {
                     response.AllTaxes = new List<TaxDetailsBase>();
-                    foreach(var details in taxdetails.OrderByDescending(x=>x.IsDefault))
+                    foreach (var details in taxdetails.OrderByDescending(x => x.IsDefault))
                     {
                         response.AllTaxes.Add(_mapper.Map<TaxDetails, TaxDetailsGet>(details));
                     }
-                    if(request.TaxId != 0 )
+                    if (request.TaxId != 0)
                     {
-                        response.SelectedTax = response.AllTaxes.Where(x=>x.TaxDetailsId == request.TaxId).FirstOrDefault();
+                        response.SelectedTax = response.AllTaxes.Where(x => x.TaxDetailsId == request.TaxId).FirstOrDefault();
                     }
                 }
                 return response;
-                    
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<GetTaxDetailsResponse>> GetTaxDetailsWithCompanySetting(CompanyTaxDetailsListRequest request)
+        {
+            try
+            {
+                List<GetTaxDetailsResponse> listData = new List<GetTaxDetailsResponse>();
+                var inclisiveAllTaxes = false;
+                var taxDetailsIds = "";
+                foreach (var td in request.TaxId)
+                {
+
+                        taxDetailsIds +=  td + "," ;
+
+                }
+                taxDetailsIds = taxDetailsIds.Remove(taxDetailsIds.Length - 1);
+                var parms = new SqlParameter[]
+                 {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@TaxDetailsIds", taxDetailsIds)
+                 };
+
+                string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId , @TaxDetailsIds";
+                var taxdetails = await _context.GetTaxDetails.FromSqlRaw(sqlText, parms).ToListAsync();
+                var inclusiveOfAllTaxes = await _context.CompanySetting.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId && k.IsActive == true);
+                if (inclusiveOfAllTaxes != null)
+                    inclisiveAllTaxes = inclusiveOfAllTaxes.IsAllProductInclusiveOfTax;
+                if (taxdetails != null && taxdetails.Count > 0)
+                {
+                    foreach (var tax in taxdetails)
+                    {
+                        var retData = _mapper.Map<GetTaxDetails, GetTaxDetailsResponse>(tax);
+                        retData.IsAllProductInclusiveOfTax = inclisiveAllTaxes;
+                        listData.Add(retData);
+                    }
+                }
+                return listData;
             }
             catch (Exception ex)
             {

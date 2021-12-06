@@ -77,6 +77,7 @@ namespace CompanyManagement.Api.Models
         public Guid? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
+        public bool IsAllProductInclusiveOfTax { get; set; }
     }
 
     public class MailServer
@@ -360,7 +361,7 @@ namespace CompanyManagement.Api.Models
         [Key]
         public long VariantId { get; set; }
         public long ItemId { get; set; }
-        
+
     }
     public class TaxName
     {
@@ -393,6 +394,24 @@ namespace CompanyManagement.Api.Models
         public DateTime? CreatedOnUTC { get; set; }
         public DateTime? UpdatedOnUTC { get; set; }
         public int CompanyId { get; set; }
+        public bool IsDefault { get; set; }
+        public decimal Total { get; set; }
+    }
+    public class GetTaxDetails
+    {
+        [Key]
+        public bool TaxDetailsId { get; set; }
+        public string TaxName { get; set; }
+        public string Tax1Name { get; set; }
+        public decimal Tax1Percentage { get; set; }
+        public string Tax2Name { get; set; }
+        public decimal Tax2Percentage { get; set; }
+        public string Tax3Name { get; set; }
+        public decimal Tax3Percentage { get; set; }
+        public string Tax4Name { get; set; }
+        public decimal Tax4Percentage { get; set; }
+        public string Tax5Name { get; set; }
+        public decimal Tax5Percentage { get; set; }
         public bool IsDefault { get; set; }
         public decimal Total { get; set; }
     }

@@ -45,4 +45,29 @@ namespace CompanyManagement.Api.Models.Tax
         public List<TaxDetailsBase> AllTaxes { get; set; }
         public TaxDetailsBase SelectedTax { get; set; }
     }
+
+
+    public class CompanyTaxDetailsListRequest
+    {
+        public int CompanyId { get; set; }
+        public List<int> TaxId { get; set; }
+    }
+    public class GetTaxDetailsResponse
+    {
+        public bool TaxDetailsId { get; set; }
+        public string TaxName { get; set; }
+        public string Tax1Name { get; set; }
+        public decimal Tax1Percentage { get; set; }
+        public string Tax2Name { get; set; }
+        public decimal Tax2Percentage { get; set; }
+        public string Tax3Name { get; set; }
+        public decimal Tax3Percentage { get; set; }
+        public string Tax4Name { get; set; }
+        public decimal Tax4Percentage { get; set; }
+        public string Tax5Name { get; set; }
+        public decimal Tax5Percentage { get; set; }
+        public bool IsDefault { get; set; }
+        public decimal Total { get; set; }
+        public bool IsAllProductInclusiveOfTax { get; set; }
+    }
 }

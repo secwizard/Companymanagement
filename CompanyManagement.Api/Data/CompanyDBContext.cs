@@ -56,5 +56,8 @@ namespace CompanyManagement.Api.Data
                        .WithMany(t => t.CompanyTemplateSections)
                        .HasForeignKey(t => t.CompanyTemplateId);
         }
+
+
+        public DbSet<GetTaxDetails> GetTaxDetails { get; set; }
     }
 }
