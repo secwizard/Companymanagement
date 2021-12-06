@@ -161,5 +161,169 @@ namespace CompanyManagement.Api.Service
                 }
             }
         }
+
+        public async Task<List<ResponseCompanyTemplate>> GetCompanyTemplate(RequestBase request)
+        {
+            try
+            {
+                var dataTemplte = await _context.CompanyTemplate
+                    .Where(t => t.CompanyId == request.CompanyId)
+                    .ToListAsync();
+                var returnDataTemplte = _mapper.Map<List<ResponseCompanyTemplate>>(dataTemplte);
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<ResponseFrontendTemplate>> GetFrontendTemplate()
+        {
+            try
+            {
+                var dataTemplte = await _context.FronEndTemplate
+                    .ToListAsync();
+                var returnDataTemplte = _mapper.Map<List<ResponseFrontendTemplate>>(dataTemplte);
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<ResponseCompanyTemplate> AddCompanyTemplate(RequestAddCompanyTemplate request)
+        {
+            try
+            {
+                var dataTemplte = await _context.FronEndTemplate
+                    .Include(t => t.TemplateDefaultSections)
+                    .Where(t => t.TemplateId == request.TemplateId)
+                    .FirstOrDefaultAsync();
+                var companyTemplate = await CreateMapForComapnyTemplate(request, dataTemplte);
+                var returnDataTemplte = _mapper.Map<ResponseCompanyTemplate>(companyTemplate);
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        private async Task<CompanyTemplate> CreateMapForComapnyTemplate(RequestAddCompanyTemplate request, FronEndTemplate dataTemplte)
+        {
+            var companyDataTemp = _mapper.Map<FronEndTemplate, CompanyTemplate>(dataTemplte);
+            companyDataTemp.CompanyId = request.CompanyId;
+            companyDataTemp.Url = "";
+            companyDataTemp.Type = "1";
+            companyDataTemp.IsForB2C = request.IsForB2C;
+            companyDataTemp.CreatedBy = request.UserId.ToString();
+            companyDataTemp.CreatedAt = DateTime.UtcNow;
+            companyDataTemp.UpdatedBy = request.UserId.ToString();
+            companyDataTemp.UpdatedAt = DateTime.UtcNow;
+            var companyTempSectionsLst = companyDataTemp.CompanyTemplateSections;
+            if (companyTempSectionsLst.Count > 0)
+            {
+                int i = 1;
+                foreach (var companyTempSection in companyTempSectionsLst)
+                {
+                    companyTempSection.CreatedBy = request.UserId.ToString();
+                    companyTempSection.CreatedAt = DateTime.UtcNow;
+                    companyTempSection.UpdatedBy = request.UserId.ToString();
+                    companyTempSection.UpdatedAt = DateTime.UtcNow;
+                    companyTempSection.DisplayOrder = i;
+                    i++;
+                }
+            }
+            await _context.CompanyTemplate.AddAsync(companyDataTemp);
+            await _context.SaveChangesAsync();
+            return companyDataTemp;
+        }
+
+        public async Task<ResponseCompanyTemplate> GetCompnayTemplateById(RequestAddCompanyTemplate request)
+        {
+            try
+            {
+                var dataTemplte = await _context.CompanyTemplate
+                    .Include(t => t.CompanyTemplateSections)
+                    .Where(t => t.TemplateId == request.TemplateId && t.CompanyId == request.CompanyId)
+                    .FirstOrDefaultAsync();
+                var returnDataTemplte = _mapper.Map<ResponseCompanyTemplate>(dataTemplte);
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<ResponseCompanyTemplateSection> EditCompanyTemplateSection(RequestEditCompanyTemplateSection request)
+        {
+            try
+            {
+                var companyTemplateSection = await GetCompnayTemplateSectionById(request.CompanyTemplateSectionId);
+                companyTemplateSection.PrimaryText = request.PrimaryText;
+                companyTemplateSection.SecondaryText = request.SecondaryText;
+                companyTemplateSection.TertiaryText = request.TertiaryText;
+                companyTemplateSection.UpdatedBy = request.UserId.ToString();
+                companyTemplateSection.UpdatedAt = DateTime.UtcNow;
+
+                //_context.CompanyTemplateSection.Attach(companyTemplateSection).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                var returnDataTemplte = _mapper.Map<ResponseCompanyTemplateSection>(companyTemplateSection);
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        private async Task<CompanyTemplateSection> GetCompnayTemplateSectionById(int companyTemplateSectionId)
+        {
+            try
+            {
+                var dataTemplte = await _context.CompanyTemplateSection
+                    .Where(t => t.CompanyTemplateSectionId == companyTemplateSectionId)
+                    .FirstOrDefaultAsync();
+                return dataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<bool> EditCompanyTemplateSectionOrder(RequestEditCompanyTemplateSectionOrder request)
+        {
+            try
+            {
+                var resultList = new List<int>();
+                var Ids = Array.ConvertAll(request.CompanyTemplateSectionIds, s => int.Parse(s));
+                var commandText = "UPDATE [dbo].[CompanyTemplateSection] SET DisplayOrder = @DisplayOrder WHERE [CompanyTemplateSectionId] = @Id";
+                foreach (var id in Ids)
+                {
+                    var parms = new SqlParameter[]
+                    {
+                        new SqlParameter("@DisplayOrder", (Array.FindIndex(Ids, i => i == id) + 1)),
+                        new SqlParameter("@Id", id)
+                    };
+                    var result = await _context.Database.ExecuteSqlRawAsync(commandText, parms);
+                    resultList.Add(result);
+                }
+                if (resultList.Any(i => i < 0)) return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
     }
 }

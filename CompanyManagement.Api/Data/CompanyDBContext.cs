@@ -1,5 +1,6 @@
 ﻿using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Response;
+using CompanyManagement.Api.Models.Tax;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,28 @@ namespace CompanyManagement.Api.Data
         public DbSet<CompanyTemplateSection> CompanyTemplateSection { get; set; }
         public DbSet<CompanyTemplateSectionImageMapping> CompanyTemplateSectionImageMapping { get; set; }
         public DbSet<GetTemplateBySectionId> GetTemplateBySectionId { get; set; }
+        public DbSet<CompanyTemplate> CompanyTemplate { get; set; }
+        public DbSet<FronEndTemplate> FronEndTemplate { get; set; }
+        public DbSet<TemplateDefaultSection> TemplateDefaultSection { get; set; }
+        public DbSet<TaxName> TaxName { get; set; }
+        public DbSet<TaxDetails> TaxDetails { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TemplateDefaultSection>()
+                        .HasOne<FronEndTemplate>(t => t.Template)
+                        .WithMany(t => t.TemplateDefaultSections)
+                        .HasForeignKey(t => t.TemplateId);
+
+            modelBuilder.Entity<CompanyTemplateSection>()
+                       .HasOne<CompanyTemplate>(t => t.CompanyTemplate)
+                       .WithMany(t => t.CompanyTemplateSections)
+                       .HasForeignKey(t => t.CompanyTemplateId);
+        }
+
+
+        public DbSet<GetTaxDetails> GetTaxDetails { get; set; }
     }
 }
