@@ -218,7 +218,7 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@TaxDetailsIds", taxDetailsIds)
                  };
 
-                string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId , @TaxDetailsIds";
+                string sqlText = $"EXECUTE dbo.[GetTaxDetails] @CompanyId , @TaxDetailsIds";
                 var taxdetails = await _context.GetTaxDetails.FromSqlRaw(sqlText, parms).ToListAsync();
                 var inclusiveOfAllTaxes = await _context.CompanySetting.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId && k.IsActive == true);
                 if (inclusiveOfAllTaxes != null)

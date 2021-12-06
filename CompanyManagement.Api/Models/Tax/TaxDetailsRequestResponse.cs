@@ -54,7 +54,7 @@ namespace CompanyManagement.Api.Models.Tax
     }
     public class GetTaxDetailsResponse
     {
-        public bool TaxDetailsId { get; set; }
+        public int TaxDetailsId { get; set; }
         public string TaxName { get; set; }
         public string Tax1Name { get; set; }
         public decimal Tax1Percentage { get; set; }

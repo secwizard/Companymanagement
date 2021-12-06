@@ -182,10 +182,8 @@ namespace CompanyManagement.Api.Controllers
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-                {
+                
                     response.Data = await _taxService.GetTaxDetailsWithCompanySetting(request);
-                }
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "No data found." : string.Empty;
             }
