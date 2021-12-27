@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CompanyManagement.Api.Models
 {
@@ -37,6 +38,9 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public string CompanySiteUrl { get; set; }
+        [Column("CurrencyId")]
+        public int CurrencyMasterId { get; set; }
+        public CurrencyMaster CurrencyMaster { get; set; }
     }
 
     public class Branch
@@ -255,6 +259,7 @@ namespace CompanyManagement.Api.Models
         public bool IsActive { get; set; }
         public string MobileViewName { get; set; }
         public string ImagePath { get; set; }
+        public string Type { get; set; }
         public List<TemplateDefaultSection> TemplateDefaultSections { get; set; } = new List<TemplateDefaultSection>();
     }
     public class TemplateDefaultSection
@@ -310,6 +315,8 @@ namespace CompanyManagement.Api.Models
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
         public CompanyTemplate CompanyTemplate { get; set; }
+        public List<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMappings { get; set; } = new List<CompanyTemplateSectionItemMapping>();
+        public List<CompanyTemplateSectionImageMapping> CompanyTemplateSectionImageMappings { get; set; } = new List<CompanyTemplateSectionImageMapping>();
     }
     public class CompanyTemplateSectionImageMapping
     {
@@ -323,6 +330,8 @@ namespace CompanyManagement.Api.Models
         public DateTime CreatedAt { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public long ItemId { get; set; }
+        public CompanyTemplateSection CompanyTemplateSection { get; set; }
     }
     public class CompanyTemplateSectionItemMapping
     {
@@ -340,6 +349,8 @@ namespace CompanyManagement.Api.Models
         public DateTime CreatedAt { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public CompanyTemplateSection CompanyTemplateSection { get; set; }
+
     }
     public class GetTemplate
     {
@@ -361,7 +372,7 @@ namespace CompanyManagement.Api.Models
         [Key]
         public long VariantId { get; set; }
         public long ItemId { get; set; }
-
+        
     }
     public class TaxName
     {
@@ -397,22 +408,20 @@ namespace CompanyManagement.Api.Models
         public bool IsDefault { get; set; }
         public decimal Total { get; set; }
     }
-    public class GetTaxDetails
+
+    public class CurrencyMaster
     {
         [Key]
-        public int TaxDetailsId { get; set; }
-        public string TaxName { get; set; }
-        public string Tax1Name { get; set; }
-        public decimal Tax1Percentage { get; set; }
-        public string Tax2Name { get; set; }
-        public decimal Tax2Percentage { get; set; }
-        public string Tax3Name { get; set; }
-        public decimal Tax3Percentage { get; set; }
-        public string Tax4Name { get; set; }
-        public decimal Tax4Percentage { get; set; }
-        public string Tax5Name { get; set; }
-        public decimal Tax5Percentage { get; set; }
-        public bool IsDefault { get; set; }
-        public decimal Total { get; set; }
+        [Column("CurrencyId")]
+        public int CurrencyMasterId { get; set; }
+        public string CountryCode { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+
     }
 }
