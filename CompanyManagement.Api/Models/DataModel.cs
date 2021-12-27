@@ -37,6 +37,8 @@ namespace CompanyManagement.Api.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public string CompanySiteUrl { get; set; }
+        public string AdminPhoneCode { get; set; }
+        public string ServicePhoneCode { get; set; }
     }
 
     public class Branch
