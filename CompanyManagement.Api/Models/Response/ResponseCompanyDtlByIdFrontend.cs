@@ -28,7 +28,6 @@ namespace CompanyManagement.Api.Models.Response
         public string CompanyTermsConditionPayment { get; set; }
         public ThemeData ThemeData { get; set; }
         public List<FooterData> FooterList { get; set; }
-        public Currency Currency { get; set; }
     }
 
     public class ThemeData

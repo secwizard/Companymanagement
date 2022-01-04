@@ -41,8 +41,6 @@ namespace CompanyManagement.Api.Data
         public DbSet<TemplateDefaultSection> TemplateDefaultSection { get; set; }
         public DbSet<TaxName> TaxName { get; set; }
         public DbSet<TaxDetails> TaxDetails { get; set; }
-        public DbSet<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMapping { get; set; }
-        public DbSet<CurrencyMaster> CurrencyMaster { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,11 +55,9 @@ namespace CompanyManagement.Api.Data
                        .HasOne<CompanyTemplate>(t => t.CompanyTemplate)
                        .WithMany(t => t.CompanyTemplateSections)
                        .HasForeignKey(t => t.CompanyTemplateId);
-
-            modelBuilder.Entity<CompanyTemplateSectionItemMapping>()
-                       .HasOne<CompanyTemplateSection>(t => t.CompanyTemplateSection)
-                       .WithMany(t => t.CompanyTemplateSectionItemMappings)
-                       .HasForeignKey(t => t.CompanyTemplateSectionId);
         }
+
+
+        public DbSet<GetTaxDetails> GetTaxDetails { get; set; }
     }
 }
