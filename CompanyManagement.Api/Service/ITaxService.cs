@@ -13,5 +13,11 @@ namespace CompanyManagement.Api.Service
         Task<TaxDetailsGet> GetSpecificTaxDetails(SingleTaxDetailsRequest request);
         Task<bool> CreateTaxName(RequestBase requestBase);
         Task<bool> UpdateTaxName(TaxNameRequest taxNameRequest);
+
+        #region Item
+        Task<CompanyTaxDetailsResponse> GetAllTax(CompanyTaxDetailsRequest taxNameRequest);
+
+        Task<List<GetTaxDetailsResponse>> GetTaxDetailsWithCompanySetting(CompanyTaxDetailsListRequest request);
+        #endregion
     }
 }

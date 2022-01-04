@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace CompanyManagement.Api.Models
 {
@@ -110,12 +109,10 @@ namespace CompanyManagement.Api.Models
         public string Url { get; set; }
 
     }
-
     public class RequestItemBySectionId
     {
         public int SectionId { get; set; }
     }
-
     public class RequestGetCompanyTemplateByTypeAndName
     {
         public long CompanyId { get; set; }
@@ -129,118 +126,22 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public bool IsForB2C { get; set; }
         public Guid UserId { get; set; }
-        public bool IsDefault { get; set; }
-    }
-
-    public class RequestEditCompanyTemplate 
-    {
-        public int CompanyTemplateId { get; set; }
-        public string TemplateName { get; set; }
-        public string PrimaryColor { get; set; }
-        public string SecondaryColor { get; set; }
-        public string TertiaryColor { get; set; }
-        public bool IsForB2C { get; set; }
-        public bool IsActive { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestGetCompanyTemplateById
-    {
-        public int CompanyTemplateId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
     }
 
     public class RequestEditCompanyTemplateSection
     {
         public int CompanyTemplateSectionId { get; set; }
         public long CompanyId { get; set; }
-        public string SectionName { get; set; }
-        public string SectionBackgroundColor { get; set; }
         public string PrimaryText { get; set; }
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
-        public bool IsActive { get; set; }
+        public int DisplayOrder { get; set; }
         public Guid UserId { get; set; }
     }
 
     public class RequestEditCompanyTemplateSectionOrder
     {
-        public int[] CompanyTemplateSectionIds { get; set; }
+        public string[] CompanyTemplateSectionIds { get; set; }
         public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestProductInclusiveOfTax
-    {
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-        public bool IsAllProductInclusiveOfTax { get; set; }
-    }
-
-    public class RequestAddSectionItem
-    {
-        public int CompanyTemplateSectionId { get; set; }
-        public long CompanyId { get; set; }
-        public List<RequestCompanyTemplateSectionItem> RequestCompanyTemplateSectionItems { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestCompanyTemplateSectionItem
-    {        
-        public long ItemId { get; set; }
-        public long VariantId { get; set; }
-        public string PrimaryText { get; set; }
-        public string SecondaryText { get; set; }
-        public string TertiaryText { get; set; }
-        public string ItemImage { get; set; }
-        public string VariantImage { get; set; }
-    }
-
-    public class RequestEditSectionItemOrder
-    {
-        public int CompanyTemplateSectionId { get; set; }
-        public long[] CompanyTemplateSectionItemMappingId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestEditSectionImageOrder
-    {
-        public int CompanyTemplateSectionId { get; set; }
-        public long[] CompanyTemplateSectionImageMappingId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestChangeCompanyTemplateDefault
-    {
-        public int CompanyTemplateId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-        public bool IsDefault { get; set; }
-    }
-
-    public class RequestChangeCompanyTemplateB2C
-    {
-        public int CompanyTemplateId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-        public bool IsForB2C { get; set; }
-    }
-
-    public class RequestDeleteCompanyTemplateSectionItem
-    {
-        public int CompanyTemplateSectionItemMappingId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class RequestDeleteCompanyTemplateSectionImage
-    {
-        public int CompanyTemplateSectionImageMappingId { get; set; }
-        public long CompanyId { get; set; }
-        public Guid UserId { get; set; }
     }
 }
