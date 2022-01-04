@@ -191,6 +191,10 @@ namespace CompanyManagement.Api.Service
             preData.ShortName = postData.ShortName;
             preData.StateCode = postData.StateCode;
             preData.Website = postData.Website;
+            preData.AdminPhoneCode = postData.AdminPhoneCode;
+            preData.ServicePhoneCode = postData.ServicePhoneCode;
+            preData.AdminPhoneCountryCode = postData.AdminPhoneCountryCode;
+            preData.ServicePhoneCountryCode = postData.ServicePhoneCountryCode;
             //preData.CompanySiteUrl = postData.CompanySiteUrl;
             return preData;
         }
