@@ -65,10 +65,6 @@ namespace CompanyManagement.Api.Models
         public Int64 SuggestedCompanyId { get; set; }
         public string CompanySiteUrl { get; set; }
         public Currency Currency { get; set; }
-        public string AdminPhoneCode { get; set; }
-        public string ServicePhoneCode { get; set; }
-        public string AdminPhoneCountryCode { get; set; }
-        public string ServicePhoneCountryCode { get; set; }
     }
 
     public class CompanyMailServer
