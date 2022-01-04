@@ -72,50 +72,22 @@ namespace CompanyManagement.Api.Service
                     Total = request.Total
                 };
 
-                using (var transaction = _context.Database.BeginTransaction())
+                if (request.TaxDetailsId == 0)
                 {
-                    try
-                    {
-                        if (request.TaxDetailsId == 0)
-                        {
-                            taxset.CreatedById = request.UserId;
-                            taxset.CreatedOnUTC = DateTime.UtcNow;
-                            taxset.UpdatedById = request.UserId;
-                            taxset.UpdatedOnUTC = DateTime.UtcNow;
-                            await _context.TaxDetails.AddAsync(taxset);
-                        }
-                        else
-                        {
-                            taxset.UpdatedById = request.UserId;
-                            taxset.UpdatedOnUTC = DateTime.UtcNow;
-                            _context.Entry(taxset).State = EntityState.Modified;
-                            _context.Entry(taxset).Property(x => x.CreatedById).IsModified = false;
-                            _context.Entry(taxset).Property(x => x.CreatedOnUTC).IsModified = false;
-                        }
-
-                        var ret = await _context.SaveChangesAsync();
-                        if (ret > 0)
-                        {
-                             await _context.Database.ExecuteSqlRawAsync("[dbo].[SetDefaultTaxForCompany] @companyId", new[] {
-                                new SqlParameter("@companyId",taxset.CompanyId)
-                            });
-                        }
-
-                        if (ret > 0)
-                        {
-                            await transaction.CommitAsync();
-                            return _mapper.Map<TaxDetails, TaxDetailsGet>(taxset);
-                        }
-                        else
-                            await transaction.RollbackAsync();
-                    }
-                    catch
-                    {
-                        await transaction.RollbackAsync();
-                    }
-
-                    throw new Exception("Error in save");
+                    taxset.CreatedById = request.UserId;
+                    taxset.CreatedOnUTC = DateTime.UtcNow;
+                    await _context.TaxDetails.AddAsync(taxset);
                 }
+                else
+                {
+                    taxset.UpdatedById = request.UserId;
+                    taxset.UpdatedOnUTC = DateTime.UtcNow;
+                    _context.Entry(taxset).State = EntityState.Modified;
+                    _context.Entry(taxset).Property(x => x.CreatedById).IsModified = false;
+                    _context.Entry(taxset).Property(x => x.CreatedOnUTC).IsModified = false;
+                }
+                await _context.SaveChangesAsync();
+                return _mapper.Map<TaxDetails, TaxDetailsGet>(taxset);
             }
             catch (Exception ex)
             {
@@ -195,5 +167,80 @@ namespace CompanyManagement.Api.Service
                 return false;
             }
         }
+
+        #region Item
+
+        public async Task<CompanyTaxDetailsResponse> GetAllTax(CompanyTaxDetailsRequest request)
+        {
+            try
+            {
+                var response = new CompanyTaxDetailsResponse();
+                var taxdetails = await _context.TaxDetails.Where(k => k.CompanyId == request.CompanyId).ToListAsync();
+                if (taxdetails != null && taxdetails.Count > 0)
+                {
+                    response.AllTaxes = new List<TaxDetailsBase>();
+                    foreach (var details in taxdetails.OrderByDescending(x => x.IsDefault))
+                    {
+                        response.AllTaxes.Add(_mapper.Map<TaxDetails, TaxDetailsGet>(details));
+                    }
+                    if (request.TaxId != 0)
+                    {
+                        response.SelectedTax = response.AllTaxes.Where(x => x.TaxDetailsId == request.TaxId).FirstOrDefault();
+                    }
+                }
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<GetTaxDetailsResponse>> GetTaxDetailsWithCompanySetting(CompanyTaxDetailsListRequest request)
+        {
+            try
+            {
+                List<GetTaxDetailsResponse> listData = new List<GetTaxDetailsResponse>();
+                var inclisiveAllTaxes = false;
+                var taxDetailsIds = "";
+                foreach (var td in request.TaxId)
+                {
+
+                        taxDetailsIds +=  td + "," ;
+
+                }
+                taxDetailsIds = taxDetailsIds.Remove(taxDetailsIds.Length - 1);
+                var parms = new SqlParameter[]
+                 {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@TaxDetailsIds", taxDetailsIds)
+                 };
+
+                string sqlText = $"EXECUTE dbo.[GetTaxDetails] @CompanyId , @TaxDetailsIds";
+                var taxdetails = await _context.GetTaxDetails.FromSqlRaw(sqlText, parms).ToListAsync();
+                var inclusiveOfAllTaxes = await _context.CompanySetting.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId && k.IsActive == true);
+                if (inclusiveOfAllTaxes != null)
+                    inclisiveAllTaxes = inclusiveOfAllTaxes.IsAllProductInclusiveOfTax;
+                if (taxdetails != null && taxdetails.Count > 0)
+                {
+                    foreach (var tax in taxdetails)
+                    {
+                        var retData = _mapper.Map<GetTaxDetails, GetTaxDetailsResponse>(tax);
+                        retData.IsAllProductInclusiveOfTax = inclisiveAllTaxes;
+                        listData.Add(retData);
+                    }
+                }
+                return listData;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

@@ -42,7 +42,6 @@ namespace CompanyManagement.Api.Service
                 var res = new ResponseCompanyDtlByIdFrontend();
 
                 var data = await _context.Company
-                    .Include(c => c.CurrencyMaster)
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
@@ -91,7 +90,6 @@ namespace CompanyManagement.Api.Service
                 var res = new CompanyInfo();
 
                 var data = await _context.Company
-                    .Include(c => c.CurrencyMaster)
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
@@ -125,7 +123,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-
+       
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
@@ -205,7 +203,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetLookUpType] @LookUpType";
-                var dataList = await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList =await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
 
                 if (dataList?.Count > 0)
                 {
@@ -332,7 +330,7 @@ namespace CompanyManagement.Api.Service
                  };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
-                var dataList = await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList =await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -586,7 +584,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
-                var dataList = await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList =await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -714,7 +712,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
-                var dataList = await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList =await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -936,7 +934,6 @@ namespace CompanyManagement.Api.Service
                 var res = new ResponseCompanyDtlByIdFrontend();
 
                 var data = await _context.Company
-                    .Include(c => c.CurrencyMaster)
                     .Where(c => c.CompanyId == CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
@@ -1016,7 +1013,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        
+
         public async Task<CompanyDetailsForSentMail> GetCompanyDetailsForSentMail(RequestBase request)
         {
             try
@@ -1090,41 +1087,6 @@ namespace CompanyManagement.Api.Service
             return mimeMessage;
         }
 
-        public async Task<bool> EditProductInclusiveOfTax(RequestProductInclusiveOfTax request)
-        {
-            try
-            {
-                bool result = false;
-                var commandText = "UPDATE [dbo].[CompanySetting] SET [IsAllProductInclusiveOfTax]=@IsAllProductInclusiveOfTax WHERE [CompanyId]=@CompanyId";
-                var parms = new SqlParameter[]
-                {
-                   new SqlParameter("@IsAllProductInclusiveOfTax", request.IsAllProductInclusiveOfTax),
-                   new SqlParameter("@CompanyId", request.CompanyId)
-                };
-                result = await _context.Database.ExecuteSqlRawAsync(commandText, parms) > 0 ? true : false;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-                throw;
-            }
-        }
-
-        public async Task<bool> IsProductInclusiveOfTax(RequestBase request)
-        {
-            try
-            {
-                return
-                    (await _context.CompanySetting
-                    .FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId))
-                    .IsAllProductInclusiveOfTax;                    
-            }
-            catch (Exception ex)
-            {
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-                throw;
-            }
-        }
+       
     }
 }

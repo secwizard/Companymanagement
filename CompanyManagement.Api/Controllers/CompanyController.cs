@@ -592,7 +592,6 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-
         [Authorize]
         [HttpPost("DeleteTemplateSetting")]
         public async Task<IActionResult> DeleteTemplateSetting(DeleteCompanyTemplate request)
@@ -684,53 +683,6 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
-        [Authorize]
-        [HttpPost("EditProductInclusiveOfTax")]
-        public async Task<IActionResult> EditProductInclusiveOfTax(RequestProductInclusiveOfTax request)
-        {
-            var response = new Response<bool>();
-            try
-            {
-                var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-                {
-                    request.UserId = user.UserId;
-                    response.Data = await _companyService.EditProductInclusiveOfTax(request);
-                }
-                response.Status = response.Data;
-                response.Message = !response.Data ? "Error updating data." : string.Empty;
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-            }
-            return Ok(response);
-        }
-
-        [Authorize]
-        [HttpPost("IsProductInclusiveOfTax")]
-        public async Task<IActionResult> IsProductInclusiveOfTax(RequestBase request)
-        {
-            var response = new Response<bool>();
-            try
-            {
-                var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-                {
-                    response.Data = await _companyService.IsProductInclusiveOfTax(request);
-                }
-                response.Status = response.Data;
-                response.Message = !response.Data ? "Error fetching company tax setting." : string.Empty;
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-            }
-            return Ok(response);
-        }
     }
 }
+
