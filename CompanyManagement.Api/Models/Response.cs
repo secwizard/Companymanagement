@@ -64,6 +64,7 @@ namespace CompanyManagement.Api.Models
         public LookUpInfo SelectedLookUp { get; set; }
         public Int64 SuggestedCompanyId { get; set; }
         public string CompanySiteUrl { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class CompanyMailServer
@@ -294,5 +295,13 @@ namespace CompanyManagement.Api.Models
     {
         public long VariantId { get; set; }
         public long ItemId { get; set; }
+    }
+    public class Currency
+    {
+        public int CurrencyMasterId { get; set; }
+        public string CountryCode { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
+
     }
 }

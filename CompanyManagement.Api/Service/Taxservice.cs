@@ -72,22 +72,50 @@ namespace CompanyManagement.Api.Service
                     Total = request.Total
                 };
 
-                if (request.TaxDetailsId == 0)
+                using (var transaction = _context.Database.BeginTransaction())
                 {
-                    taxset.CreatedById = request.UserId;
-                    taxset.CreatedOnUTC = DateTime.UtcNow;
-                    await _context.TaxDetails.AddAsync(taxset);
+                    try
+                    {
+                        if (request.TaxDetailsId == 0)
+                        {
+                            taxset.CreatedById = request.UserId;
+                            taxset.CreatedOnUTC = DateTime.UtcNow;
+                            taxset.UpdatedById = request.UserId;
+                            taxset.UpdatedOnUTC = DateTime.UtcNow;
+                            await _context.TaxDetails.AddAsync(taxset);
+                        }
+                        else
+                        {
+                            taxset.UpdatedById = request.UserId;
+                            taxset.UpdatedOnUTC = DateTime.UtcNow;
+                            _context.Entry(taxset).State = EntityState.Modified;
+                            _context.Entry(taxset).Property(x => x.CreatedById).IsModified = false;
+                            _context.Entry(taxset).Property(x => x.CreatedOnUTC).IsModified = false;
+                        }
+
+                        var ret = await _context.SaveChangesAsync();
+                        if (ret > 0)
+                        {
+                            await _context.Database.ExecuteSqlRawAsync("[dbo].[SetDefaultTaxForCompany] @companyId", new[] {
+                                new SqlParameter("@companyId",taxset.CompanyId)
+                            });
+                        }
+
+                        if (ret > 0)
+                        {
+                            await transaction.CommitAsync();
+                            return _mapper.Map<TaxDetails, TaxDetailsGet>(taxset);
+                        }
+                        else
+                            await transaction.RollbackAsync();
+                    }
+                    catch
+                    {
+                        await transaction.RollbackAsync();
+                    }
+
+                    throw new Exception("Error in save");
                 }
-                else
-                {
-                    taxset.UpdatedById = request.UserId;
-                    taxset.UpdatedOnUTC = DateTime.UtcNow;
-                    _context.Entry(taxset).State = EntityState.Modified;
-                    _context.Entry(taxset).Property(x => x.CreatedById).IsModified = false;
-                    _context.Entry(taxset).Property(x => x.CreatedOnUTC).IsModified = false;
-                }
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TaxDetails, TaxDetailsGet>(taxset);
             }
             catch (Exception ex)
             {
@@ -95,7 +123,6 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-
         public async Task<List<TaxDetailsGet>> GetTaxDetails(RequestBase request)
         {
             try
