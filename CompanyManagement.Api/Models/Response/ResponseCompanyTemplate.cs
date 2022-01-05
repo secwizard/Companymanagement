@@ -27,16 +27,5 @@ namespace CompanyManagement.Api.Models.Response
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
     }
 
-    public class ResponseCompanyTemplateSection
-    {
-        public int CompanyTemplateSectionId { get; set; }
-        public int SectionType { get; set; }
-        public string SectionName { get; set; }
-        public string SectionBackgrounColor { get; set; }
-        public bool? IsActive { get; set; }       
-        public string PrimaryText { get; set; }
-        public string SecondaryText { get; set; }
-        public string TertiaryText { get; set; }
-        public int DisplayOrder { get; set; }
-    }
+    
 }

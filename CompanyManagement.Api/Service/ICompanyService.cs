@@ -36,5 +36,10 @@ namespace CompanyManagement.Api.Service
         Task<List<GetLookUpType>> GetCompanyLookUp(RequestLookUp request);
 
         Task<ResponseMail> SendMail(NotificationMetadata notificationMetadata, RequestSendMail requestSendMail);
+
+        Task<bool> EditProductInclusiveOfTax(RequestProductInclusiveOfTax request);
+
+        Task<bool> IsProductInclusiveOfTax(RequestBase request);
+
     }
 }

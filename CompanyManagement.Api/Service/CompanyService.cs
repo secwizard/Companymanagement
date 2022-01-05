@@ -90,6 +90,7 @@ namespace CompanyManagement.Api.Service
                 var res = new CompanyInfo();
 
                 var data = await _context.Company
+                    .Include(c => c.CurrencyMaster)
                     .Where(c => c.CompanyId == request.CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
@@ -934,6 +935,7 @@ namespace CompanyManagement.Api.Service
                 var res = new ResponseCompanyDtlByIdFrontend();
 
                 var data = await _context.Company
+                    .Include(c => c.CurrencyMaster)
                     .Where(c => c.CompanyId == CompanyId
                     && c.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
@@ -1086,7 +1088,42 @@ namespace CompanyManagement.Api.Service
             { Text = requestSendMail.Message };
             return mimeMessage;
         }
+        public async Task<bool> EditProductInclusiveOfTax(RequestProductInclusiveOfTax request)
+        {
+            try
+            {
+                bool result = false;
+                var commandText = "UPDATE [dbo].[CompanySetting] SET [IsAllProductInclusiveOfTax]=@IsAllProductInclusiveOfTax WHERE [CompanyId]=@CompanyId";
+                var parms = new SqlParameter[]
+                {
+                   new SqlParameter("@IsAllProductInclusiveOfTax", request.IsAllProductInclusiveOfTax),
+                   new SqlParameter("@CompanyId", request.CompanyId)
+                };
+                result = await _context.Database.ExecuteSqlRawAsync(commandText, parms) > 0 ? true : false;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
 
-       
+        public async Task<bool> IsProductInclusiveOfTax(RequestBase request)
+        {
+            try
+            {
+                return
+                    (await _context.CompanySetting
+                    .FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId))
+                    .IsAllProductInclusiveOfTax;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
     }
 }
