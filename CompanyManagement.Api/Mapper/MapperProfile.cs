@@ -11,7 +11,8 @@ namespace CompanyManagement.Api.Mapper
         {
             this.CreateMap<CompanyInfo, Company>(MemberList.None)
                 .ForMember(s => s.CurrencyMaster, c => c.MapFrom(m => m.Currency));
-            this.CreateMap<Company, CompanyInfo>(MemberList.None);
+            this.CreateMap<Company, CompanyInfo>(MemberList.None)
+                .ForMember(s => s.Currency, c => c.MapFrom(m => m.CurrencyMaster));
             this.CreateMap<CompanyMailServer, MailServer>(MemberList.None);
             this.CreateMap<MailServer, CompanyMailServer>(MemberList.None);
             this.CreateMap<CompanyTheme, Theme>(MemberList.None);
