@@ -28,5 +28,6 @@ namespace CompanyManagement.Api.Models.Response
         public string InvoiceEmailTemplate { get; set; }
         public string ReminderEmailTemplate { get; set; } 
         public string GSTIN { get; set; }
+        public string CurrencySymbol { get; set; }
     }
 }
