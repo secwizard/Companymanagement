@@ -41,6 +41,10 @@ namespace CompanyManagement.Api.Models
         [Column("CurrencyId")]
         public int CurrencyMasterId { get; set; }
         public CurrencyMaster CurrencyMaster { get; set; }
+        public string AdminPhoneCode { get; set; }
+        public string ServicePhoneCode { get; set; }
+        public string AdminPhoneCountryCode { get; set; }
+        public string ServicePhoneCountryCode { get; set; }
     }
 
     public class Branch
