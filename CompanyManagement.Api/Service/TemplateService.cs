@@ -635,7 +635,7 @@ namespace CompanyManagement.Api.Service
             template.TertiaryColor = dataTemplte.TertiaryColor;
             template.WebViewName = dataTemplte.WebViewName;
             template.MobileViewName = dataTemplte.MobileViewName;
-            template = await GetTemplateSection(template, dataTemplte.TemplateId);
+            template = await GetTemplateSection(template, dataTemplte.CompanyTemplateId);
             return template;
         }
         private async Task<FrontEndTemplate> GetTemplateSection(FrontEndTemplate template, int templateId)
