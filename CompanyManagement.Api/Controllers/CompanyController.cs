@@ -730,6 +730,45 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+       
+        [HttpPost("SaveNotificationService")]
+        public async Task<IActionResult> SaveNotificationService(RequestSaveNotificationServiceDetails request)
+        {
+            Response<ResponseSaveTwillioNotificationService> response = new Response<ResponseSaveTwillioNotificationService>();
+            try
+            {
+                var result = await _companyService.SaveTwillioNotificationService(request);
+                response.Data = result;
+                response.Status = result != null;
+                response.Message = response.Status ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+        [HttpPost("GetNotificationServiceService")]
+        public async Task<IActionResult> GetNotificationServiceService(RequestGetNotificationSettingsServiceDetails request)
+        {
+            Response<ResponseGetNotificationServiceDetails> response = new Response<ResponseGetNotificationServiceDetails>();
+            try
+            {
+                var result = await _companyService.GetNotificationServiceService(request);
+                response.Data = result;
+                response.Status = result != null;
+                response.Message = response.Status ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "Some error occured!";
+                log.Error($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+            }
+            return Ok(response);
+        }
     }
 }
 

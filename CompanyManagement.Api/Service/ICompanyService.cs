@@ -40,6 +40,9 @@ namespace CompanyManagement.Api.Service
         Task<bool> EditProductInclusiveOfTax(RequestProductInclusiveOfTax request);
 
         Task<bool> IsProductInclusiveOfTax(RequestBase request);
+        Task<ResponseSaveTwillioNotificationService> SaveTwillioNotificationService(RequestSaveNotificationServiceDetails request);
 
+        Task<ResponseGetNotificationServiceDetails> GetNotificationServiceService(RequestGetNotificationSettingsServiceDetails request);
+        
     }
 }
