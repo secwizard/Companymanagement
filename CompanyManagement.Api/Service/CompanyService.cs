@@ -124,7 +124,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-       
+
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
@@ -208,7 +208,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetLookUpType] @LookUpType";
-                var dataList =await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList = await _context.GetLookUpType.FromSqlRaw(sqlText, parms).ToListAsync();
 
                 if (dataList?.Count > 0)
                 {
@@ -335,7 +335,7 @@ namespace CompanyManagement.Api.Service
                  };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTheme] @CompanyId";
-                var dataList =await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList = await _context.GetCompanyTheme.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -589,7 +589,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanySettings] @CompanyId, @SettingType, @DataText";
-                var dataList =await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList = await _context.CompanySettingInfo.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -717,7 +717,7 @@ namespace CompanyManagement.Api.Service
                 };
 
                 string sqlText = $"EXECUTE dbo.[GetCompanyTemplate] @CompanyId";
-                var dataList =await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
+                var dataList = await _context.GetCompanyTemplate.FromSqlRaw(sqlText, parms).ToListAsync();
                 return dataList;
             }
             catch (Exception ex)
@@ -1127,6 +1127,95 @@ namespace CompanyManagement.Api.Service
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
                 throw;
             }
+        }
+        public async Task<ResponseSaveTwillioNotificationService> SaveTwillioNotificationService(RequestSaveNotificationServiceDetails request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                     {
+                          new SqlParameter("@Id", request.Id),
+                          new SqlParameter("@CompanyId", request.CompanyId),
+                          new SqlParameter("@ServiceName", request.ServiceName),
+                          new SqlParameter("@AccountSID", request.AccountSID??""),
+                          new SqlParameter("@AuthToken", request.AuthToken??""),
+                          new SqlParameter("@FromNumber", request.FromNumber??""),
+                          new SqlParameter("@SortCode", request.SortCode??""),
+                          new SqlParameter("@APIKey", request.APIKey??""),
+                          new SqlParameter("@SenderId", request.SenderId??""),
+                          new SqlParameter("@URLLink", request.URLLink??""),
+                          new SqlParameter("@SMTPServerAddress", request.SMTPServerAddress??""),
+                          new SqlParameter("@MailSendPort", request.MailSendPort??""),
+                          new SqlParameter("@FromEmailId", request.FromEmailId??""),
+                          new SqlParameter("@SMTPUserId", request.SMTPUserId??""),
+                          new SqlParameter("@SMTPPassword", request.SMTPPassword??""),
+                          new SqlParameter("@IsSSLEnabled", request.IsSSLEnabled),
+                          
+                     };
+
+                string sqlText = $"dbo.SP_SaveCompanySecretForTwillioNotificationService @Id, @CompanyId, @ServiceName,@AccountSID,@AuthToken,@FromNumber,@SortCode,@APIKey,@SenderId,@URLLink,@SMTPServerAddress,@MailSendPort,@FromEmailId,@SMTPUserId,@SMTPPassword,@IsSSLEnabled";
+                var Id = await _context.AddEditTwillioNotificationService.FromSqlRaw(sqlText, parms).ToListAsync();
+                return Id.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                log.Error($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw ex;
+            }
+        }
+        public async Task<ResponseGetNotificationServiceDetails> GetNotificationServiceService(RequestGetNotificationSettingsServiceDetails request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@ServiceName", request.ServiceName)
+
+                };
+
+                string sqlText = $"EXECUTE dbo.SP_GetCompanySecretForTwillioNotificationService @CompanyId,@ServiceName";
+                var dataList = await _context.ResponseGetNotificationServiceDetails.FromSqlRaw(sqlText, parms).ToListAsync();
+                if (dataList?.Count > 0)
+                {
+                    return dataList.FirstOrDefault();
+                }
+                ResponseGetNotificationServiceDetails resBlankObj = new ResponseGetNotificationServiceDetails();
+                resBlankObj = await GetNotificationServiceDefaultObject();
+                return resBlankObj;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<ResponseGetNotificationServiceDetails> GetNotificationServiceDefaultObject()
+        {
+            ResponseGetNotificationServiceDetails resBlankObj = new ResponseGetNotificationServiceDetails();
+            try
+            {
+                resBlankObj.AccountSID = "";
+                resBlankObj.AuthToken = "";
+                resBlankObj.FromNumber = "";
+                resBlankObj.ServiceName = "";
+                resBlankObj.SortCode = "";
+                resBlankObj.APIKey = "";
+                resBlankObj.SenderId = "";
+                resBlankObj.URLLink = "";
+                resBlankObj.SMTPServerAddress = "";
+                resBlankObj.MailSendPort = "";
+                resBlankObj.FromEmailId = "";
+                resBlankObj.SMTPUserId = "";
+                resBlankObj.SMTPPassword = "";
+                resBlankObj.IsSSLEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+            return resBlankObj;
         }
 
     }

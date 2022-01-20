@@ -241,4 +241,29 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public Guid UserId { get; set; }
     }
+    public class RequestSaveNotificationServiceDetails
+    {
+        public int Id { get; set; }
+        public int CompanyId { get; set; }
+        public string ServiceName { get; set; }
+        public string AccountSID { get; set; }
+        public string AuthToken { get; set; }
+        public string FromNumber { get; set; }
+        public string SortCode { get; set; }
+        public string APIKey { get; set; }
+        public string SenderId { get; set; }
+        public string URLLink { get; set; }
+        public string SMTPServerAddress { get; set; }
+        public string MailSendPort { get; set; }
+        public string FromEmailId { get; set; }
+        public string SMTPUserId { get; set; }
+        public string SMTPPassword { get; set; }
+        public bool IsSSLEnabled { get; set; }
+
+    }
+    public class RequestGetNotificationSettingsServiceDetails
+    {
+        public long CompanyId { get; set; }
+        public string ServiceName { get; set; }
+    }
 }
