@@ -259,6 +259,8 @@ namespace CompanyManagement.Api.Models
         public string SMTPUserId { get; set; }
         public string SMTPPassword { get; set; }
         public bool IsSSLEnabled { get; set; }
+        public string RoboCallFromNumber { get; set; }
+        public string MessagingServiceSid { get; set; }
 
     }
     public class RequestGetNotificationSettingsServiceDetails

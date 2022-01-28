@@ -1150,10 +1150,12 @@ namespace CompanyManagement.Api.Service
                           new SqlParameter("@SMTPUserId", request.SMTPUserId??""),
                           new SqlParameter("@SMTPPassword", request.SMTPPassword??""),
                           new SqlParameter("@IsSSLEnabled", request.IsSSLEnabled),
-                          
+                          new SqlParameter("@RoboCallFromNumber", request.RoboCallFromNumber??""),
+                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid),
+
                      };
 
-                string sqlText = $"dbo.SP_SaveCompanySecretForTwillioNotificationService @Id, @CompanyId, @ServiceName,@AccountSID,@AuthToken,@FromNumber,@SortCode,@APIKey,@SenderId,@URLLink,@SMTPServerAddress,@MailSendPort,@FromEmailId,@SMTPUserId,@SMTPPassword,@IsSSLEnabled";
+                string sqlText = $"dbo.SP_SaveCompanySecretForTwillioNotificationService @Id, @CompanyId, @ServiceName,@AccountSID,@AuthToken,@FromNumber,@SortCode,@APIKey,@SenderId,@URLLink,@SMTPServerAddress,@MailSendPort,@FromEmailId,@SMTPUserId,@SMTPPassword,@IsSSLEnabled,@RoboCallFromNumber,@MessagingServiceSid";
                 var Id = await _context.AddEditTwillioNotificationService.FromSqlRaw(sqlText, parms).ToListAsync();
                 return Id.FirstOrDefault();
             }
