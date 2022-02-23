@@ -106,6 +106,7 @@ namespace CompanyManagement.Api.Service
                     TertiaryColor = request.TertiaryColor,
                     IsActive = request.IsActive,
                     IsForB2C = request.IsForB2C,
+                    FontFamilyId = request.FontFamilyId,
                     UpdatedBy = request.UserId.ToString(),
                     UpdatedAt = DateTime.UtcNow
                 };
@@ -116,6 +117,7 @@ namespace CompanyManagement.Api.Service
                 _context.Entry(companyTemplate).Property(x => x.TertiaryColor).IsModified = true;
                 _context.Entry(companyTemplate).Property(x => x.IsForB2C).IsModified = true;
                 _context.Entry(companyTemplate).Property(x => x.IsActive).IsModified = true;
+                _context.Entry(companyTemplate).Property(x => x.FontFamilyId).IsModified = true;
                 _context.Entry(companyTemplate).Property(x => x.UpdatedBy).IsModified = true;
                 _context.Entry(companyTemplate).Property(x => x.UpdatedAt).IsModified = true;
                 await _context.SaveChangesAsync();
@@ -517,6 +519,10 @@ namespace CompanyManagement.Api.Service
             companyDataTemp.UpdatedBy = request.UserId.ToString();
             companyDataTemp.UpdatedAt = DateTime.UtcNow;
             companyDataTemp.IsActive = true;
+
+            companyDataTemp.OnlyForMobile = false;
+            companyDataTemp.IsEditable = true;
+
             var companyTempSectionsLst = companyDataTemp.CompanyTemplateSections;
             if (companyTempSectionsLst != null && companyTempSectionsLst.Any())
             {
@@ -730,6 +736,21 @@ namespace CompanyManagement.Api.Service
                     .Where(t => t.CompanyTemplateSectionId == companyTemplateSectionId)
                     .FirstOrDefaultAsync();
                 return dataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<ResponseFrontEndTemplateFontFamilyMaster>> GetAllFrontEndTemplateFonts()
+        {
+            try
+            {
+                var fontList = await _context.FrontEndTemplateFontFamilyMaster.ToListAsync();                   
+                var returnFontList = _mapper.Map<List<ResponseFrontEndTemplateFontFamilyMaster>>(fontList);
+                return returnFontList;
             }
             catch (Exception ex)
             {

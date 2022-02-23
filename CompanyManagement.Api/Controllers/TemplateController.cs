@@ -399,5 +399,24 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+
+        [HttpGet("GetAllFrontEndTemplateFonts")]
+        public async Task<IActionResult> GetAllFrontEndTemplateFonts()
+        {
+            var response = new ResponseList<ResponseFrontEndTemplateFontFamilyMaster>();
+            try
+            {
+                response.Data = await _temllateService.GetAllFrontEndTemplateFonts();
+                response.Status = response.Data != null;
+                response.Message = response.Data != null ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
     }
 }

@@ -25,5 +25,6 @@ namespace CompanyManagement.Api.Service
         Task<bool> ChangeCompanyTemplateB2C(RequestChangeCompanyTemplateB2C request);
         Task<bool> DeleteCompanyTemplateSectionItem(RequestDeleteCompanyTemplateSectionItem request);
         Task<bool> DeleteCompanyTemplateSectionImage(RequestDeleteCompanyTemplateSectionImage request);
+        Task<List<ResponseFrontEndTemplateFontFamilyMaster>> GetAllFrontEndTemplateFonts();
     }
 }

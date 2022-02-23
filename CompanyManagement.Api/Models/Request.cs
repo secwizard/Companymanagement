@@ -138,6 +138,7 @@ namespace CompanyManagement.Api.Models
         public string TertiaryColor { get; set; }
         public bool IsForB2C { get; set; }
         public bool IsActive { get; set; }
+        public int? FontFamilyId { get; set; }
         public long CompanyId { get; set; }
         public Guid UserId { get; set; }
     }
