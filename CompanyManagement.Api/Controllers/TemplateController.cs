@@ -119,6 +119,25 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+        [HttpPost("GetDefaultTemplateByCompany")]
+        public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
+        {
+            var response = new Response<ResponseCompanyTemplate>();
+            try
+            {
+                response.Data = await _temllateService.GetDefaultTemplateByCompany(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
         [Authorize]
         [HttpPost("GetCompanyTemplateList")]
         public async Task<ActionResult<List<ResponseCompanyTemplate>>> GetCompanyTemplateList(RequestBase request)
@@ -314,6 +333,25 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetAllFrontEndTemplateFonts")]
+        public async Task<IActionResult> GetAllFrontEndTemplateFonts()
+        {
+            var response = new ResponseList<ResponseFrontEndTemplateFontFamilyMaster>();
+            try
+            {
+                response.Data = await _temllateService.GetAllFrontEndTemplateFonts();
+                response.Status = response.Data != null;
+                response.Message = response.Data != null ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
         //-------------------------------------------------------------//
         [HttpPost("GetTemplate")]
         public async Task<IActionResult> GetTemplate(RequestCompanyTemplate request)
@@ -389,26 +427,6 @@ namespace CompanyManagement.Api.Controllers
                     response.Status = await _temllateService.DeleteCompanyTemplateSectionImage(request);
                     response.Message = response.Status == false ? "Error deleting." : string.Empty;
                 }
-            }
-            catch (Exception ex)
-            {
-                response.Status = false;
-                response.Message = ex.Message;
-                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
-            }
-            return Ok(response);
-        }
-
-
-        [HttpGet("GetAllFrontEndTemplateFonts")]
-        public async Task<IActionResult> GetAllFrontEndTemplateFonts()
-        {
-            var response = new ResponseList<ResponseFrontEndTemplateFontFamilyMaster>();
-            try
-            {
-                response.Data = await _temllateService.GetAllFrontEndTemplateFonts();
-                response.Status = response.Data != null;
-                response.Message = response.Data != null ? string.Empty : "Data not found.";
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CompanyManagement.Api.Helpers;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,7 +50,5 @@ namespace CompanyManagement.Api.Models.Response
         public string SubSectionGradientPrimaryColor { get; set; }
         public string SubSectionGradientSecondaryColor { get; set; }
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
-    }
-
-    
+    }    
 }

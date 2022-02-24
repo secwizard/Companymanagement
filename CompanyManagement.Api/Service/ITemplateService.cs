@@ -16,6 +16,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseCompanyTemplate> AddCompanyTemplate(RequestAddCompanyTemplate request);
         Task<ResponseCompanyTemplate> EditCompanyTemplate(RequestEditCompanyTemplate request);
         Task<ResponseCompanyTemplate> GetCompnayTemplateById(RequestGetCompanyTemplateById request);
+        Task<ResponseCompanyTemplate> GetDefaultTemplateByCompany(RequestCompanyTemplate request);
         Task<ResponseCompanyTemplateSection> EditCompanyTemplateSection(RequestEditCompanyTemplateSection request);
         Task<bool> EditCompanyTemplateSectionOrder(RequestEditCompanyTemplateSectionOrder request);
         Task<ResponseSectionItemAndImage> AddSectionItem(RequestAddSectionItem request);

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CompanyManagement.Api.Data;
+using CompanyManagement.Api.Helpers;
 using CompanyManagement.Api.Mapper;
 using CompanyManagement.Api.Models;
 using CompanyManagement.Api.Models.Request;
@@ -8,6 +9,7 @@ using log4net;
 using MailKit.Net.Smtp;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ namespace CompanyManagement.Api.Service
         private readonly CompanyDBContext _context;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly IMapper _mapper;
+        private readonly AppSettings appSettings;
 
         static TemplateService()
         {
@@ -32,9 +35,10 @@ namespace CompanyManagement.Api.Service
             }).CreateMapper();
         }
 
-        public TemplateService(CompanyDBContext context)
+        public TemplateService(CompanyDBContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            this.appSettings = appSettings.Value;
         }
 
         public async Task<List<ResponseFrontendTemplate>> GetFrontendTemplate()
@@ -146,7 +150,16 @@ namespace CompanyManagement.Api.Service
                         .Where(ct => ct.CompanyTemplateId == request.CompanyTemplateId)
                         .FirstOrDefaultAsync();
 
+                var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId)).ImageFilePath;
+
                 var returnDataTemplte = _mapper.Map<ResponseCompanyTemplate>(dataTemplte);
+                returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
+                returnDataTemplte.ImagePath = appSettings.CommonImagePath + returnDataTemplte.ImagePath;
+                returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
+                returnDataTemplte.TopProfileIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopProfileIconUrl;
+                returnDataTemplte.TopMenuIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopMenuIconUrl;
+                returnDataTemplte.SeeAllArrowIconUrl = appSettings.CommonImagePath + returnDataTemplte.SeeAllArrowIconUrl;
+
                 foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
                 {
                     MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages,
@@ -154,6 +167,30 @@ namespace CompanyManagement.Api.Service
                 }
 
                 return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
+        {
+            try
+            {
+                var templateId = (await _context.CompanyTemplate.FirstOrDefaultAsync(k =>
+                  k.CompanyId == request.CompanyId
+                  && k.IsActive == true
+                  && k.Type == request.Type
+                  && (string.IsNullOrWhiteSpace(request.Url) ? k.IsDefault == true : k.Url == request.Url)))
+                  .CompanyTemplateId;
+
+                return
+                    await GetCompnayTemplateById(new RequestGetCompanyTemplateById
+                    {
+                        CompanyId = request.CompanyId,
+                        CompanyTemplateId = templateId
+                    });
             }
             catch (Exception ex)
             {
@@ -748,7 +785,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var fontList = await _context.FrontEndTemplateFontFamilyMaster.ToListAsync();                   
+                var fontList = await _context.FrontEndTemplateFontFamilyMaster.ToListAsync();
                 var returnFontList = _mapper.Map<List<ResponseFrontEndTemplateFontFamilyMaster>>(fontList);
                 return returnFontList;
             }
