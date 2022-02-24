@@ -49,6 +49,7 @@ namespace CompanyManagement.Api.Service
                     .Where(k => k.IsActive)
                     .ToListAsync();
                 var returnDataTemplte = _mapper.Map<List<ResponseFrontendTemplate>>(dataTemplte);
+                returnDataTemplte.ForEach(k => k.ImagePath = k.ImagePath.StartsWith("http") ? k.ImagePath : appSettings.CommonImagePath + k.ImagePath);
                 return returnDataTemplte;
             }
             catch (Exception ex)
