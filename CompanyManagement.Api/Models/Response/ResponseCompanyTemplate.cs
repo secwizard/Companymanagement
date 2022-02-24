@@ -37,7 +37,7 @@ namespace CompanyManagement.Api.Models.Response
         public string TopMenuIconUrl { get; set; }
         public string PageBackgroundColor { get; set; }
         public string FontBackgroundBrushColor { get; set; }
-        public int? FontFamilyId { get; set; }
+        //public int? FontFamilyId { get; set; }
         public string GeneralFontColor { get; set; }
         public string SeeAllArrowIconUrl { get; set; }
         public string ShopNowFontColor { get; set; }
@@ -49,6 +49,7 @@ namespace CompanyManagement.Api.Models.Response
         public bool? IsSubSectionTransparent { get; set; }
         public string SubSectionGradientPrimaryColor { get; set; }
         public string SubSectionGradientSecondaryColor { get; set; }
+        public ResponseFrontEndTemplateFontFamilyMaster ResponseFontFamily { get; set; }
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
     }
 }

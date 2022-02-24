@@ -29,9 +29,10 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<FooterData, Template>(MemberList.None);
             this.CreateMap<OnBoardSubscriptions, SubscriptionMaster>(MemberList.None);
             this.CreateMap<OnBoardAddOns, AddOnMaster>(MemberList.None);
-            this.CreateMap<SubscriptionMaster, OnBoardSubscriptions > (MemberList.None);
-            this.CreateMap<AddOnMaster, OnBoardAddOns > (MemberList.None);
+            this.CreateMap<SubscriptionMaster, OnBoardSubscriptions>(MemberList.None);
+            this.CreateMap<AddOnMaster, OnBoardAddOns>(MemberList.None);
             this.CreateMap<CompanyTemplate, ResponseCompanyTemplate>(MemberList.None)
+            .ForMember(s => s.ResponseFontFamily, c => c.MapFrom(m => m.FontFamilyMaster))
              .ForMember(s => s.ResponseCompanyTemplateSections, c => c.MapFrom(m => m.CompanyTemplateSections));
             this.CreateMap<FronEndTemplate, ResponseFrontendTemplate>(MemberList.None);
 

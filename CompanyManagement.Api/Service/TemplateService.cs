@@ -48,6 +48,7 @@ namespace CompanyManagement.Api.Service
                 var dataTemplte = await _context.FronEndTemplate
                     .Where(k => k.IsActive)
                     .ToListAsync();
+
                 var returnDataTemplte = _mapper.Map<List<ResponseFrontendTemplate>>(dataTemplte);
                 returnDataTemplte.ForEach(k => k.ImagePath = k.ImagePath.StartsWith("http") ? k.ImagePath : appSettings.CommonImagePath + k.ImagePath);
                 return returnDataTemplte;
@@ -143,6 +144,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
+
                 var dataTemplte = await _context.CompanyTemplate
                         .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder))
                             .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder))
@@ -150,6 +152,9 @@ namespace CompanyManagement.Api.Service
                             .ThenInclude(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(ctsImg => ctsImg.DisplayOrder))
                         .Where(ct => ct.CompanyTemplateId == request.CompanyTemplateId)
                         .FirstOrDefaultAsync();
+
+                var fontMaster = await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == dataTemplte.FontFamilyId);
+                dataTemplte.FontFamilyMaster = fontMaster;
 
                 var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId)).ImageFilePath;
 
