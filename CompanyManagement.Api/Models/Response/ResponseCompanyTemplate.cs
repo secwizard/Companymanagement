@@ -50,5 +50,5 @@ namespace CompanyManagement.Api.Models.Response
         public string SubSectionGradientPrimaryColor { get; set; }
         public string SubSectionGradientSecondaryColor { get; set; }
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
-    }    
+    }
 }
