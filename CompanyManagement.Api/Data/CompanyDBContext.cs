@@ -44,6 +44,8 @@ namespace CompanyManagement.Api.Data
         public DbSet<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMapping { get; set; }
         public DbSet<CurrencyMaster> CurrencyMaster { get; set; }
 
+        public DbSet<FrontEndTemplateFontFamilyMaster> FrontEndTemplateFontFamilyMaster { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

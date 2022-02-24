@@ -104,8 +104,10 @@ namespace CompanyManagement.Api.Models
     {
         [JsonProperty("companyid")]
         public long CompanyId { get; set; }
+
         [JsonProperty("type")]
         public string Type { get; set; }
+
         [JsonProperty("url")]
         public string Url { get; set; }
 
@@ -138,6 +140,7 @@ namespace CompanyManagement.Api.Models
         public string TertiaryColor { get; set; }
         public bool IsForB2C { get; set; }
         public bool IsActive { get; set; }
+        public int? FontFamilyId { get; set; }
         public long CompanyId { get; set; }
         public Guid UserId { get; set; }
     }

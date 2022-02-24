@@ -52,6 +52,7 @@ namespace CompanyManagement.Api.Mapper
 
             this.CreateMap<CurrencyMaster, Currency>(MemberList.None).ReverseMap();
 
+            this.CreateMap<FrontEndTemplateFontFamilyMaster, ResponseFrontEndTemplateFontFamilyMaster>(MemberList.None).ReverseMap();
         }
     }
 }

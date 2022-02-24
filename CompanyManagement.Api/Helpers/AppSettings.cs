@@ -8,5 +8,6 @@ namespace CompanyManagement.Api.Helpers
     public class AppSettings
     {
         public string UserManagementAPI { get; set; }
+        public string CommonImagePath { get; set; }
     }
 }
