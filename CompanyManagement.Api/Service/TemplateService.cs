@@ -563,9 +563,6 @@ namespace CompanyManagement.Api.Service
             companyDataTemp.UpdatedAt = DateTime.UtcNow;
             companyDataTemp.IsActive = true;
 
-            companyDataTemp.OnlyForMobile = false;
-            companyDataTemp.IsEditable = true;
-
             var companyTempSectionsLst = companyDataTemp.CompanyTemplateSections;
             if (companyTempSectionsLst != null && companyTempSectionsLst.Any())
             {
