@@ -160,7 +160,7 @@ namespace CompanyManagement.Api.Service
 
                 var returnDataTemplte = _mapper.Map<ResponseCompanyTemplate>(dataTemplte);
                 returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
-                returnDataTemplte.ImagePath = appSettings.CommonImagePath + returnDataTemplte.ImagePath;
+                returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
                 returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
                 returnDataTemplte.TopProfileIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopProfileIconUrl;
                 returnDataTemplte.TopMenuIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopMenuIconUrl;
