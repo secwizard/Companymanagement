@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+
 namespace CompanyManagement.Api.Controllers
 {
     [Route("[controller]")]
@@ -788,6 +789,84 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+        #region ========== Zone settings======
+        [Authorize]
+        [HttpPost("SaveZoneSettings")]
+        public async Task<IActionResult> SaveZoneSettings(RequestZoneSetting request)
+        {
+            var response = new Response<ZoneSetting>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    response = await _companyService.SaveZoneSettings(request);
+                }
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Error saving zone setting." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+        [Authorize]
+        [HttpPost("GetZoneList")]
+        public async Task<IActionResult> GetZoneList(RequestZoneSetting request)
+        {
+            var responce = new ResponseList<ResponseZoneSetting>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    responce.Data = await _companyService.GetZoneList(request);
+                }
+                responce.Status = responce.Data?.Count > 0;
+                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        [HttpGet("GetZonePattern")]
+        public async Task<IActionResult> GetZonePattern()
+        {
+            var responce = new ResponseList<ZonePatternDetails>();
+            List<ZonePatternDetails> list = new List<ZonePatternDetails>();
+            try
+            {
+                var getAllZoneSettingPatterns = Utility.ZoneSettingPattern.GetAllZoneSettingPatterns();
+                if(getAllZoneSettingPatterns !=null)
+                {
+                    foreach (var item in getAllZoneSettingPatterns)
+                    {
+                        ZonePatternDetails eachItem = new ZonePatternDetails();
+                        eachItem.PatternId = item.PatternId;
+                        eachItem.PatternName = item.PatternName;
+                        list.Add(eachItem);
+                    }
+                }
+                responce.Data = list;
+                responce.Status = responce.Data?.Count > 0;
+                responce.Message = responce.Data?.Count > 0 ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
+        #endregion
     }
 }
 

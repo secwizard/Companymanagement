@@ -43,6 +43,10 @@ namespace CompanyManagement.Api.Service
         Task<ResponseSaveTwillioNotificationService> SaveTwillioNotificationService(RequestSaveNotificationServiceDetails request);
 
         Task<ResponseGetNotificationServiceDetails> GetNotificationServiceService(RequestGetNotificationSettingsServiceDetails request);
+
+        Task<Response<ZoneSetting>> SaveZoneSettings(RequestZoneSetting request);
+        Task<List<ResponseZoneSetting>> GetZoneList(RequestZoneSetting request);
         
+
     }
 }

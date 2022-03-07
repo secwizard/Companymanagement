@@ -124,7 +124,7 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-
+        
         public async Task<Response<CompanyInfo>> EditCompany(CompanyInfo request)
         {
             var retVal = new Response<CompanyInfo>();
@@ -1112,6 +1112,77 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        #region ========== Zone settings======
+        public async Task<Response<ZoneSetting>> SaveZoneSettings(RequestZoneSetting request)
+        {
+            var retVal = new Response<ZoneSetting>();
+            try
+            {
+                var data = await _context.ZoneSetting
+                    .Where(c => c.CompanyId == request.CompanyId && c.ZoneId== request.ZoneId
+                    && c.IsActive == true).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+                    data = MapZoneSetting(data, request);
+                    data.UpdatedBy = request.CreatedBy;
+                    data.UpdatedOnUTC = DateTime.UtcNow;
+                    _context.Entry(data).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    retVal.Message = "OK";
+                    retVal.Status = true;
+                }
+                else
+                {
+                    data = MapZoneSetting(data, request);
+                    data.CreatedBy = request.CreatedBy;
+                    data.CreatedOnUTC = DateTime.UtcNow;
+                    _context.ZoneSetting.Add(data);
+                    retVal.Message = "OK";
+                    retVal.Status = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                retVal.Message = "ERROR";
+                retVal.Status = false;
+            }
+
+            return retVal;
+        }
+        private ZoneSetting MapZoneSetting(ZoneSetting preData, RequestZoneSetting postData)
+        {
+            if (preData == null)
+            preData = new ZoneSetting();
+            preData.ZoneName = postData.ZoneName;
+            preData.PatternValue = postData.PatternValue;
+            preData.PatternType = postData.PatternType;
+            preData.Isdefault = postData.Isdefault;
+            preData.IsActive = postData.IsActive;
+            return preData;
+        }
+        public async Task<List<ResponseZoneSetting>> GetZoneList(RequestZoneSetting request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId)
+                };
+
+                string sqlText = $"EXECUTE dbo.SP_GetZoneSetting @CompanyId";
+                var dataList = await _context.ResponseZoneSetting.FromSqlRaw(sqlText, parms).ToListAsync();
+                return dataList;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        #endregion
 
         public async Task<bool> IsProductInclusiveOfTax(RequestBase request)
         {

@@ -271,4 +271,19 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public string ServiceName { get; set; }
     }
+    public class RequestZoneSetting
+    {
+        public int ZoneId { get; set; }
+        public long CompanyId { get; set; }
+        public string ZoneName { get; set; }
+        public string PatternValue { get; set; }
+        public byte PatternType { get; set; }
+        public bool Isdefault { get; set; }
+        public bool IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public DateTime? CreatedOnUTC { get; set; }
+        public DateTime? UpdatedOnUTC { get; set; }
+
+    }
 }

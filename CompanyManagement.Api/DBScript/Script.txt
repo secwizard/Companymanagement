@@ -39,3 +39,58 @@ BEGIN
 END
 GO
 
+-- =============================================
+-- Author:		Kuntal Das
+-- Create date: 07 March 2022
+-- Description:	create table ZoneSetting
+-- =============================================
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ZoneSetting](
+	[ZoneId] [int] IDENTITY(1,1) NOT NULL,
+	[CompanyId] [bigint] NOT NULL,
+	[ZoneName] [nvarchar](100) NOT NULL,
+	[PatternValue] [nvarchar](max) NOT NULL,
+	[PatternType] [tinyint] NOT NULL,
+	[Isdefault] [bit] NOT NULL DEFAULT 0,
+	[IsActive] [bit] NOT NULL DEFAULT 1,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[UpdatedBy] [uniqueidentifier] NULL,
+	[CreatedOnUTC] [datetime] NULL,
+	[UpdatedOnUTC] [datetime] NULL,
+ CONSTRAINT [PK_ZoneSetting1] PRIMARY KEY CLUSTERED 
+(
+	[ZoneId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+go
+   
+CREATE PROCEDURE [dbo].[SP_GetZoneSetting]    
+    @CompanyId INT 
+AS    
+-- =============================================    
+-- Author: Kuntal Das    
+-- Create date: 07 March 2022    
+-- Description:  Get all ZoneSetting value against ComapnyId   
+-- =============================================    
+BEGIN    
+ SELECT [ZoneId]
+      ,[CompanyId]
+      ,[ZoneName]
+      ,[PatternValue]
+      ,[PatternType]
+      ,[Isdefault]
+      ,[IsActive]
+      ,[CreatedBy]
+      ,[UpdatedBy]
+      ,[CreatedOnUTC]
+      ,[UpdatedOnUTC]
+  FROM [dbo].[ZoneSetting] WHERE  CompanyId=@CompanyId AND IsActive=1
+END
+go

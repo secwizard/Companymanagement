@@ -337,4 +337,42 @@ namespace CompanyManagement.Api.Models
         public string MessagingServiceSid { get; set; }
 
     }
+    public class ZoneSetting
+    {
+        [Key]
+        public int ZoneId { get; set; }
+        public long CompanyId { get; set; }
+        public string ZoneName { get; set; }
+        public string PatternValue { get; set; }
+        public byte PatternType { get; set; }
+        public bool Isdefault { get; set; }
+        public bool IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public DateTime? CreatedOnUTC { get; set; }
+        public DateTime? UpdatedOnUTC { get; set; }
+
+    }
+    public class ResponseZoneSetting
+    {
+        [Key]
+        public int ZoneId { get; set; }
+        public long CompanyId { get; set; }
+        public string ZoneName { get; set; }
+        public string PatternValue { get; set; }
+        public byte PatternType { get; set; }
+        public bool Isdefault { get; set; }
+        public bool IsActive { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public DateTime? CreatedOnUTC { get; set; }
+        public DateTime? UpdatedOnUTC { get; set; }
+
+    }
+    public class ZonePatternDetails
+    {
+        public byte PatternId { get; set; }
+        public string PatternName { get; set; }
+    }
+
 }
