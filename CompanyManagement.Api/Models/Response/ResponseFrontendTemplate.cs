@@ -37,7 +37,10 @@ namespace CompanyManagement.Api.Models.Response
         public decimal? SubSectionBorderRadius { get; set; }
         public bool? IsSubSectionTransparent { get; set; }
         public string SubSectionGradientPrimaryColor { get; set; }
-        public string SubSectionGradientSecondaryColor { get; set; }       
+        public string SubSectionGradientSecondaryColor { get; set; }
+        public string LargeBrushName { get; set; }
+        public string MediumBrushName { get; set; }
+        public string SmallBrushName { get; set; }
     }
 
     public class ResponseCompanyTemplateSection
