@@ -46,7 +46,9 @@ namespace CompanyManagement.Api.Service
 
         Task<Response<ZoneSetting>> SaveZoneSettings(RequestZoneSetting request);
         Task<List<ResponseZoneSetting>> GetZoneList(RequestZoneSetting request);
-        
+        Task<ResponseZoneSetting> GetZoneByZoneId(RequestZoneSetting request);
+        Task<ResponseZoneId> GetZoneId(RequestZoneSetting request);
+
 
     }
 }

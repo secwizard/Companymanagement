@@ -73,7 +73,8 @@ namespace CompanyManagement.Api.Data
         public DbSet<ResponseGetNotificationServiceDetails> ResponseGetNotificationServiceDetails { get; set; }
         public DbSet<ZoneSetting> ZoneSetting { get; set; }
         public DbSet<ResponseZoneSetting> ResponseZoneSetting { get; set; }
-        
+        public DbSet<ResponseZoneId> ResponseZoneId { get; set; }
+
 
     }
 }

@@ -53,6 +53,8 @@ GO
 CREATE TABLE [dbo].[ZoneSetting](
 	[ZoneId] [int] IDENTITY(1,1) NOT NULL,
 	[CompanyId] [bigint] NOT NULL,
+	[FromPostalCode] [bigint] NULL,
+	[ToPostalCode] [bigint] NULL,
 	[ZoneName] [nvarchar](100) NOT NULL,
 	[PatternValue] [nvarchar](max) NOT NULL,
 	[PatternType] [tinyint] NOT NULL,
@@ -82,6 +84,8 @@ AS
 BEGIN    
  SELECT [ZoneId]
       ,[CompanyId]
+	  ,[FromPostalCode]
+	  ,[ToPostalCode]
       ,[ZoneName]
       ,[PatternValue]
       ,[PatternType]
@@ -92,5 +96,31 @@ BEGIN
       ,[CreatedOnUTC]
       ,[UpdatedOnUTC]
   FROM [dbo].[ZoneSetting] WHERE  CompanyId=@CompanyId AND IsActive=1
+END
+go
+     
+CREATE PROCEDURE [dbo].[SP_GetZoneSettingByZoneId]      
+    @ZoneId INT   
+AS      
+-- =============================================      
+-- Author: Kuntal Das      
+-- Create date: 08 March 2022      
+-- Description:  Get  ZoneSetting value against ZoneId     
+-- =============================================      
+BEGIN      
+ SELECT [ZoneId]  
+      ,[CompanyId] 
+	  ,[FromPostalCode]
+	  ,[ToPostalCode]
+      ,[ZoneName]  
+      ,[PatternValue]  
+      ,[PatternType]  
+      ,[Isdefault]  
+      ,[IsActive]  
+      ,[CreatedBy]  
+      ,[UpdatedBy]  
+      ,[CreatedOnUTC]  
+      ,[UpdatedOnUTC]  
+  FROM [dbo].[ZoneSetting] WHERE  [ZoneId]=@ZoneId AND IsActive=1  
 END
 go

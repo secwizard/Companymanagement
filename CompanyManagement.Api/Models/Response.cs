@@ -342,6 +342,8 @@ namespace CompanyManagement.Api.Models
         [Key]
         public int ZoneId { get; set; }
         public long CompanyId { get; set; }
+        public long FromPostalCode { get; set; }
+        public long ToPostalCode { get; set; }
         public string ZoneName { get; set; }
         public string PatternValue { get; set; }
         public byte PatternType { get; set; }
@@ -358,6 +360,8 @@ namespace CompanyManagement.Api.Models
         [Key]
         public int ZoneId { get; set; }
         public long CompanyId { get; set; }
+        public long FromPostalCode { get; set; }
+        public long ToPostalCode { get; set; }
         public string ZoneName { get; set; }
         public string PatternValue { get; set; }
         public byte PatternType { get; set; }
@@ -374,5 +378,9 @@ namespace CompanyManagement.Api.Models
         public byte PatternId { get; set; }
         public string PatternName { get; set; }
     }
-
-}
+    public class ResponseZoneId
+    {
+        [Key]
+        public int ZoneId { get; set; }
+    }
+    }

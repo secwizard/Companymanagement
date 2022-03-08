@@ -836,6 +836,49 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
+        [Authorize]
+        [HttpPost("GetZoneByZoneId")]
+        public async Task<IActionResult> GetZoneByZoneId(RequestZoneSetting request)
+        {
+            Response<ResponseZoneSetting> response = new Response<ResponseZoneSetting>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    response.Data = await _companyService.GetZoneByZoneId(request);
+                }
+                response.Status = response.Data != null;
+                response.Message = response.Status ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+        
+        [HttpPost("GetZoneId")]
+        public async Task<IActionResult> GetZoneId(RequestZoneSetting request)
+        {
+            Response<ResponseZoneId> response = new Response<ResponseZoneId>();
+            try
+            {
+                response.Data = await _companyService.GetZoneId(request);
+                response.Status = response.Data != null;
+                response.Message = response.Status ? string.Empty : "Data not found.";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
         [HttpGet("GetZonePattern")]
         public async Task<IActionResult> GetZonePattern()
         {

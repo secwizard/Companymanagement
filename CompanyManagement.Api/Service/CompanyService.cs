@@ -1182,6 +1182,47 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<ResponseZoneSetting> GetZoneByZoneId(RequestZoneSetting request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@ZoneId", request.ZoneId)
+                };
+
+                string sqlText = $"EXECUTE dbo.SP_GetZoneSettingByZoneId @ZoneId";
+                var data = await _context.ResponseZoneSetting.FromSqlRaw(sqlText, parms).FirstOrDefaultAsync();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+        public async Task<ResponseZoneId> GetZoneId(RequestZoneSetting request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@PostalCode", request.PostalCode),
+                    new SqlParameter("@CityName", request.CityName),
+                    new SqlParameter("@StateName", request.StateName)
+                };
+
+                string sqlText = $"EXECUTE dbo.GetZoneId @CompanyId,@PostalCode,@CityName,@StateName";
+                var data = await _context.ResponseZoneId.FromSqlRaw(sqlText, parms).FirstOrDefaultAsync();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         #endregion
 
         public async Task<bool> IsProductInclusiveOfTax(RequestBase request)

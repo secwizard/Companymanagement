@@ -284,6 +284,9 @@ namespace CompanyManagement.Api.Models
         public Guid? UpdatedBy { get; set; }
         public DateTime? CreatedOnUTC { get; set; }
         public DateTime? UpdatedOnUTC { get; set; }
+        public string PostalCode { get; set; }
+        public string CityName { get; set; }
+        public string StateName { get; set; }
 
     }
 }
