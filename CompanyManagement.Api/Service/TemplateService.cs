@@ -146,9 +146,9 @@ namespace CompanyManagement.Api.Service
             {
 
                 var dataTemplte = await _context.CompanyTemplate
-                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder))
+                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
                             .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder))
-                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder))
+                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
                             .ThenInclude(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(ctsImg => ctsImg.DisplayOrder))
                         .Where(ct => ct.CompanyTemplateId == request.CompanyTemplateId)
                         .FirstOrDefaultAsync();
