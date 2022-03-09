@@ -287,8 +287,13 @@ namespace CompanyManagement.Api.Models
         public string SubSectionGradientPrimaryColor { get; set; }
         public string SubSectionGradientSecondaryColor { get; set; }
         public int? FontFamilyId { get; set; }
+
         [ForeignKey(nameof(FontFamilyId))]
         public FrontEndTemplateFontFamilyMaster FontFamilyMaster { get; set; }
+
+        public string LargeBrushName { get; set; }
+        public string MediumBrushName { get; set; }
+        public string SmallBrushName { get; set; }
         public List<TemplateDefaultSection> TemplateDefaultSections { get; set; } = new List<TemplateDefaultSection>();
     }
     public class TemplateDefaultSection
@@ -349,6 +354,11 @@ namespace CompanyManagement.Api.Models
         public int? FontFamilyId { get; set; }
         [ForeignKey(nameof(FontFamilyId))]
         public FrontEndTemplateFontFamilyMaster FontFamilyMaster { get; set; }
+
+        public string LargeBrushName { get; set; }
+        public string MediumBrushName { get; set; }
+        public string SmallBrushName { get; set; }
+
         public List<CompanyTemplateSection> CompanyTemplateSections { get; set; } = new List<CompanyTemplateSection>();
     }
     public class CompanyTemplateSection
