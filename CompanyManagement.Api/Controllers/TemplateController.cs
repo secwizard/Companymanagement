@@ -18,7 +18,6 @@ namespace CompanyManagement.Api.Controllers
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ITemplateService _temllateService;
-
         public TemplateController(ITemplateService templateService)
         {
             _temllateService = templateService;
