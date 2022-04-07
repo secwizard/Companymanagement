@@ -188,7 +188,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                request.CompanyTemplateId = 124;
+                //request.CompanyTemplateId = 124;
                 var dataTemplte = await _context.CompanyTemplate
                         .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
                             .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder).Where(ctsItem => ctsItem.IsActive))
