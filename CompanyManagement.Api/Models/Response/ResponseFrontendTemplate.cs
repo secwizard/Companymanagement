@@ -54,6 +54,7 @@ namespace CompanyManagement.Api.Models.Response
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
+        public int SectionFor { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
     }
 
@@ -69,6 +70,20 @@ namespace CompanyManagement.Api.Models.Response
         public int DisplayOrder { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
+        public decimal Price { get; set; }
+        public decimal MRP { get; set; }
+        public decimal SalePrice { get; set; }
+        public decimal TaxPercentage { get; set; }
+        public decimal MembrPrice { get; set; }
+        public List<ReturnImages> Images { get; set; }
+    }
+
+    public class ReturnImages
+    {
+        public long id { get; set; }
+        public string name { get; set; }
+        public string alt { get; set; }
+        public string fullImagepath { get; set; }
     }
     public class ResponseCompanyTemplateSectionImage
     {

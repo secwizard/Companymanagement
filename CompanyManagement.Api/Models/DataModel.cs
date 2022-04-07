@@ -378,6 +378,7 @@ namespace CompanyManagement.Api.Models
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
+        public int SectionFor { get; set; }
         public CompanyTemplate CompanyTemplate { get; set; }
         public List<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMappings { get; set; } = new List<CompanyTemplateSectionItemMapping>();
         public List<CompanyTemplateSectionImageMapping> CompanyTemplateSectionImageMappings { get; set; } = new List<CompanyTemplateSectionImageMapping>();

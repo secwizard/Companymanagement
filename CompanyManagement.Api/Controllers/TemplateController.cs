@@ -137,6 +137,25 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+        [HttpPost("GetDefaultTemplateByCompanyV2")]
+        public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompanyV2(RequestCompanyTemplate request)
+        {
+            var response = new Response<ResponseCompanyTemplate>();
+            try
+            {
+                response.Data = await _temllateService.GetDefaultTemplateByCompanyV2(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
         [Authorize]
         [HttpPost("GetCompanyTemplateList")]
         public async Task<ActionResult<List<ResponseCompanyTemplate>>> GetCompanyTemplateList(RequestBase request)
