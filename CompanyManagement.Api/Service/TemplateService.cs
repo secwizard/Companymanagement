@@ -183,6 +183,44 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+        public async Task<ResponseCompanyTemplate> GetCompnayTemplateByIdV2(RequestGetCompanyTemplateById request)
+        {
+            try
+            {
+                //request.CompanyTemplateId = 124;
+                var dataTemplte = await _context.CompanyTemplate
+                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
+                            .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder).Where(ctsItem => ctsItem.IsActive))
+                        .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
+                        //.ThenInclude(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(ctsImg => ctsImg.DisplayOrder).Where(ctsImg => ctsImg.IsActive))
+                        .Where(ct => ct.CompanyTemplateId == request.CompanyTemplateId)
+                        .FirstOrDefaultAsync();
+
+                var fontMaster = await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == dataTemplte.FontFamilyId);
+                dataTemplte.FontFamilyMaster = fontMaster;
+
+                var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == request.CompanyId)).ImageFilePath;
+
+                var returnDataTemplte = _mapper.Map<ResponseCompanyTemplate>(dataTemplte);
+                returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
+                returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
+                returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
+                returnDataTemplte.TopProfileIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopProfileIconUrl;
+                returnDataTemplte.TopMenuIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopMenuIconUrl;
+                returnDataTemplte.SeeAllArrowIconUrl = appSettings.CommonImagePath + returnDataTemplte.SeeAllArrowIconUrl;
+                returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
+                returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
+                returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
+
+                return returnDataTemplte;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
         {
             try
@@ -207,6 +245,34 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+        public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompanyV2(RequestCompanyTemplate request)
+        {
+            try
+            {
+                var templateId = (await _context.CompanyTemplate.FirstOrDefaultAsync(k =>
+                  k.CompanyId == request.CompanyId
+                  && k.IsActive == true
+                  && k.Type == request.Type
+                  && (string.IsNullOrWhiteSpace(request.Url) ? k.IsDefault == true : k.Url == request.Url)))
+                  .CompanyTemplateId;
+
+                return
+                    await GetCompnayTemplateByIdV2(new RequestGetCompanyTemplateById
+                    {
+                        CompanyId = request.CompanyId,
+                        CompanyTemplateId = templateId
+                    });
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        
+
         public async Task<List<ResponseCompanyTemplate>> GetCompanyTemplates(RequestBase request)
         {
             try
