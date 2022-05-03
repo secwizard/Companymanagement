@@ -1203,7 +1203,7 @@ namespace CompanyManagement.Api.Service
                           new SqlParameter("@SMTPPassword", request.SMTPPassword??""),
                           new SqlParameter("@IsSSLEnabled", request.IsSSLEnabled),
                           new SqlParameter("@RoboCallFromNumber", request.RoboCallFromNumber??""),
-                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid),
+                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid??""),
 
                      };
 
