@@ -71,6 +71,7 @@ namespace CompanyManagement.Api.Data
         public DbSet<GetTaxDetails> GetTaxDetails { get; set; }
         public DbSet<ResponseSaveTwillioNotificationService> AddEditTwillioNotificationService { get; set; }
         public DbSet<ResponseGetNotificationServiceDetails> ResponseGetNotificationServiceDetails { get; set; }
-        
+        public DbSet<CompanySocialLink> CompanySocialLink { get; set; }
+
     }
 }
