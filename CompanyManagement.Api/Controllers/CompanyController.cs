@@ -788,6 +788,27 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("SaveUpdateSocialLink")]
+        public async Task<IActionResult> SaveUpdateSocialLink(CompanySocialLinkRequest request)
+        {
+            Response<CompanySocialLink> returnVal = new Response<CompanySocialLink>();
+            try
+            {
+                var result = await _companyService.SaveUpdateSocialLink(request);
+                returnVal.Data = result;
+                returnVal.Status = result != null;
+                returnVal.Message = result == null ? "Data Not Found" : string.Empty;
+
+
+            }
+            catch (Exception ex)
+            {
+                returnVal.Status = false;
+                returnVal.Message = "Some error occured!";
+                log.Error($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+            }
+            return Ok(returnVal);
+        }
     }
 }
 

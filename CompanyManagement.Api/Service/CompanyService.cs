@@ -1271,6 +1271,42 @@ namespace CompanyManagement.Api.Service
             }
             return resBlankObj;
         }
+        public async Task<CompanySocialLink> SaveUpdateSocialLink(CompanySocialLinkRequest request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanySocialLinkId", request.CompanySocialLinkId),
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@IsActive", request.IsActive),
+                    new SqlParameter("@Facebook", request.Facebook),
+                    new SqlParameter("@ShowFacebookOnline", request.ShowFacebookOnline),
+                    new SqlParameter("@Instagram", request.Instagram),
+                    new SqlParameter("@ShowInstagramOnline", request.ShowInstagramOnline),
+                    new SqlParameter("@Twitter", request.Twitter),
+                    new SqlParameter("@ShowTwitterOnline", request.ShowInstagramOnline),
+                    new SqlParameter("@ContactEmail", request.ContactPhone),
+                    new SqlParameter("@ShowContactEmailOnline", request.ShowContactEmailOnline),
+                    new SqlParameter("@ContactPhone", request.ContactPhone),
+                    new SqlParameter("@ShowContactPhoneOnline", request.ShowContactPhoneOnline),
+                    new SqlParameter("@CreatedByUserId", request.CreatedByUserId),
+                    new SqlParameter("@CreatedAt", request.CreatedAt),
+                    new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID),
+                    new SqlParameter("@UpdatedAt", request.UpdatedAt)
+                };
+                string sqlText = $"EXECUTE dbo.SP_SaveUpdateSocialLink  @CompanySocialLinkId, @CompanyId, @IsActive, @Facebook, @ShowFacebookOnline, @Instagram, @ShowInstagramOnline, @Twitter, @ShowTwitterOnline, @ContactEmail, @ShowContactEmailOnline, @ContactPhone, @ShowContactPhoneOnline, @CreatedByUserId, @CreatedAt, @UpdatedByUserID, @UpdatedAt";
+                var retval = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+
+
+                return retval.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+        }
 
     }
 }
