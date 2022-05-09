@@ -1279,7 +1279,7 @@ namespace CompanyManagement.Api.Service
                 {
                     new SqlParameter("@CompanySocialLinkId", request.CompanySocialLinkId),
                     new SqlParameter("@CompanyId", request.CompanyId),
-                    new SqlParameter("@IsActive", request.IsActive),
+                    new SqlParameter("@IsActive", true),
                     new SqlParameter("@Facebook", request.Facebook),
                     new SqlParameter("@ShowFacebookOnline", request.ShowFacebookOnline),
                     new SqlParameter("@Instagram", request.Instagram),
@@ -1290,9 +1290,9 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@ShowContactEmailOnline", request.ShowContactEmailOnline),
                     new SqlParameter("@ContactPhone", request.ContactPhone),
                     new SqlParameter("@ShowContactPhoneOnline", request.ShowContactPhoneOnline),
-                    new SqlParameter("@CreatedByUserId", request.CreatedByUserId),
+                    new SqlParameter("@CreatedByUserId", request.CreatedByUserId == null ? new Guid() : request.CreatedByUserId),
                     new SqlParameter("@CreatedAt", request.CreatedAt),
-                    new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID),
+                    new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID == null ? new Guid() : request.UpdatedByUserID),
                     new SqlParameter("@UpdatedAt", request.UpdatedAt)
                 };
                 string sqlText = $"EXECUTE dbo.SP_SaveUpdateSocialLink  @CompanySocialLinkId, @CompanyId, @IsActive, @Facebook, @ShowFacebookOnline, @Instagram, @ShowInstagramOnline, @Twitter, @ShowTwitterOnline, @ContactEmail, @ShowContactEmailOnline, @ContactPhone, @ShowContactPhoneOnline, @CreatedByUserId, @CreatedAt, @UpdatedByUserID, @UpdatedAt";
