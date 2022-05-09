@@ -101,6 +101,16 @@ namespace CompanyManagement.Api.Service
 
                     res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
                     res.SelectedLookUp = (from lk in lookup where lk.LookUpValue.ToLower() == data.BusinessType.ToLower() select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
+                    
+                    var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", request.CompanyId)};
+
+                    string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                    var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                    if (dataList?.Count > 0)
+                    {
+                        res = BindSocialLinkDataMobile(dataList.FirstOrDefault(), res);
+                    }
                     return res;
                 }
                 return null;
@@ -932,6 +942,35 @@ namespace CompanyManagement.Api.Service
             }
             return companyid;
         }
+        private ResponseCompanyDtlByIdFrontend BindSocialLinkDataWebsite(CompanySocialLink social, ResponseCompanyDtlByIdFrontend res)
+        {
+            res.Facebook = social.Facebook;
+            res.ShowFacebookOnline = social.ShowFacebookOnline;
+            res.Instagram = social.Instagram;
+            res.ShowInstagramOnline = social.ShowInstagramOnline;
+            res.Twitter = social.Twitter;
+            res.ShowTwitterOnline = social.ShowTwitterOnline;
+            res.ContactEmail = social.ContactEmail;
+            res.ShowContactEmailOnline = social.ShowContactEmailOnline;
+            res.ContactPhone = social.ContactPhone;
+            res.ShowContactPhoneOnline = social.ShowContactPhoneOnline;
+            return res;
+        }
+
+        private CompanyInfo BindSocialLinkDataMobile(CompanySocialLink social, CompanyInfo res)
+        {
+            res.Facebook = social.Facebook;
+            res.ShowFacebookOnline = social.ShowFacebookOnline;
+            res.Instagram = social.Instagram;
+            res.ShowInstagramOnline = social.ShowInstagramOnline;
+            res.Twitter = social.Twitter;
+            res.ShowTwitterOnline = social.ShowTwitterOnline;
+            res.ContactEmail = social.ContactEmail;
+            res.ShowContactEmailOnline = social.ShowContactEmailOnline;
+            res.ContactPhone = social.ContactPhone;
+            res.ShowContactPhoneOnline = social.ShowContactPhoneOnline;
+            return res;
+        }
         private async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(long CompanyId)
         {
             try
@@ -970,6 +1009,19 @@ namespace CompanyManagement.Api.Service
 
                     res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == CompanyId
                      && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+
+
+                    var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", CompanyId)};
+
+                    string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                    var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                    if (dataList?.Count > 0)
+                    {
+                        res = BindSocialLinkDataWebsite(dataList.FirstOrDefault(), res);
+                    }
+
 
                     return res;
                 }
@@ -1151,7 +1203,7 @@ namespace CompanyManagement.Api.Service
                           new SqlParameter("@SMTPPassword", request.SMTPPassword??""),
                           new SqlParameter("@IsSSLEnabled", request.IsSSLEnabled),
                           new SqlParameter("@RoboCallFromNumber", request.RoboCallFromNumber??""),
-                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid),
+                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid??""),
 
                      };
 
