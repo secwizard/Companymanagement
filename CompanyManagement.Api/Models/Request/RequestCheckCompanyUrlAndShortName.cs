@@ -29,7 +29,11 @@ namespace CompanyManagement.Api.Models.Request
         public bool ShowContactPhoneOnline { get; set; }
         public Guid CreatedByUserId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public Guid UpdatedByUserID { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public Guid? UpdatedByUserID { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+    }
+    public class SocialReqById
+    {
+        public long CompanyId { get; set; }
     }
 }
