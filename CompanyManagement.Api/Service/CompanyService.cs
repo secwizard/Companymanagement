@@ -101,7 +101,7 @@ namespace CompanyManagement.Api.Service
 
                     res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
                     res.SelectedLookUp = (from lk in lookup where lk.LookUpValue.ToLower() == data.BusinessType.ToLower() select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
-                    
+
                     var parms = new SqlParameter[]{
                     new SqlParameter("@CompanyId", request.CompanyId)};
 
@@ -1270,6 +1270,49 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
             return resBlankObj;
+        }
+
+        public async Task<CompanySocialLinkResponse> GetAllSocialDetails(SocialReqById reqById)
+        {
+            CompanySocialLinkResponse retVal = new CompanySocialLinkResponse();
+            try
+            {
+                var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", reqById.CompanyId)};
+
+                string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                if (dataList != null && dataList.Count > 0)
+                    return BindSocialData(dataList.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+            return retVal;
+        }
+        private CompanySocialLinkResponse BindSocialData(CompanySocialLink socialData)
+        {
+            CompanySocialLinkResponse data = new CompanySocialLinkResponse();
+            data.CompanyId = socialData.CompanyId;
+            data.CompanySocialLinkId = socialData.CompanySocialLinkId;
+            data.IsActive = socialData.IsActive;
+            data.Facebook = socialData.Facebook;
+            data.ShowFacebookOnline = socialData.ShowFacebookOnline;
+            data.Instagram = socialData.Instagram;
+            data.ShowInstagramOnline = socialData.ShowInstagramOnline;
+            data.Twitter = socialData.Twitter;
+            data.ShowTwitterOnline = socialData.ShowTwitterOnline;
+            data.ContactPhone = socialData.ContactPhone;
+            data.ShowContactPhoneOnline = socialData.ShowContactPhoneOnline;
+            data.ContactEmail = socialData.ContactEmail;
+            data.ShowContactEmailOnline = socialData.ShowContactEmailOnline;
+            data.CreatedByUserId = socialData.CreatedByUserId;
+            data.CreatedAt = socialData.CreatedAt;
+            data.UpdatedByUserID = socialData.UpdatedByUserID;
+            data.UpsatedAt = socialData.UpsatedAt;
+            return data;
         }
         public async Task<CompanySocialLink> SaveUpdateSocialLink(CompanySocialLinkRequest request)
         {
