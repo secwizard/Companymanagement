@@ -365,8 +365,9 @@ namespace CompanyManagement.Api.Models
         public bool ShowContactPhoneOnline { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid CreatedByUserId { get; set; }
-        public DateTime? UpsatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public Guid? UpdatedByUserID { get; set; }
+       
     }
 
 }
