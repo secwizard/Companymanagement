@@ -1330,15 +1330,15 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@ShowInstagramOnline", request.ShowInstagramOnline),
                     new SqlParameter("@Twitter", request.Twitter),
                     new SqlParameter("@ShowTwitterOnline", request.ShowInstagramOnline),
-                    new SqlParameter("@ContactEmail", request.ContactPhone),
+                    new SqlParameter("@ContactEmail", request.ContactEmail),
                     new SqlParameter("@ShowContactEmailOnline", request.ShowContactEmailOnline),
                     new SqlParameter("@ContactPhone", request.ContactPhone),
                     new SqlParameter("@ShowContactPhoneOnline", request.ShowContactPhoneOnline),
                     new SqlParameter("@CreatedByUserId", request.CreatedByUserId == null ? new Guid() : request.CreatedByUserId),
-                    new SqlParameter("@CreatedAt", request.CreatedAt),
-                    //new SqlParameter("@CreatedAt", Common.StringToDateTime(request.CreatedAt_Str)),
+                    new SqlParameter("@CreatedAt",  request.CreatedAt),
+                   // new SqlParameter("@CreatedAt", Common.StringToDateTime(request.CreatedAt_Str)),
                     new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID == null ? new Guid() : request.UpdatedByUserID),
-                    new SqlParameter("@UpdatedAt", request.UpdatedAt)
+                    new SqlParameter("@UpdatedAt", request.UpdatedAt == null)
                 };
                 string sqlText = $"EXECUTE dbo.SP_SaveUpdateSocialLink  @CompanySocialLinkId, @CompanyId, @IsActive, @Facebook, @ShowFacebookOnline, @Instagram, @ShowInstagramOnline, @Twitter, @ShowTwitterOnline, @ContactEmail, @ShowContactEmailOnline, @ContactPhone, @ShowContactPhoneOnline, @CreatedByUserId, @CreatedAt, @UpdatedByUserID, @UpdatedAt";
                 var retval = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
