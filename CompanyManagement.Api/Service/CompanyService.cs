@@ -1310,8 +1310,9 @@ namespace CompanyManagement.Api.Service
             data.ShowContactEmailOnline = socialData.ShowContactEmailOnline;
             data.CreatedByUserId = socialData.CreatedByUserId;
             data.CreatedAt = socialData.CreatedAt;
+            //data.CreatedAt = socialData.I(socialData.GetOrdinal("CreatedAt")) ? DateTime.Now : Convert.ToDateTime(socialData["CreatedAt"]);
             data.UpdatedByUserID = socialData.UpdatedByUserID;
-            data.UpsatedAt = socialData.UpsatedAt;
+            data.UpdatedAt = socialData.UpdatedAt;
             return data;
         }
         public async Task<CompanySocialLink> SaveUpdateSocialLink(CompanySocialLinkRequest request)
@@ -1335,6 +1336,7 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@ShowContactPhoneOnline", request.ShowContactPhoneOnline),
                     new SqlParameter("@CreatedByUserId", request.CreatedByUserId == null ? new Guid() : request.CreatedByUserId),
                     new SqlParameter("@CreatedAt", request.CreatedAt),
+                    //new SqlParameter("@CreatedAt", Common.StringToDateTime(request.CreatedAt_Str)),
                     new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID == null ? new Guid() : request.UpdatedByUserID),
                     new SqlParameter("@UpdatedAt", request.UpdatedAt)
                 };
