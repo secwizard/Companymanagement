@@ -1,6 +1,7 @@
 ﻿using CompanyManagement.Api.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -56,7 +57,8 @@ namespace CompanyManagement.Api.Service
                 responseMail.Message = "Exception : " + ex.Message + " Inner Exception : " + ex.InnerException;
             }
             return responseMail;
-        }
+        }      
 
     }
+
 }
