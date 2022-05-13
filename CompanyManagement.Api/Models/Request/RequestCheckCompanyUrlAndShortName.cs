@@ -37,5 +37,6 @@ namespace CompanyManagement.Api.Models.Request
     public class SocialReqById
     {
         public long CompanyId { get; set; }
+        public long CompanySocialLinkId { get; set; }
     }
 }
