@@ -140,6 +140,8 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetDefaultTemplateByCompanyV2")]
         public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompanyV2(RequestCompanyTemplate request)
         {
+            log.Info("***GetDefaultTemplateByCompanyV2 api*** Call at Date : " + DateTime.UtcNow);
+
             var response = new Response<ResponseCompanyTemplate>();
             try
             {
@@ -153,6 +155,8 @@ namespace CompanyManagement.Api.Controllers
                 response.Message = ex.Message;
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
             }
+
+            log.Info("***GetDefaultTemplateByCompanyV2 api*** Call end Date : " + DateTime.UtcNow);
             return Ok(response);
         }
 
