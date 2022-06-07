@@ -873,6 +873,40 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task <ResponseCompanyTemplate> GetTemplateSectionForMetaData()
+        {
+            ResponseCompanyTemplate retVal = new ResponseCompanyTemplate();
+            try
+            {
+                
+
+                string sqlText = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+                var dataList = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlText).ToListAsync();
+                if (dataList != null && dataList.Count > 0)
+                {
+                  
+                    foreach (var item in dataList)
+                    {
+                        TemplateSectionForMetaData tdata = new TemplateSectionForMetaData();
+                        {
+                            tdata.TemplateSectionForId = item.TemplateSectionForId;
+                            tdata.TemplateSectionForName = item.TemplateSectionForName;
+                        }
+                      
+                        retVal.TemplateSectionForMetaData.Add(tdata);
+                    }  
+                  
+                }
+         
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+            return retVal;
+        }
+      
 
     }
 }

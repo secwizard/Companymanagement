@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CompanyManagement.Api.Models.Response
 {
     public class ResponseCompanyTemplate
-    {
+    { 
         public int CompanyTemplateId { get; set; }
         public long CompanyId { get; set; }
         public long TemplateId { get; set; }
@@ -54,5 +54,6 @@ namespace CompanyManagement.Api.Models.Response
         public string MediumBrushName { get; set; }
         public string SmallBrushName { get; set; }
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
+        public List<TemplateSectionForMetaData> TemplateSectionForMetaData { get; set; } = new List<TemplateSectionForMetaData>();
     }
 }

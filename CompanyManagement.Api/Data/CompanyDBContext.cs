@@ -17,6 +17,7 @@ namespace CompanyManagement.Api.Data
         }
 
         public DbSet<Company> Company { get; set; }
+
         public DbSet<Branch> Branch { get; set; }
         public DbSet<CompanySetting> CompanySetting { get; set; }
         public DbSet<MailServer> MailServer { get; set; }
@@ -72,6 +73,9 @@ namespace CompanyManagement.Api.Data
         public DbSet<ResponseSaveTwillioNotificationService> AddEditTwillioNotificationService { get; set; }
         public DbSet<ResponseGetNotificationServiceDetails> ResponseGetNotificationServiceDetails { get; set; }
         public DbSet<CompanySocialLink> CompanySocialLink { get; set; }
+        public DbSet<TemplateSectionForMetaData> TemplateSectionForMetaData { get; set; }
+
+        //public DbSet<ResponseCompanyTemplate> ResponseCompanyTemplate { get; set; }
 
     }
 }

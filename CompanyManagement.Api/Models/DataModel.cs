@@ -540,4 +540,12 @@ namespace CompanyManagement.Api.Models
         public Guid UpdatedByUserID { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
+
+    public class TemplateSectionForMetaData
+    {      [Key]
+        public int TemplateSectionForId { get; set; }
+        public string TemplateSectionForName { get; set; }
+
+       
+    }
 }
