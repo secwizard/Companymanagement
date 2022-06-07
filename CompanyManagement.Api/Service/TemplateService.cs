@@ -144,6 +144,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
+                log.Info("***GetCompnayTemplateById api Method*** Call at Date : " + DateTime.UtcNow);
 
                 var dataTemplte = await _context.CompanyTemplate
                         .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
@@ -174,6 +175,8 @@ namespace CompanyManagement.Api.Service
                     MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages,
                         section.ResponseSectionItemAndImage.SectionItems);
                 }
+
+                log.Info("***GetCompnayTemplateById api Method*** Call end Date : " + DateTime.UtcNow);
 
                 return returnDataTemplte;
             }
@@ -248,6 +251,8 @@ namespace CompanyManagement.Api.Service
 
         public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompanyV2(RequestCompanyTemplate request)
         {
+            log.Info("***GetDefaultTemplateByCompanyV2 Method*** Call at Date : " + DateTime.UtcNow);
+
             try
             {
                 var templateId = (await _context.CompanyTemplate.FirstOrDefaultAsync(k =>
@@ -257,6 +262,7 @@ namespace CompanyManagement.Api.Service
                   && (string.IsNullOrWhiteSpace(request.Url) ? k.IsDefault == true : k.Url == request.Url)))
                   .CompanyTemplateId;
 
+                log.Info("***GetDefaultTemplateByCompanyV2 Method*** Call end Date : " + DateTime.UtcNow);
                 return
                     await GetCompnayTemplateByIdV2(new RequestGetCompanyTemplateById
                     {
