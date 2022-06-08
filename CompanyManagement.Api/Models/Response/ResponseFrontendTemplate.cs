@@ -59,7 +59,7 @@ namespace CompanyManagement.Api.Models.Response
         public int SectionFor { get; set; }
         public string CreatedBy { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
-        public SelectList SectionForList { get; set; }
+        public List<TemplateSectionForMetaData> SectionForList { get; set; }
     }
 
     public class ResponseCompanyTemplateSectionItem

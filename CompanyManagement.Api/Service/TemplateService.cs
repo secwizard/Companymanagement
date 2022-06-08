@@ -883,7 +883,7 @@ namespace CompanyManagement.Api.Service
                 var dataList = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlText).ToListAsync();
                 if (dataList != null && dataList.Count > 0)
                 {
-                    retVal.SectionForList = new SelectList(dataList, "TemplateSectionForName", "TemplateSectionForId",dataList.FirstOrDefault().TemplateSectionForId);
+                    retVal.SectionForList = dataList;
                 }
             }
             catch (Exception ex)
