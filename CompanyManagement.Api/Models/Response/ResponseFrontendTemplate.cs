@@ -50,7 +50,7 @@ namespace CompanyManagement.Api.Models.Response
         public int CompanyTemplateId { get; set; }
         public int SectionType { get; set; }
         public string SectionName { get; set; }
-        public string SectionBackgrounColor { get; set; }
+        public string? SectionBackgrounColor { get; set; }
         public bool? IsActive { get; set; }
         public string PrimaryText { get; set; }
         public string SecondaryText { get; set; }

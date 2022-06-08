@@ -904,7 +904,7 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@CompanyTemplateId", request.CompanyTemplateId),
                     new SqlParameter("@SectionType", request.SectionType),
                     new SqlParameter("@SectionName", request.SectionName),
-                    new SqlParameter("@SectionBackgrounColor", request.SectionBackgrounColor),
+                    new SqlParameter("@SectionBackgrounColor", request.SectionBackgrounColor??""),
                     new SqlParameter("@IsActive",true),
                     new SqlParameter("@CreatedBy",request.CreatedBy),
                     new SqlParameter("@UpdatedBy", request.UpdatedBy??""),
