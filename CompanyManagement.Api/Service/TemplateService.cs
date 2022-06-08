@@ -7,6 +7,7 @@ using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Models.Response;
 using log4net;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -873,31 +874,17 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
-        public async Task <ResponseCompanyTemplate> GetTemplateSectionForMetaData()
+        public async Task<ResponseCompanyTemplateSection> GetTemplateSectionForMetaData()
         {
-            ResponseCompanyTemplate retVal = new ResponseCompanyTemplate();
+            ResponseCompanyTemplateSection retVal = new ResponseCompanyTemplateSection();
             try
             {
-                
-
                 string sqlText = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
                 var dataList = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlText).ToListAsync();
                 if (dataList != null && dataList.Count > 0)
                 {
-                  
-                    foreach (var item in dataList)
-                    {
-                        TemplateSectionForMetaData tdata = new TemplateSectionForMetaData();
-                        {
-                            tdata.TemplateSectionForId = item.TemplateSectionForId;
-                            tdata.TemplateSectionForName = item.TemplateSectionForName;
-                        }
-                      
-                        retVal.TemplateSectionForMetaData.Add(tdata);
-                    }  
-                  
+                    retVal.SectionForList = new SelectList(dataList, "TemplateSectionForName", "TemplateSectionForId",dataList.FirstOrDefault().TemplateSectionForId);
                 }
-         
             }
             catch (Exception ex)
             {
@@ -906,7 +893,44 @@ namespace CompanyManagement.Api.Service
             }
             return retVal;
         }
-      
+
+        //public async Task<TemplateSectionForMetaData> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplate request)
+        //{
+        //    try
+        //    {
+        //        var parms = new SqlParameter[]
+        //        {
+        //            new SqlParameter("@FaqId", request.FaqId),
+        //            new SqlParameter("@CompanyId", request.CompanyId),
+        //            new SqlParameter("@Faq", request.Faq??""),
+        //            new SqlParameter("@FaqAnswer", request.FaqAnswer),
+        //            new SqlParameter("@FaqPostedBy", request.FaqPostedBy == null ? new Guid() : request.FaqPostedBy),
+        //            new SqlParameter("@FaqUpdatedBy", request.FaqUpdatedBy == null ? new Guid() : request.FaqUpdatedBy),
+        //            new SqlParameter("@AnswerPostedBy", request.AnswerPostedBy == null ? new Guid() : request.AnswerPostedBy),
+        //            new SqlParameter("@AnswerUpdatedBy", request.AnswerUpdatedBy == null ? new Guid() : request.AnswerUpdatedBy),
+        //            new SqlParameter("@ItemId", request.ItemId),
+        //            new SqlParameter("@IsActive",true),
+        //            new SqlParameter("@FaqUpdatedByName", request.FaqUpdatedByName??""),
+        //            new SqlParameter("@FaqPostedByName", request.FaqPostedByName??""),
+        //            new SqlParameter("@AnswerPostedByName",  request.AnswerPostedByName??""),
+        //            new SqlParameter("@AnswerUpdatedByName", request.AnswerUpdatedByName??""),
+        //            new SqlParameter("@ItemVariant", request.ItemVariant )
+
+        //        };
+        //        string sqlText = $"EXECUTE dbo.SP_SaveUpdateFAQ  @FaqId, @CompanyId, @Faq, @FaqAnswer, @FaqPostedBy, @FaqUpdatedBy, @AnswerPostedBy, @AnswerUpdatedBy, @ItemId, @IsActive, @FaqUpdatedByName, @FaqPostedByName, @AnswerPostedByName, @AnswerUpdatedByName,@ItemVariant";
+
+        //        var retval = await _context.FAQModel.FromSqlRaw(sqlText, parms).ToListAsync();
+
+        //        return retval.FirstOrDefault();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+        //        throw;
+        //    }
+        //    // return new FAQModel();
+        //}
+
 
     }
 }

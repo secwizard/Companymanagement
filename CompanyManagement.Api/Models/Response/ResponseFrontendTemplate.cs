@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace CompanyManagement.Api.Models.Response
@@ -46,6 +47,7 @@ namespace CompanyManagement.Api.Models.Response
     public class ResponseCompanyTemplateSection
     {
         public int CompanyTemplateSectionId { get; set; }//pk
+        public int CompanyTemplateId { get; set; }
         public int SectionType { get; set; }
         public string SectionName { get; set; }
         public string SectionBackgrounColor { get; set; }
@@ -55,7 +57,9 @@ namespace CompanyManagement.Api.Models.Response
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
         public int SectionFor { get; set; }
+        public string CreatedBy { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
+        public SelectList SectionForList { get; set; }
     }
 
     public class ResponseCompanyTemplateSectionItem

@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Api.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,5 @@ namespace CompanyManagement.Api.Models.Response
         public string MediumBrushName { get; set; }
         public string SmallBrushName { get; set; }
         public List<ResponseCompanyTemplateSection> ResponseCompanyTemplateSections { get; set; } = new List<ResponseCompanyTemplateSection>();
-        public List<TemplateSectionForMetaData> TemplateSectionForMetaData { get; set; } = new List<TemplateSectionForMetaData>();
     }
 }

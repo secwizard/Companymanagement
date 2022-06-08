@@ -463,7 +463,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetTemplateSectionForMetaData")]
         public async Task<IActionResult> GetTemplateSectionForMetaData()
         {
-            Response<ResponseCompanyTemplate> returnVal = new Response<ResponseCompanyTemplate>();
+            Response<ResponseCompanyTemplateSection> returnVal = new Response<ResponseCompanyTemplateSection>();
 
             try
             {

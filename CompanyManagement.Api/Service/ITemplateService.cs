@@ -28,6 +28,6 @@ namespace CompanyManagement.Api.Service
         Task<bool> DeleteCompanyTemplateSectionItem(RequestDeleteCompanyTemplateSectionItem request);
         Task<bool> DeleteCompanyTemplateSectionImage(RequestDeleteCompanyTemplateSectionImage request);
         Task<List<ResponseFrontEndTemplateFontFamilyMaster>> GetAllFrontEndTemplateFonts();
-        Task <ResponseCompanyTemplate> GetTemplateSectionForMetaData();
+        Task <ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
     }
 }
