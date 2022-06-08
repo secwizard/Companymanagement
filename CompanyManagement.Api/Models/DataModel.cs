@@ -548,4 +548,15 @@ namespace CompanyManagement.Api.Models
 
        
     }
+    public class TemplateSectionTypemaster
+    {
+        [Key]
+        public int TemplateSectionType { get; set; }
+        public string TemplateSectionName { get; set; }
+        public string HelpLink { get; set; }
+
+
+
+        
+    }
 }

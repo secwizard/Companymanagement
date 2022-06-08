@@ -61,6 +61,7 @@ namespace CompanyManagement.Api.Models.Response
         public string? UpdatedBy { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
         public List<TemplateSectionForMetaData> SectionForList { get; set; }
+        public List<TemplateSectionTypemaster> TemplateSectionTypemaster { get; set; }
     }
 
     public class ResponseCompanyTemplateSectionItem

@@ -885,6 +885,13 @@ namespace CompanyManagement.Api.Service
                 {
                     retVal.SectionForList = dataList;
                 }
+
+                string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionTypeMaster";
+                var dataListValue = await _context.TemplateSectionTypemaster.FromSqlRaw(sqlTextdata).ToListAsync();
+                if (dataListValue != null && dataListValue.Count > 0)
+                {
+                    retVal.TemplateSectionTypemaster = dataListValue;
+                }
             }
             catch (Exception ex)
             {
