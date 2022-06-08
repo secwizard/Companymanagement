@@ -58,6 +58,7 @@ namespace CompanyManagement.Api.Models.Response
         public int DisplayOrder { get; set; }
         public int SectionFor { get; set; }
         public string CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
         public List<TemplateSectionForMetaData> SectionForList { get; set; }
     }

@@ -481,5 +481,25 @@ namespace CompanyManagement.Api.Controllers
 
             return Ok(returnVal);
         }
+
+        [HttpPost("SaveUpdateCompanyTemplateSectionData")]
+        public async Task<IActionResult> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request)
+        {
+            Response<ResponseCompanyTemplateSection> returnVal = new Response<ResponseCompanyTemplateSection>();
+            try
+            {
+                var result = await _temllateService.SaveUpdateCompanyTemplateSectionData(request);
+                returnVal.Data = result;
+                returnVal.Status = result != null;
+                returnVal.Message = result == null ? "Data Not Found" : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                returnVal.Status = false;
+                returnVal.Message = "Some error occured!";
+                log.Error($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+            }
+            return Ok(returnVal);
+        }
     }
 }

@@ -374,7 +374,7 @@ namespace CompanyManagement.Api.Models
         public string CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public string UpdatedBy { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public string PrimaryText { get; set; }
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }

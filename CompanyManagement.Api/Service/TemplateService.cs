@@ -894,42 +894,36 @@ namespace CompanyManagement.Api.Service
             return retVal;
         }
 
-        public async Task<TemplateSectionForMetaData> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplate request)
+        public async Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request)
         {
-            //try
-            //{
-            //    var parms = new SqlParameter[]
-            //    {
-            //        new SqlParameter("@FaqId", request.FaqId),
-            //        new SqlParameter("@CompanyId", request.CompanyId),
-            //        new SqlParameter("@Faq", request.Faq??""),
-            //        new SqlParameter("@FaqAnswer", request.FaqAnswer),
-            //        new SqlParameter("@FaqPostedBy", request.FaqPostedBy == null ? new Guid() : request.FaqPostedBy),
-            //        new SqlParameter("@FaqUpdatedBy", request.FaqUpdatedBy == null ? new Guid() : request.FaqUpdatedBy),
-            //        new SqlParameter("@AnswerPostedBy", request.AnswerPostedBy == null ? new Guid() : request.AnswerPostedBy),
-            //        new SqlParameter("@AnswerUpdatedBy", request.AnswerUpdatedBy == null ? new Guid() : request.AnswerUpdatedBy),
-            //        new SqlParameter("@ItemId", request.ItemId),
-            //        new SqlParameter("@IsActive",true),
-            //        new SqlParameter("@FaqUpdatedByName", request.FaqUpdatedByName??""),
-            //        new SqlParameter("@FaqPostedByName", request.FaqPostedByName??""),
-            //        new SqlParameter("@AnswerPostedByName",  request.AnswerPostedByName??""),
-            //        new SqlParameter("@AnswerUpdatedByName", request.AnswerUpdatedByName??""),
-            //        new SqlParameter("@ItemVariant", request.ItemVariant )
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
+                    new SqlParameter("@CompanyTemplateId", request.CompanyTemplateId),
+                    new SqlParameter("@SectionType", request.SectionType),
+                    new SqlParameter("@SectionName", request.SectionName),
+                    new SqlParameter("@SectionBackgrounColor", request.SectionBackgrounColor),
+                    new SqlParameter("@IsActive",true),
+                    new SqlParameter("@CreatedBy",request.CreatedBy),
+                    new SqlParameter("@UpdatedBy", request.UpdatedBy??""),
+                    new SqlParameter("@PrimaryText", request.PrimaryText),
+                    new SqlParameter("@SecondaryText",request.SecondaryText),
+                    new SqlParameter("@TertiaryText", request.TertiaryText),
+                    new SqlParameter("@DisplayOrder", request.DisplayOrder),
+                    new SqlParameter("@SectionFor",  request.SectionFor),        
+                };
+                string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSection  @CompanyTemplateSectionId, @CompanyTemplateId, @SectionType, @SectionName, @SectionBackgrounColor, @IsActive, @CreatedBy, @UpdatedBy, @PrimaryText, @SecondaryText, @TertiaryText, @DisplayOrder, @SectionFor";
 
-            //    };
-            //    string sqlText = $"EXECUTE dbo.SP_SaveUpdateFAQ  @FaqId, @CompanyId, @Faq, @FaqAnswer, @FaqPostedBy, @FaqUpdatedBy, @AnswerPostedBy, @AnswerUpdatedBy, @ItemId, @IsActive, @FaqUpdatedByName, @FaqPostedByName, @AnswerPostedByName, @AnswerUpdatedByName,@ItemVariant";
-
-            //    var retval = await _context.FAQModel.FromSqlRaw(sqlText, parms).ToListAsync();
-
-            //    return retval.FirstOrDefault();
-            //}
-            //catch (Exception ex)
-            //{
-            //    log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
-            //    throw;
-            //}
-            //// return new FAQModel();
-            return new TemplateSectionForMetaData();
+                var retval = await _context.CompanyTemplateSection.FromSqlRaw(sqlText, parms).ToListAsync();
+                return request;
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw ex;
+            }
 
         }
     }
