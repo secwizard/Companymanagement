@@ -930,6 +930,7 @@ namespace CompanyManagement.Api.Service
             //}
             //// return new FAQModel();
             return new TemplateSectionForMetaData();
+
         }
     }
 }
