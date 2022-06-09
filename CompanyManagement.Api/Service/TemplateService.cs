@@ -171,10 +171,14 @@ namespace CompanyManagement.Api.Service
                 returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
                 returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
 
+                string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+                var dataListValue = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlTextdata).ToListAsync();
+
                 foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
                 {
                     MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages,
                         section.ResponseSectionItemAndImage.SectionItems);
+                    section.SectionForList = dataListValue;
                 }
 
                 log.Info("***GetCompnayTemplateById api Method*** Call end Date : " + DateTime.UtcNow);
