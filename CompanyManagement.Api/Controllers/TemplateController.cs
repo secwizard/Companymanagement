@@ -18,7 +18,6 @@ namespace CompanyManagement.Api.Controllers
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ITemplateService _temllateService;
-
         public TemplateController(ITemplateService templateService)
         {
             _temllateService = templateService;
@@ -135,6 +134,29 @@ namespace CompanyManagement.Api.Controllers
                 response.Message = ex.Message;
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
             }
+            return Ok(response);
+        }
+
+        [HttpPost("GetDefaultTemplateByCompanyV2")]
+        public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompanyV2(RequestCompanyTemplate request)
+        {
+            log.Info("***GetDefaultTemplateByCompanyV2 api*** Call at Date : " + DateTime.UtcNow);
+
+            var response = new Response<ResponseCompanyTemplate>();
+            try
+            {
+                response.Data = await _temllateService.GetDefaultTemplateByCompanyV2(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+
+            log.Info("***GetDefaultTemplateByCompanyV2 api*** Call end Date : " + DateTime.UtcNow);
             return Ok(response);
         }
 

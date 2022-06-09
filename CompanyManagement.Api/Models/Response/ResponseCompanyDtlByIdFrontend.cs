@@ -29,6 +29,16 @@ namespace CompanyManagement.Api.Models.Response
         public ThemeData ThemeData { get; set; }
         public List<FooterData> FooterList { get; set; }
         public Currency Currency { get; set; }
+        public string Facebook { get; set; }
+        public bool ShowFacebookOnline { get; set; }
+        public string Instagram { get; set; }
+        public bool ShowInstagramOnline { get; set; }
+        public string Twitter { get; set; }
+        public bool ShowTwitterOnline { get; set; }
+        public string ContactEmail { get; set; }
+        public bool ShowContactEmailOnline { get; set; }
+        public string ContactPhone { get; set; }
+        public bool ShowContactPhoneOnline { get; set; }
     }
 
     public class ThemeData

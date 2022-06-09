@@ -43,6 +43,9 @@ namespace CompanyManagement.Api.Service
         Task<ResponseSaveTwillioNotificationService> SaveTwillioNotificationService(RequestSaveNotificationServiceDetails request);
 
         Task<ResponseGetNotificationServiceDetails> GetNotificationServiceService(RequestGetNotificationSettingsServiceDetails request);
-        
+        Task<CompanySocialLinkResponse> GetAllSocialDetails(SocialReqById reqById);
+        Task<CompanySocialLink> SaveUpdateSocialLink(CompanySocialLinkRequest request);
+        Task<CompanySocialLink> GetSocialLinkById(SocialReqById request);
+
     }
 }

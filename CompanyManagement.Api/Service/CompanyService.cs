@@ -101,6 +101,16 @@ namespace CompanyManagement.Api.Service
 
                     res.LookUps = (from lk in lookup select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).ToList();
                     res.SelectedLookUp = (from lk in lookup where lk.LookUpValue.ToLower() == data.BusinessType.ToLower() select new LookUpInfo() { LookUpText = lk.LookUpDescription, LookUpValue = lk.LookUpValue }).FirstOrDefault();
+
+                    var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", request.CompanyId)};
+
+                    string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                    var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                    if (dataList?.Count > 0)
+                    {
+                        res = BindSocialLinkDataMobile(dataList.FirstOrDefault(), res);
+                    }
                     return res;
                 }
                 return null;
@@ -932,6 +942,35 @@ namespace CompanyManagement.Api.Service
             }
             return companyid;
         }
+        private ResponseCompanyDtlByIdFrontend BindSocialLinkDataWebsite(CompanySocialLink social, ResponseCompanyDtlByIdFrontend res)
+        {
+            res.Facebook = social.Facebook;
+            res.ShowFacebookOnline = social.ShowFacebookOnline;
+            res.Instagram = social.Instagram;
+            res.ShowInstagramOnline = social.ShowInstagramOnline;
+            res.Twitter = social.Twitter;
+            res.ShowTwitterOnline = social.ShowTwitterOnline;
+            res.ContactEmail = social.ContactEmail;
+            res.ShowContactEmailOnline = social.ShowContactEmailOnline;
+            res.ContactPhone = social.ContactPhone;
+            res.ShowContactPhoneOnline = social.ShowContactPhoneOnline;
+            return res;
+        }
+
+        private CompanyInfo BindSocialLinkDataMobile(CompanySocialLink social, CompanyInfo res)
+        {
+            res.Facebook = social.Facebook;
+            res.ShowFacebookOnline = social.ShowFacebookOnline;
+            res.Instagram = social.Instagram;
+            res.ShowInstagramOnline = social.ShowInstagramOnline;
+            res.Twitter = social.Twitter;
+            res.ShowTwitterOnline = social.ShowTwitterOnline;
+            res.ContactEmail = social.ContactEmail;
+            res.ShowContactEmailOnline = social.ShowContactEmailOnline;
+            res.ContactPhone = social.ContactPhone;
+            res.ShowContactPhoneOnline = social.ShowContactPhoneOnline;
+            return res;
+        }
         private async Task<ResponseCompanyDtlByIdFrontend> GetCompanyDtlByIdFrontend(long CompanyId)
         {
             try
@@ -970,6 +1009,19 @@ namespace CompanyManagement.Api.Service
 
                     res.CompanyTermsConditionPayment = _context.Template.Where(x => x.CompanyId == CompanyId
                      && x.TemplateType == "TermsCondition" && x.Name == "PAYMENT" && x.IsActive == true).FirstOrDefault()?.HTMLData;
+
+
+
+                    var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", CompanyId)};
+
+                    string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                    var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                    if (dataList?.Count > 0)
+                    {
+                        res = BindSocialLinkDataWebsite(dataList.FirstOrDefault(), res);
+                    }
+
 
                     return res;
                 }
@@ -1151,7 +1203,7 @@ namespace CompanyManagement.Api.Service
                           new SqlParameter("@SMTPPassword", request.SMTPPassword??""),
                           new SqlParameter("@IsSSLEnabled", request.IsSSLEnabled),
                           new SqlParameter("@RoboCallFromNumber", request.RoboCallFromNumber??""),
-                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid),
+                          new SqlParameter("@MessagingServiceSid", request.MessagingServiceSid??""),
 
                      };
 
@@ -1218,6 +1270,109 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
             return resBlankObj;
+        }
+
+        public async Task<CompanySocialLinkResponse> GetAllSocialDetails(SocialReqById reqById)
+        {
+            CompanySocialLinkResponse retVal = new CompanySocialLinkResponse();
+            try
+            {
+                var parms = new SqlParameter[]{
+                    new SqlParameter("@CompanyId", reqById.CompanyId)};
+
+                string sqlText = $"EXECUTE dbo.GetCompanySocialLinks @CompanyId";
+                var dataList = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                if (dataList != null && dataList.Count > 0)
+                    return BindSocialData(dataList.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+            return retVal;
+        }
+        private CompanySocialLinkResponse BindSocialData(CompanySocialLink socialData)
+        {
+            CompanySocialLinkResponse data = new CompanySocialLinkResponse();
+            data.CompanyId = socialData.CompanyId;
+            data.CompanySocialLinkId = socialData.CompanySocialLinkId;
+            data.IsActive = socialData.IsActive;
+            data.Facebook = socialData.Facebook;
+            data.ShowFacebookOnline = socialData.ShowFacebookOnline;
+            data.Instagram = socialData.Instagram;
+            data.ShowInstagramOnline = socialData.ShowInstagramOnline;
+            data.Twitter = socialData.Twitter;
+            data.ShowTwitterOnline = socialData.ShowTwitterOnline;
+            data.ContactPhone = socialData.ContactPhone;
+            data.ShowContactPhoneOnline = socialData.ShowContactPhoneOnline;
+            data.ContactEmail = socialData.ContactEmail;
+            data.ShowContactEmailOnline = socialData.ShowContactEmailOnline;
+            data.CreatedByUserId = socialData.CreatedByUserId;
+            data.CreatedAt = socialData.CreatedAt;
+            //data.CreatedAt = socialData.I(socialData.GetOrdinal("CreatedAt")) ? DateTime.Now : Convert.ToDateTime(socialData["CreatedAt"]);
+            data.UpdatedByUserID = socialData.UpdatedByUserID;
+            data.UpdatedAt = socialData.UpdatedAt;
+            return data;
+        }
+        public async Task<CompanySocialLink> SaveUpdateSocialLink(CompanySocialLinkRequest request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanySocialLinkId", request.CompanySocialLinkId),
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@IsActive", true),
+                    new SqlParameter("@Facebook", request.Facebook),
+                    new SqlParameter("@ShowFacebookOnline", request.ShowFacebookOnline),
+                    new SqlParameter("@Instagram", request.Instagram),
+                    new SqlParameter("@ShowInstagramOnline", request.ShowInstagramOnline),
+                    new SqlParameter("@Twitter", request.Twitter),
+                    new SqlParameter("@ShowTwitterOnline", request.ShowInstagramOnline),
+                    new SqlParameter("@ContactEmail", request.ContactEmail),
+                    new SqlParameter("@ShowContactEmailOnline", request.ShowContactEmailOnline),
+                    new SqlParameter("@ContactPhone", request.ContactPhone),
+                    new SqlParameter("@ShowContactPhoneOnline", request.ShowContactPhoneOnline),
+                    new SqlParameter("@CreatedByUserId", request.CreatedByUserId == null ? new Guid() : request.CreatedByUserId),
+                    new SqlParameter("@CreatedAt",  request.CreatedAt),
+                   // new SqlParameter("@CreatedAt", Common.StringToDateTime(request.CreatedAt_Str)),
+                    new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID == null ? new Guid() : request.UpdatedByUserID),
+                    
+                    new SqlParameter("@UpdatedAt", request.UpdatedAt??System.DateTime.Now)
+
+
+                };
+                string sqlText = $"EXECUTE dbo.SP_SaveUpdateSocialLink  @CompanySocialLinkId, @CompanyId, @IsActive, @Facebook, @ShowFacebookOnline, @Instagram, @ShowInstagramOnline, @Twitter, @ShowTwitterOnline, @ContactEmail, @ShowContactEmailOnline, @ContactPhone, @ShowContactPhoneOnline, @CreatedByUserId, @CreatedAt, @UpdatedByUserID, @UpdatedAt";
+                var retval = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+
+
+                return retval.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+        }
+
+        public async Task<CompanySocialLink> GetSocialLinkById(SocialReqById request)
+        {
+            try
+            {
+                var parms = new SqlParameter[] {
+                    new SqlParameter("@CompanyId", request.CompanyId),
+                    new SqlParameter("@CompanySocialLinkId", request.CompanySocialLinkId)
+                };
+                string sqlText = $"EXECUTE dbo.SP_GetFaqById @CompanyId, @CompanySocialLinkId";
+                var socialDtl = await _context.CompanySocialLink.FromSqlRaw(sqlText, parms).ToListAsync();
+                return socialDtl.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
         }
 
     }
