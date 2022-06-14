@@ -504,7 +504,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("GetCompanyTemplateSectionItemMappingById")]
         public async Task<IActionResult> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request)
         {
-            var responce = new Response<List<ResponseCompanyTempalteSectionMappingById>>();
+            var responce = new Response<List<long>>();
             try
             {
                 responce.Data = await _temllateService.GetCompanyTemplateSectionItemMappingById(request);

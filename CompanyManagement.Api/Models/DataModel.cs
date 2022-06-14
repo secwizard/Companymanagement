@@ -559,4 +559,10 @@ namespace CompanyManagement.Api.Models
 
         
     }
+    public class CompanyTempalteSectionMappingById
+    {
+       [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public long ItemId { get; set; }
+    }
 }

@@ -369,13 +369,4 @@ namespace CompanyManagement.Api.Models
         public Guid? UpdatedByUserID { get; set; }
        
     }
-
-   public class ResponseCompanyTempalteSectionMappingById
-    {  [Key]
-        public int CompanyTemplateSectionId { get; set; }
-        public long ItemId { get; set; }
-        public long VariantId { get; set; }
-        
-    }
-
 }

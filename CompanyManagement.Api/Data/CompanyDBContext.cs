@@ -76,7 +76,7 @@ namespace CompanyManagement.Api.Data
         public DbSet<TemplateSectionForMetaData> TemplateSectionForMetaData { get; set; }
         public DbSet<TemplateSectionTypemaster> TemplateSectionTypemaster { get; set; }
 
-        public DbSet<ResponseCompanyTempalteSectionMappingById> ResponseCompanyTempalteSectionMappingById { get; set; }
+        public DbSet<CompanyTempalteSectionMappingById> CompanyTempalteSectionMappingById { get; set; }
 
     }
 }
