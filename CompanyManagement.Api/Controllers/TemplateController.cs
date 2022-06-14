@@ -501,5 +501,23 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(returnVal);
         }
+        [HttpPost("GetCompanyTemplateSectionItemMappingById")]
+        public async Task<IActionResult> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request)
+        {
+            var responce = new Response<List<ResponseCompanyTempalteSectionMappingById>>();
+            try
+            {
+                responce.Data = await _temllateService.GetCompanyTemplateSectionItemMappingById(request);
+                responce.Status = responce.Data != null;
+                responce.Message = responce.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                responce.Status = false;
+                responce.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(responce);
+        }
     }
 }

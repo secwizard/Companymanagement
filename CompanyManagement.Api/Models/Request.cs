@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagement.Api.Models
 {
@@ -271,4 +272,12 @@ namespace CompanyManagement.Api.Models
         public long CompanyId { get; set; }
         public string ServiceName { get; set; }
     }
+    public class RequestCompanyTempalteSectionMappingById
+    {   
+        public int CompanyTemplateSectionId { get; set; }
+        public long CompanyId { get; set; }
+        
+        
+    }
+
 }

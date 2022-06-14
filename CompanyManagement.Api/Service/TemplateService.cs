@@ -937,5 +937,43 @@ namespace CompanyManagement.Api.Service
             }
 
         }
+
+        public async Task<List<ResponseCompanyTempalteSectionMappingById>> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request)
+        {
+            try
+            {
+                List<ResponseCompanyTempalteSectionMappingById> listData = new List<ResponseCompanyTempalteSectionMappingById>();
+                var parms = new SqlParameter[]
+                 {
+
+                    new SqlParameter("@CompanyTemplateSectionId", Convert.ToInt64(request.CompanyTemplateSectionId))
+
+                 };
+
+                string sqlText = $"EXECUTE dbo.SP_CompanyTemplateSectionItemMappingById @CompanyTemplateSectionId";
+                var data = await _context.ResponseCompanyTempalteSectionMappingById.FromSqlRaw(sqlText, parms).ToListAsync();
+                if (data != null && data.Count > 0)
+                {
+                    foreach (var item in data)
+                    {
+                        ResponseCompanyTempalteSectionMappingById response = new ResponseCompanyTempalteSectionMappingById();
+                        response.ItemId = item.ItemId;
+                        response.VariantId = item.VariantId;
+                        response.CompanyTemplateSectionId = item.CompanyTemplateSectionId;
+                        listData.Add(response);
+
+                    }
+                }
+                    return listData;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+
+
     }
 }
