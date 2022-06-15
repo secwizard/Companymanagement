@@ -968,7 +968,45 @@ namespace CompanyManagement.Api.Service
             }
         }
 
+        public async Task<List<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request)
+        {
+            try
+            {
 
+                var companyTemplateSectionItemList = new List<CompanyTemplateSectionItemMapping>();
+                await RemoveDuplicateCompanyTemplateSectionItem(request);
+                //Add operation will be done if there is items//
+                if (request.RequestCompanyTemplateSectionItems.Count > 0)
+                {
+                    for (int i = 1; i <= request.RequestCompanyTemplateSectionItems.Count; i++)
+                    {
+                        var parms = new SqlParameter[]
+                        {
+                            new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
+                            new SqlParameter("@ItemId", request.RequestCompanyTemplateSectionItems[i-1].ItemId),
+                            new SqlParameter("@VariantId", request.RequestCompanyTemplateSectionItems[i-1].VariantId),
+                            new SqlParameter("@PrimaryText", request.RequestCompanyTemplateSectionItems[i-1].PrimaryText),
+                            new SqlParameter("@SecondaryText", request.RequestCompanyTemplateSectionItems[i-1].SecondaryText),
+                            new SqlParameter("@TertiaryText", request.RequestCompanyTemplateSectionItems[i-1].TertiaryText),
+                            new SqlParameter("@DisplayOrder", i),
+                            new SqlParameter("@IsActive",true),
+                            new SqlParameter("@CreatedBy", request.UserId.ToString()),
+                            new SqlParameter("@UpdatedBy", request.UserId.ToString()),
+                        };
+                        string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId, @ItemId, @VariantId,@PrimaryText,@SecondaryText,@TertiaryText,@DisplayOrder,@IsActive,@CreatedBy,@UpdatedBy";
+                        var retval = await _context.CompanyTemplateSectionItemMapping.FromSqlRaw(sqlText, parms).ToListAsync();
+                           companyTemplateSectionItemList = retval;                     
+                    }
+                }
+                return companyTemplateSectionItemList;
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+           
+        }
 
     }
 }

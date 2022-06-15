@@ -31,5 +31,6 @@ namespace CompanyManagement.Api.Service
         Task <ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
         Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request);
         Task<List<long>> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request);
+        Task<List<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request);
     }
 }
