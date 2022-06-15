@@ -110,6 +110,7 @@ namespace CompanyManagement.Api.Models.Response
     {
         public List<ResponseCompanyTemplateSectionItem> SectionItems { get; set; }
         public List<ResponseCompanyTemplateSectionImage> SectionImages { get; set; }
+        public CompanyTemplateSectionItemMappingData SectionItemDetails { get; set; }
     }
 
     public class ResponseFrontEndTemplateFontFamilyMaster

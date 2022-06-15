@@ -43,6 +43,8 @@ namespace CompanyManagement.Api.Data
         public DbSet<TaxName> TaxName { get; set; }
         public DbSet<TaxDetails> TaxDetails { get; set; }
         public DbSet<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMapping { get; set; }
+        public DbSet<CompanyTemplateSectionItemMappingData> CompanyTemplateSectionItemMappingData { get; set; }
+        
         public DbSet<CurrencyMaster> CurrencyMaster { get; set; }
 
         public DbSet<FrontEndTemplateFontFamilyMaster> FrontEndTemplateFontFamilyMaster { get; set; }

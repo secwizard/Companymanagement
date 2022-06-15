@@ -38,4 +38,7 @@ BEGIN
 	AND c.IsActive = 1
 END
 GO
+-----------------------------------------------------------------------
+alter table CompanyTemplateSectionItemMapping alter Column UpdatedAt datetime  null
+alter table CompanyTemplateSectionItemMapping alter Column UpdatedBy  nvarchar  null
 

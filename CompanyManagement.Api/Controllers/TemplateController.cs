@@ -520,19 +520,18 @@ namespace CompanyManagement.Api.Controllers
             return Ok(responce);
         }
 
-        [Authorize]
+      
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
         public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request)
         {
-            var response = new Response<List<CompanyTemplateSectionItemMapping>>();
+            var response = new Response<ResponseSectionItemAndImage>();
             try
             {
-                var user = (UserInfo)HttpContext.Items["User"];
-                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-                {
-                    request.UserId = user.UserId;
-                    response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);
-                }
+                //var user = (UserInfo)HttpContext.Items["User"];
+                //if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+               
+                //    request.UserId = user.UserId;
+                    response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);       
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Item can't be added." : string.Empty;
             }

@@ -420,6 +420,25 @@ namespace CompanyManagement.Api.Models
         public CompanyTemplateSection CompanyTemplateSection { get; set; }
 
     }
+    public class CompanyTemplateSectionItemMappingData
+    {
+        [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public long ItemId { get; set; }
+        public long VariantId { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+       
+
+    }
     public class GetTemplate
     {
         [Key]
