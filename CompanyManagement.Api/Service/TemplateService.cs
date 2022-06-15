@@ -938,7 +938,7 @@ namespace CompanyManagement.Api.Service
 
         }
 
-        public async Task<List<long>> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request)
+        public async Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request)
         {
             try
             {

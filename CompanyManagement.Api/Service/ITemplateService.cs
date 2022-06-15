@@ -30,7 +30,7 @@ namespace CompanyManagement.Api.Service
         Task<List<ResponseFrontEndTemplateFontFamilyMaster>> GetAllFrontEndTemplateFonts();
         Task <ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
         Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request);
-        Task<List<long>> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request);
+        Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request);
         Task<List<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request);
     }
 }

@@ -501,13 +501,13 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(returnVal);
         }
-        [HttpPost("GetCompanyTemplateSectionItemMappingById")]
-        public async Task<IActionResult> GetCompanyTemplateSectionItemMappingById(RequestCompanyTempalteSectionMappingById request)
+        [HttpPost("GetSelectedCustomGroup")]
+        public async Task<IActionResult> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request)
         {
             var responce = new Response<List<long>>();
             try
             {
-                responce.Data = await _temllateService.GetCompanyTemplateSectionItemMappingById(request);
+                responce.Data = await _temllateService.GetSelectedCustomGroup(request);
                 responce.Status = responce.Data != null;
                 responce.Message = responce.Data == null ? "Data not found." : string.Empty;
             }
