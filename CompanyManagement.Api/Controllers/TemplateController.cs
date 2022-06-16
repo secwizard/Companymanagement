@@ -522,9 +522,9 @@ namespace CompanyManagement.Api.Controllers
 
       
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
-        public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request)
+        public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            var response = new Response<ResponseSectionItemAndImage>();
+            var response =  new Response<List<long>>();
             try
             {
                 //var user = (UserInfo)HttpContext.Items["User"];

@@ -439,6 +439,10 @@ namespace CompanyManagement.Api.Models
        
 
     }
+    public class CustomIdList
+    { [Key]
+        public long ItemId { get; set; }
+    }
     public class GetTemplate
     {
         [Key]

@@ -282,7 +282,7 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        
+
 
         public async Task<List<ResponseCompanyTemplate>> GetCompanyTemplates(RequestBase request)
         {
@@ -923,7 +923,7 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@SecondaryText",request.SecondaryText),
                     new SqlParameter("@TertiaryText", request.TertiaryText),
                     new SqlParameter("@DisplayOrder", request.DisplayOrder),
-                    new SqlParameter("@SectionFor",  request.SectionFor),        
+                    new SqlParameter("@SectionFor",  request.SectionFor),
                 };
                 string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSection  @CompanyTemplateSectionId, @CompanyTemplateId, @SectionType, @SectionName, @SectionBackgrounColor, @IsActive, @CreatedBy, @UpdatedBy, @PrimaryText, @SecondaryText, @TertiaryText, @DisplayOrder, @SectionFor";
 
@@ -968,46 +968,45 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request)
+        public async Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            ResponseSectionItemAndImage response = new ResponseSectionItemAndImage();
+            List<long> response = new List<long>();
             try
             {
-                
-                await RemoveDuplicateCompanyTemplateSectionItem(request);
-                //Add operation will be done if there is items//
-                if (request.RequestCompanyTemplateSectionItems.Count > 0)
+                if (request.RequestCustomSectionIds.Count > 0)
                 {
-                    for (int i = 1; i <= request.RequestCompanyTemplateSectionItems.Count; i++)
+                    var customIds = String.Join(',', request.RequestCustomSectionIds.Select(x=>x.Id));
+                    var displayOrder = request.RequestCustomSectionIds.Count;
+                    var parms = new SqlParameter[]
                     {
-                        var parms = new SqlParameter[]
-                        {
-                            new SqlParameter("@MappingId",Convert.ToInt64(0)),
+                            //new SqlParameter("@MappingId",Convert.ToInt64(0)),
                             new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
-                            new SqlParameter("@ItemId", request.RequestCompanyTemplateSectionItems[i-1].ItemId),
-                            new SqlParameter("@VariantId", request.RequestCompanyTemplateSectionItems[i-1].VariantId),
-                            new SqlParameter("@PrimaryText", request.RequestCompanyTemplateSectionItems[i-1].PrimaryText),
-                            new SqlParameter("@SecondaryText", request.RequestCompanyTemplateSectionItems[i-1].SecondaryText),
-                            new SqlParameter("@TertiaryText", request.RequestCompanyTemplateSectionItems[i-1].TertiaryText),
-                            new SqlParameter("@DisplayOrder", i),
+                            new SqlParameter("@SectionCustomId", customIds),
+                            new SqlParameter("@DisplayOrder", displayOrder),
                             new SqlParameter("@IsActive",true),
                             new SqlParameter("@CreatedBy", request.UserId.ToString()),
                             new SqlParameter("@UpdatedBy", request.UserId.ToString()),
-                        };
-                        string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @MappingId, @CompanyTemplateSectionId, @ItemId, @VariantId,@PrimaryText,@SecondaryText,@TertiaryText,@DisplayOrder,@IsActive,@CreatedBy,@UpdatedBy";
-                        var retval = await _context.CompanyTemplateSectionItemMappingData.FromSqlRaw(sqlText, parms).ToListAsync();
-                        response.SectionItemDetails = retval.FirstOrDefault();
+                    };
+                    string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@DisplayOrder,@IsActive,@CreatedBy,@UpdatedBy";
+                    var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
+
+                    if (retval != null && retval.Count > 0)
+                    {
+                        foreach (var item in retval)
+                        {
+                            response.Add(item.ItemId);
+                        }
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
                 log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
-                throw;
+                //throw;
             }
             return response;
         }
     }
-       
+
 }

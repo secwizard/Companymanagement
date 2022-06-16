@@ -28,9 +28,9 @@ namespace CompanyManagement.Api.Service
         Task<bool> DeleteCompanyTemplateSectionItem(RequestDeleteCompanyTemplateSectionItem request);
         Task<bool> DeleteCompanyTemplateSectionImage(RequestDeleteCompanyTemplateSectionImage request);
         Task<List<ResponseFrontEndTemplateFontFamilyMaster>> GetAllFrontEndTemplateFonts();
-        Task <ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
+        Task<ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
         Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request);
         Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request);
-        Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestAddSectionItem request);
+        Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request);
     }
 }

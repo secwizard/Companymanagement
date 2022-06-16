@@ -200,6 +200,23 @@ namespace CompanyManagement.Api.Models
         public string VariantImage { get; set; }
     }
 
+   
+        public class RequestSectionCustomGroups
+        {
+            public int CompanyTemplateSectionId { get; set; }
+            public long CompanyId { get; set; }
+            public Guid UserId { get; set; }
+            public List<SectionCustomId> RequestCustomSectionIds { get; set; }
+
+        }
+   
+
+    public class SectionCustomId
+    {
+        public long Id { get; set; }
+
+    }
+
     public class RequestEditSectionItemOrder
     {
         public int CompanyTemplateSectionId { get; set; }
