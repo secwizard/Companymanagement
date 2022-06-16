@@ -519,7 +519,7 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-
+       
       
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
         public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
