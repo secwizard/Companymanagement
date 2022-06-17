@@ -543,5 +543,24 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+
+        [HttpPost("AddSectionItemVariantList")]
+        public async Task<ActionResult<ResponseSectionItemAndImage>> AddSectionItemVariantList(RequestAddSectionItem request)
+        {
+            var response = new Response<List<long>>();
+            try
+            {             
+                    response.Data = await _temllateService.AddSectionItemVariantList(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Item can't be added." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
     }
 }

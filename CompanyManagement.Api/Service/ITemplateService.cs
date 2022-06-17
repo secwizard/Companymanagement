@@ -32,5 +32,6 @@ namespace CompanyManagement.Api.Service
         Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request);
         Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request);
         Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request);
+        Task<List<long>> AddSectionItemVariantList(RequestAddSectionItem request);
     }
 }

@@ -977,6 +977,7 @@ namespace CompanyManagement.Api.Service
                 {
                     var customIds = String.Join(',', request.RequestCustomSectionIds.Select(x=>x.Id));
                     var displayOrder = request.RequestCustomSectionIds.Count;
+
                     var parms = new SqlParameter[]
                     {
                             new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
@@ -1007,6 +1008,93 @@ namespace CompanyManagement.Api.Service
             return response;
         }
 
+
+
+        public async Task<List<long>> AddSectionItemVariantList(RequestAddSectionItem request)
+        {
+            List<long> response = new List<long>();
+            try
+            {
+                var companyTemplateSectionItemList = new List<CompanyTemplateSectionItemMapping>();
+                var companyTemplateSectionImageList = new List<CompanyTemplateSectionImageMapping>();
+
+                await RemoveDuplicateCompanyTemplateSectionItem(request);
+
+                //Add operation will be done if there is items//
+                if (request.RequestCompanyTemplateSectionItems.Count > 0)
+                {
+                    for (int i = 1; i <= request.RequestCompanyTemplateSectionItems.Count; i++)
+                    {
+                        companyTemplateSectionItemList.Add(new CompanyTemplateSectionItemMapping
+                        {
+                            CompanyTemplateSectionId = request.CompanyTemplateSectionId,
+                            ItemId = request.RequestCompanyTemplateSectionItems[i - 1].ItemId,
+                            VariantId = request.RequestCompanyTemplateSectionItems[i - 1].VariantId,
+                            PrimaryText = request.RequestCompanyTemplateSectionItems[i - 1].PrimaryText,
+                            SecondaryText = request.RequestCompanyTemplateSectionItems[i - 1].SecondaryText,
+                            TertiaryText = request.RequestCompanyTemplateSectionItems[i - 1].TertiaryText,
+                            DisplayOrder = i,
+                            IsActive = true,
+                            CreatedBy = request.UserId.ToString(),
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedBy = request.UserId.ToString(),
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+
+                    var distinctItemList = request.RequestCompanyTemplateSectionItems
+                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId=k.VariantId, ItemImage = k.ItemImage })
+                        .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
+
+                    distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
+
+                    if (distinctItemList.Count > 0)
+                    {
+                        for (int i = 0; i < distinctItemList.Count; i++)
+                        {
+                            companyTemplateSectionImageList.Add(new CompanyTemplateSectionImageMapping
+                            {
+                                CompanyTemplateSectionId = request.CompanyTemplateSectionId,
+                                CreatedAt = DateTime.UtcNow,
+                                CreatedBy = request.UserId.ToString(),
+                                DisplayOrder = i + 1,
+                                ImagePath = distinctItemList[i].ItemImage,
+                                ItemId = distinctItemList[i].ItemId,
+                                IsActive = true,
+                                UpdatedAt = DateTime.UtcNow,
+                                UpdatedBy = request.UserId.ToString()
+                            });
+                        }
+                    }
+                }
+
+                if (companyTemplateSectionImageList.Any())
+                    await _context.CompanyTemplateSectionImageMapping.AddRangeAsync(companyTemplateSectionImageList);
+                   await _context.SaveChangesAsync();
+                if (companyTemplateSectionItemList.Any())
+                    await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
+                await _context.SaveChangesAsync();
+                //if (companyTemplateSectionImageList.Any() || companyTemplateSectionItemList.Any())
+                //    await _context.SaveChangesAsync();
+                if (companyTemplateSectionItemList != null && companyTemplateSectionItemList.Count > 0)
+                {
+                    foreach (var item in companyTemplateSectionItemList)
+                    {
+                        response.Add(item.ItemId);
+                    }
+                }
+                var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+
+
+        }
     }
 
 }
