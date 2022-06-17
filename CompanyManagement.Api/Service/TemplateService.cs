@@ -1092,8 +1092,6 @@ namespace CompanyManagement.Api.Service
                 log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
                 throw;
             }
-
-
         }
     }
 
