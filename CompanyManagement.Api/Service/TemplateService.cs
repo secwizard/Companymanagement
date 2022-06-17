@@ -979,7 +979,6 @@ namespace CompanyManagement.Api.Service
                     var displayOrder = request.RequestCustomSectionIds.Count;
                     var parms = new SqlParameter[]
                     {
-                            //new SqlParameter("@MappingId",Convert.ToInt64(0)),
                             new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
                             new SqlParameter("@SectionCustomId", customIds),
                             new SqlParameter("@DisplayOrder", displayOrder),
@@ -1007,6 +1006,45 @@ namespace CompanyManagement.Api.Service
             }
             return response;
         }
+
+        //public async Task<List<long>> SaveUpdateCompanyTemplateSectionItemItemVariantMapping(RequestSectionCustomGroups request)
+        //{
+        //    List<long> response = new List<long>();
+        //    try
+        //    {
+        //        if (request.RequestCustomSectionIds.Count > 0)
+        //        {
+        //            var customIds = String.Join(',', request.RequestCustomSectionIds.Select(x => x.Id));
+        //            var displayOrder = request.RequestCustomSectionIds.Count;
+        //            var parms = new SqlParameter[]
+        //            {
+        //                    new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
+        //                    new SqlParameter("@SectionCustomId", customIds),
+        //                    new SqlParameter("@DisplayOrder", displayOrder),
+        //                    new SqlParameter("@IsActive",true),
+        //                    new SqlParameter("@CreatedBy", request.UserId.ToString()),
+        //                    new SqlParameter("@UpdatedBy", request.UserId.ToString()),
+        //            };
+        //            string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@DisplayOrder,@IsActive,@CreatedBy,@UpdatedBy";
+        //            var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
+
+        //            if (retval != null && retval.Count > 0)
+        //            {
+        //                foreach (var item in retval)
+        //                {
+        //                    response.Add(item.ItemId);
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+        //        //throw;
+        //    }
+        //    return response;
+        //}
     }
 
 }
