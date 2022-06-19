@@ -919,9 +919,9 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@IsActive",true),
                     new SqlParameter("@CreatedBy",request.CreatedBy),
                     new SqlParameter("@UpdatedBy", request.UpdatedBy??""),
-                    new SqlParameter("@PrimaryText", request.PrimaryText),
-                    new SqlParameter("@SecondaryText",request.SecondaryText),
-                    new SqlParameter("@TertiaryText", request.TertiaryText),
+                    new SqlParameter("@PrimaryText", request.PrimaryText??""),
+                    new SqlParameter("@SecondaryText",request.SecondaryText??""),
+                    new SqlParameter("@TertiaryText", request.TertiaryText??""),
                     new SqlParameter("@DisplayOrder", request.DisplayOrder),
                     new SqlParameter("@SectionFor",  request.SectionFor),
                 };
