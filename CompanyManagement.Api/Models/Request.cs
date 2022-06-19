@@ -214,6 +214,8 @@ namespace CompanyManagement.Api.Models
     public class SectionCustomId
     {
         public long Id { get; set; }
+        public string CustomGroupName { get; set; }
+        public string CustomGroupImageLink { get; set; }
 
     }
 
