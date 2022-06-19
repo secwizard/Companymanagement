@@ -975,19 +975,23 @@ namespace CompanyManagement.Api.Service
             {
                 if (request.RequestCustomSectionIds.Count > 0)
                 {
-                    var customIds = String.Join(',', request.RequestCustomSectionIds.Select(x=>x.Id));
-                    var displayOrder = request.RequestCustomSectionIds.Count;
-
+                    var customIds = "";
+                    var displayOrder = 0;
+                    foreach(var x in request.RequestCustomSectionIds)
+                    {
+                        customIds += x.Id.ToString() + '#' + displayOrder +'#' + x.CustomGroupImageLink + ",";
+                        displayOrder++;
+                    }
+                    customIds = customIds.Remove(customIds.Length - 1);
                     var parms = new SqlParameter[]
                     {
                             new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
                             new SqlParameter("@SectionCustomId", customIds),
-                            new SqlParameter("@DisplayOrder", displayOrder),
                             new SqlParameter("@IsActive",true),
                             new SqlParameter("@CreatedBy", request.UserId.ToString()),
                             new SqlParameter("@UpdatedBy", request.UserId.ToString()),
                     };
-                    string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@DisplayOrder,@IsActive,@CreatedBy,@UpdatedBy";
+                    string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@IsActive,@CreatedBy,@UpdatedBy";
                     var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
 
                     if (retval != null && retval.Count > 0)
