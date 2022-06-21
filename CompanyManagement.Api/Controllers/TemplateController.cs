@@ -547,7 +547,7 @@ namespace CompanyManagement.Api.Controllers
         [HttpPost("AddSectionItemVariantList")]
         public async Task<ActionResult<ResponseSectionItemAndImage>> AddSectionItemVariantList(RequestAddSectionItem request)
         {
-            var response = new Response<List<long>>();
+            var response = new Response<ResponseSectionItemAndImage>();
             try
             {             
                     response.Data = await _temllateService.AddSectionItemVariantList(request);

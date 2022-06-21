@@ -1014,9 +1014,9 @@ namespace CompanyManagement.Api.Service
 
 
 
-        public async Task<List<long>> AddSectionItemVariantList(RequestAddSectionItem request)
+        public async Task<ResponseSectionItemAndImage> AddSectionItemVariantList(RequestAddSectionItem request)
         {
-            List<long> response = new List<long>();
+            //List<long> response = new List<long>();
             try
             {
                 var companyTemplateSectionItemList = new List<CompanyTemplateSectionItemMapping>();
@@ -1080,16 +1080,16 @@ namespace CompanyManagement.Api.Service
                 await _context.SaveChangesAsync();
                 //if (companyTemplateSectionImageList.Any() || companyTemplateSectionItemList.Any())
                 //    await _context.SaveChangesAsync();
-                if (companyTemplateSectionItemList != null && companyTemplateSectionItemList.Count > 0)
-                {
-                    foreach (var item in companyTemplateSectionItemList)
-                    {
-                        response.Add(item.ItemId);
-                    }
-                }
+                //if (companyTemplateSectionItemList != null && companyTemplateSectionItemList.Count > 0)
+                //{
+                //    foreach (var item in companyTemplateSectionItemList)
+                //    {
+                //        response.Add(item.ItemId);
+                //    }
+                //}
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
                 MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                return response;
+                return section.ResponseSectionItemAndImage;
             }
             catch (Exception ex)
             {
