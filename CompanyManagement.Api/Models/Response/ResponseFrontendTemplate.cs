@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace CompanyManagement.Api.Models.Response
@@ -46,16 +47,21 @@ namespace CompanyManagement.Api.Models.Response
     public class ResponseCompanyTemplateSection
     {
         public int CompanyTemplateSectionId { get; set; }//pk
+        public int CompanyTemplateId { get; set; }
         public int SectionType { get; set; }
         public string SectionName { get; set; }
-        public string SectionBackgrounColor { get; set; }
+        public string? SectionBackgrounColor { get; set; }
         public bool? IsActive { get; set; }
         public string PrimaryText { get; set; }
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
         public int DisplayOrder { get; set; }
         public int SectionFor { get; set; }
+        public string CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
         public ResponseSectionItemAndImage ResponseSectionItemAndImage { get; set; }
+        public List<TemplateSectionForMetaData> SectionForList { get; set; }
+        public List<TemplateSectionTypemaster> TemplateSectionTypemaster { get; set; }
     }
 
     public class ResponseCompanyTemplateSectionItem
@@ -104,6 +110,7 @@ namespace CompanyManagement.Api.Models.Response
     {
         public List<ResponseCompanyTemplateSectionItem> SectionItems { get; set; }
         public List<ResponseCompanyTemplateSectionImage> SectionImages { get; set; }
+        public CompanyTemplateSectionItemMappingData SectionItemDetails { get; set; }
     }
 
     public class ResponseFrontEndTemplateFontFamilyMaster

@@ -7,6 +7,7 @@ using CompanyManagement.Api.Models.Request;
 using CompanyManagement.Api.Models.Response;
 using log4net;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -148,9 +149,9 @@ namespace CompanyManagement.Api.Service
 
                 var dataTemplte = await _context.CompanyTemplate
                         .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
-                            .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder))
+                            .ThenInclude(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(ctsItem => ctsItem.DisplayOrder).Where(ctsItem => ctsItem.IsActive))
                         .Include(ct => ct.CompanyTemplateSections.OrderBy(cts => cts.DisplayOrder).Where(cts => cts.IsActive))
-                            .ThenInclude(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(ctsImg => ctsImg.DisplayOrder))
+                            .ThenInclude(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(ctsImg => ctsImg.DisplayOrder).Where(ctsImg => ctsImg.IsActive))
                         .Where(ct => ct.CompanyTemplateId == request.CompanyTemplateId)
                         .FirstOrDefaultAsync();
 
@@ -170,10 +171,14 @@ namespace CompanyManagement.Api.Service
                 returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
                 returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
 
+                string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+                var dataListValue = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlTextdata).ToListAsync();
+
                 foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
                 {
                     MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages,
                         section.ResponseSectionItemAndImage.SectionItems);
+                    section.SectionForList = dataListValue;
                 }
 
                 log.Info("***GetCompnayTemplateById api Method*** Call end Date : " + DateTime.UtcNow);
@@ -277,7 +282,7 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        
+
 
         public async Task<List<ResponseCompanyTemplate>> GetCompanyTemplates(RequestBase request)
         {
@@ -873,6 +878,225 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        public async Task<ResponseCompanyTemplateSection> GetTemplateSectionForMetaData()
+        {
+            ResponseCompanyTemplateSection retVal = new ResponseCompanyTemplateSection();
+            try
+            {
+                string sqlText = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+                var dataList = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlText).ToListAsync();
+                if (dataList != null && dataList.Count > 0)
+                {
+                    retVal.SectionForList = dataList;
+                }
 
+                string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionTypeMaster";
+                var dataListValue = await _context.TemplateSectionTypemaster.FromSqlRaw(sqlTextdata).ToListAsync();
+                if (dataListValue != null && dataListValue.Count > 0)
+                {
+                    retVal.TemplateSectionTypemaster = dataListValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw;
+            }
+            return retVal;
+        }
+
+        public async Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request)
+        {
+            try
+            {
+                var parms = new SqlParameter[]
+                {
+                    new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
+                    new SqlParameter("@CompanyTemplateId", request.CompanyTemplateId),
+                    new SqlParameter("@SectionType", request.SectionType),
+                    new SqlParameter("@SectionName", request.SectionName),
+                    new SqlParameter("@SectionBackgrounColor", request.SectionBackgrounColor??""),
+                    new SqlParameter("@IsActive",true),
+                    new SqlParameter("@CreatedBy",request.CreatedBy),
+                    new SqlParameter("@UpdatedBy", request.UpdatedBy??""),
+                    new SqlParameter("@PrimaryText", request.PrimaryText??""),
+                    new SqlParameter("@SecondaryText",request.SecondaryText??""),
+                    new SqlParameter("@TertiaryText", request.TertiaryText??""),
+                    new SqlParameter("@DisplayOrder", request.DisplayOrder),
+                    new SqlParameter("@SectionFor",  request.SectionFor),
+                };
+                string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSection  @CompanyTemplateSectionId, @CompanyTemplateId, @SectionType, @SectionName, @SectionBackgrounColor, @IsActive, @CreatedBy, @UpdatedBy, @PrimaryText, @SecondaryText, @TertiaryText, @DisplayOrder, @SectionFor";
+
+                var retval = await _context.CompanyTemplateSection.FromSqlRaw(sqlText, parms).ToListAsync();
+                return request;
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                throw ex;
+            }
+
+        }
+
+        public async Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request)
+        {
+            try
+            {
+                List<long> listData = new List<long>();
+                var parms = new SqlParameter[]
+                 {
+
+                    new SqlParameter("@CompanyTemplateSectionId",(request.CompanyTemplateSectionId))
+
+                 };
+
+                string sqlText = $"EXECUTE dbo.SP_CompanyTemplateSectionItemMappingById @CompanyTemplateSectionId";
+                var data = await _context.CompanyTempalteSectionMappingById.FromSqlRaw(sqlText, parms).ToListAsync();
+                if (data != null && data.Count > 0)
+                {
+                    foreach (var item in data)
+                    {
+                        listData.Add(item.ItemId);
+                    }
+                }
+                return listData;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        {
+            List<long> response = new List<long>();
+            try
+            {
+                if (request.RequestCustomSectionIds.Count > 0)
+                {
+                    var customIds = "";
+                    var displayOrder = 0;
+                    foreach(var x in request.RequestCustomSectionIds)
+                    {
+                        customIds += x.Id.ToString() + '#' + displayOrder +'#' + x.CustomGroupImageLink + ",";
+                        displayOrder++;
+                    }
+                    customIds = customIds.Remove(customIds.Length - 1);
+                    var parms = new SqlParameter[]
+                    {
+                            new SqlParameter("@CompanyTemplateSectionId", request.CompanyTemplateSectionId),
+                            new SqlParameter("@SectionCustomId", customIds),
+                            new SqlParameter("@IsActive",true),
+                            new SqlParameter("@CreatedBy", request.UserId.ToString()),
+                            new SqlParameter("@UpdatedBy", request.UserId.ToString()),
+                    };
+                    string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@IsActive,@CreatedBy,@UpdatedBy";
+                    var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
+
+                    if (retval != null && retval.Count > 0)
+                    {
+                        foreach (var item in retval)
+                        {
+                            response.Add(item.ItemId);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.Info($"ErrorOn:{DateTime.UtcNow} Message:{ex.Message} InnerException: {ex.InnerException} StackTrace: {ex.StackTrace}");
+                //throw;
+            }
+            return response;
+        }
+
+
+
+        public async Task<ResponseSectionItemAndImage> AddSectionItemVariantList(RequestAddSectionItem request)
+        {
+            //List<long> response = new List<long>();
+            try
+            {
+                var companyTemplateSectionItemList = new List<CompanyTemplateSectionItemMapping>();
+                var companyTemplateSectionImageList = new List<CompanyTemplateSectionImageMapping>();
+
+                await RemoveDuplicateCompanyTemplateSectionItem(request);
+
+                //Add operation will be done if there is items//
+                if (request.RequestCompanyTemplateSectionItems.Count > 0)
+                {
+                    for (int i = 1; i <= request.RequestCompanyTemplateSectionItems.Count; i++)
+                    {
+                        companyTemplateSectionItemList.Add(new CompanyTemplateSectionItemMapping
+                        {
+                            CompanyTemplateSectionId = request.CompanyTemplateSectionId,
+                            ItemId = request.RequestCompanyTemplateSectionItems[i - 1].ItemId,
+                            VariantId = request.RequestCompanyTemplateSectionItems[i - 1].VariantId,
+                            PrimaryText = request.RequestCompanyTemplateSectionItems[i - 1].PrimaryText,
+                            SecondaryText = request.RequestCompanyTemplateSectionItems[i - 1].SecondaryText,
+                            TertiaryText = request.RequestCompanyTemplateSectionItems[i - 1].TertiaryText,
+                            DisplayOrder = i,
+                            IsActive = true,
+                            CreatedBy = request.UserId.ToString(),
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedBy = request.UserId.ToString(),
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+
+                    var distinctItemList = request.RequestCompanyTemplateSectionItems
+                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId=k.VariantId, ItemImage = k.ItemImage })
+                        .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
+
+                    distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
+
+                    if (distinctItemList.Count > 0)
+                    {
+                        for (int i = 0; i < distinctItemList.Count; i++)
+                        {
+                            companyTemplateSectionImageList.Add(new CompanyTemplateSectionImageMapping
+                            {
+                                CompanyTemplateSectionId = request.CompanyTemplateSectionId,
+                                CreatedAt = DateTime.UtcNow,
+                                CreatedBy = request.UserId.ToString(),
+                                DisplayOrder = i + 1,
+                                ImagePath = distinctItemList[i].ItemImage,
+                                ItemId = distinctItemList[i].ItemId,
+                                IsActive = true,
+                                UpdatedAt = DateTime.UtcNow,
+                                UpdatedBy = request.UserId.ToString()
+                            });
+                        }
+                    }
+                }
+
+                if (companyTemplateSectionImageList.Any())
+                    await _context.CompanyTemplateSectionImageMapping.AddRangeAsync(companyTemplateSectionImageList);
+                   await _context.SaveChangesAsync();
+                if (companyTemplateSectionItemList.Any())
+                    await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
+                await _context.SaveChangesAsync();
+                //if (companyTemplateSectionImageList.Any() || companyTemplateSectionItemList.Any())
+                //    await _context.SaveChangesAsync();
+                //if (companyTemplateSectionItemList != null && companyTemplateSectionItemList.Count > 0)
+                //{
+                //    foreach (var item in companyTemplateSectionItemList)
+                //    {
+                //        response.Add(item.ItemId);
+                //    }
+                //}
+                var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                return section.ResponseSectionItemAndImage;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
     }
+
 }

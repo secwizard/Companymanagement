@@ -374,7 +374,7 @@ namespace CompanyManagement.Api.Models
         public string CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public string UpdatedBy { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public string PrimaryText { get; set; }
         public string SecondaryText { get; set; }
         public string TertiaryText { get; set; }
@@ -419,6 +419,29 @@ namespace CompanyManagement.Api.Models
         public DateTime UpdatedAt { get; set; }
         public CompanyTemplateSection CompanyTemplateSection { get; set; }
 
+    }
+    public class CompanyTemplateSectionItemMappingData
+    {
+        [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public long ItemId { get; set; }
+        public long VariantId { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+       
+
+    }
+    public class CustomIdList
+    { [Key]
+        public long ItemId { get; set; }
     }
     public class GetTemplate
     {
@@ -539,5 +562,30 @@ namespace CompanyManagement.Api.Models
         public DateTime CreatedAt { get; set; }
         public Guid UpdatedByUserID { get; set; }
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public class TemplateSectionForMetaData
+    {      [Key]
+        public int TemplateSectionForId { get; set; }
+        public string TemplateSectionForName { get; set; }
+
+       
+    }
+    public class TemplateSectionTypemaster
+    {
+        [Key]
+        public int TemplateSectionType { get; set; }
+        public string TemplateSectionName { get; set; }
+        public string HelpLink { get; set; }
+
+
+
+        
+    }
+    public class CompanyTempalteSectionMappingById
+    {
+       [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public long ItemId { get; set; }
     }
 }
