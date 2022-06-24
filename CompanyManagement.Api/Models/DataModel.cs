@@ -45,6 +45,10 @@ namespace CompanyManagement.Api.Models
         public string ServicePhoneCode { get; set; }
         public string AdminPhoneCountryCode { get; set; }
         public string ServicePhoneCountryCode { get; set; }
+        public string GoogleClientId { get; set; }
+        public string FaceBookApiId { get; set; }
+        public bool? IsPhonePeActive { get; set; }
+        public string GoogleClientSecret { get; set; }
     }
 
     public class Branch
