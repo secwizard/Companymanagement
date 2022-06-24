@@ -17,6 +17,7 @@ namespace CompanyManagement.Api.Data
         }
 
         public DbSet<Company> Company { get; set; }
+
         public DbSet<Branch> Branch { get; set; }
         public DbSet<CompanySetting> CompanySetting { get; set; }
         public DbSet<MailServer> MailServer { get; set; }
@@ -42,6 +43,9 @@ namespace CompanyManagement.Api.Data
         public DbSet<TaxName> TaxName { get; set; }
         public DbSet<TaxDetails> TaxDetails { get; set; }
         public DbSet<CompanyTemplateSectionItemMapping> CompanyTemplateSectionItemMapping { get; set; }
+        public DbSet<CompanyTemplateSectionItemMappingData> CompanyTemplateSectionItemMappingData { get; set; }
+            public DbSet<CustomIdList> CustomIdList { get; set; }
+
         public DbSet<CurrencyMaster> CurrencyMaster { get; set; }
 
         public DbSet<FrontEndTemplateFontFamilyMaster> FrontEndTemplateFontFamilyMaster { get; set; }
@@ -72,6 +76,10 @@ namespace CompanyManagement.Api.Data
         public DbSet<ResponseSaveTwillioNotificationService> AddEditTwillioNotificationService { get; set; }
         public DbSet<ResponseGetNotificationServiceDetails> ResponseGetNotificationServiceDetails { get; set; }
         public DbSet<CompanySocialLink> CompanySocialLink { get; set; }
+        public DbSet<TemplateSectionForMetaData> TemplateSectionForMetaData { get; set; }
+        public DbSet<TemplateSectionTypemaster> TemplateSectionTypemaster { get; set; }
+
+        public DbSet<CompanyTempalteSectionMappingById> CompanyTempalteSectionMappingById { get; set; }
 
     }
 }

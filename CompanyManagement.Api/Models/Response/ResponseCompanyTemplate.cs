@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Api.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace CompanyManagement.Api.Models.Response
 {
     public class ResponseCompanyTemplate
-    {
+    { 
         public int CompanyTemplateId { get; set; }
         public long CompanyId { get; set; }
         public long TemplateId { get; set; }
