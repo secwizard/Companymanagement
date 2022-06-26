@@ -94,9 +94,9 @@ namespace CompanyManagement.Api.Controllers
 
         [Authorize]
         [HttpPost("GetCompanyTemplateById")]
-        public async Task<ActionResult<ResponseCompanyTemplate>> GetCompanyTemplateById(RequestGetCompanyTemplateById request)
+        public async Task<ActionResult<ResponseAdminTemplate>> GetCompanyTemplateById(RequestGetCompanyTemplateById request)
         {
-            var response = new Response<ResponseCompanyTemplate>();
+            var response = new Response<ResponseAdminTemplate>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
@@ -104,7 +104,7 @@ namespace CompanyManagement.Api.Controllers
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     request.UserId = user.UserId;
-                    response.Data = await _temllateService.GetCompnayTemplateById(request);
+                    response.Data = await _temllateService.GetCompnayAdminTemplateById(request);
                 }
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Data not found." : string.Empty;

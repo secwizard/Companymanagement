@@ -461,6 +461,130 @@ namespace CompanyManagement.Api.Models
         public string Name { get; set; }
         public string CompanyLogo { get; set; }
     }
+    //Admin Section
+
+    public class CompanyTemplateAdmin
+    {
+        [Key]
+        public int CompanyTemplateId { get; set; }
+        public long CompanyId { get; set; }
+        public int TemplateId { get; set; }
+        public string TemplateName { get; set; }
+        public bool IsDefault { get; set; }
+        public string Url { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
+        public string TertiaryColor { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public string Type { get; set; }
+        public bool IsForB2C { get; set; }
+        public string TemplateView { get; set; }
+        public string ViewName { get; set; }
+        public string MobileViewName { get; set; }
+        public string ImagePath { get; set; }
+        public bool? OnlyForMobile { get; set; }
+        public bool? IsEditable { get; set; }
+        public string TopBarBackgroundColor { get; set; }
+        public string TopLogoUrl { get; set; }
+        public string TopCartIconUrl { get; set; }
+        public string TopcartIconBackgroundColor { get; set; }
+        public string TopProfileIconUrl { get; set; }
+        public string TopProfileIconBackgroundColor { get; set; }
+        public string TopMenuIconUrl { get; set; }
+        public string PageBackgroundColor { get; set; }
+        public string FontBackgroundBrushColor { get; set; }
+        public string GeneralFontColor { get; set; }
+        public string SeeAllArrowIconUrl { get; set; }
+        public string ShopNowFontColor { get; set; }
+        public string ShopNowBackgroundColor { get; set; }
+        public decimal? ShopNowBorderRadius { get; set; }
+        public string ShopNowBorderColor { get; set; }
+        public decimal? SectionBorderRadius { get; set; }
+        public decimal? SubSectionBorderRadius { get; set; }
+        public bool? IsSubSectionTransparent { get; set; }
+        public string SubSectionGradientPrimaryColor { get; set; }
+        public string SubSectionGradientSecondaryColor { get; set; }
+        public int? FontFamilyId { get; set; }
+        [ForeignKey(nameof(FontFamilyId))]
+        public FrontEndTemplateFontFamilyMaster FontFamilyMaster { get; set; }
+
+        public string LargeBrushName { get; set; }
+        public string MediumBrushName { get; set; }
+        public string SmallBrushName { get; set; }
+
+        public List<CompanyTemplateSectionAdmin> CompanyTemplateSections { get; set; } = new List<CompanyTemplateSectionAdmin>();
+    }
+
+    public class CompanyTemplateSectionAdmin
+    {
+        [Key]
+        public int CompanyTemplateSectionId { get; set; }
+        public int CompanyTemplateId { get; set; }
+        public int SectionType { get; set; }
+        public string SectionTypeName { get; set; }
+        public string SectionName { get; set; }
+        public string SectionBackgrounColor { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public int SectionFor { get; set; }
+        public CompanyTemplateAdmin CompanyTemplate { get; set; }
+        public List<CompanyTemplateSectionItemMappingAdmin> CompanyTemplateSectionItemMappings { get; set; } = new List<CompanyTemplateSectionItemMappingAdmin>();
+        public List<CompanyTemplateSectionImageMappingAdmin> CompanyTemplateSectionImageMappings { get; set; } = new List<CompanyTemplateSectionImageMappingAdmin>();
+
+    }
+
+    public class CompanyTemplateSectionItemMappingAdmin
+    {
+        [Key]
+        public long CompanyTemplateSectionItemMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public long ItemId { get; set; }
+        public long? VariantId { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public CompanyTemplateSectionAdmin CompanyTemplateSection { get; set; }
+
+    }
+
+    public class CompanyTemplateSectionImageMappingAdmin
+    {
+        [Key]
+        public long CompanyTemplateSectionImageMappingId { get; set; }
+        public int CompanyTemplateSectionId { get; set; }
+        public string ImagePath { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public long ItemId { get; set; }
+        public CompanyTemplateSectionAdmin CompanyTemplateSection { get; set; }
+
+    }
+
+
+    //Admin Section End
+
+
 
     public class GetTemplateBySectionId
     {

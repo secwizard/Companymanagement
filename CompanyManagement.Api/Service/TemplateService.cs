@@ -229,6 +229,175 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+
+        //proc for company template
+
+        public async Task<ResponseAdminTemplate> GetCompnayAdminTemplateById(RequestGetCompanyTemplateById request)
+        {
+            try
+            {
+                var companyTemplate = await GetCompanyTemplate(request.CompanyId, request.CompanyTemplateId);
+                var companyTemplateSections = companyTemplate != null ? await GetCompanyTemplateSections(request.CompanyId, request.CompanyTemplateId) : null;
+                if (companyTemplateSections != null && companyTemplateSections.Count > 0)
+                {
+                     await GetCompanyTemplateSectionImages(companyTemplateSections);
+                     await GetCompanyTemplateSectionItems(companyTemplateSections);
+                    var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
+                    companyTemplate.FontFamilyMaster = fontMaster;
+                }
+                return await CreateTemplateReturnObject(request.CompanyId, companyTemplate);
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        private async Task<CompanyTemplateAdmin> GetCompanyTemplate(long companyId, int companyTemplateId)
+        {
+            try
+            {
+                var companyTemplates = await _context.CompanyTemplateAdmin
+                    .FromSqlRaw($"dbo.GetCompanyTemplateById @CompanyId, @CompanyTemplateId"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyId", companyId),
+                       new SqlParameter("@CompanyTemplateId", companyTemplateId)
+                     })
+                    .ToListAsync();
+
+                return companyTemplates != null && companyTemplates.Count > 0 ? companyTemplates.FirstOrDefault() : null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<CompanyTemplateSectionAdmin>> GetCompanyTemplateSections(long companyId, int companyTemplateId)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionAdmin
+                    .FromSqlRaw($"dbo.GetCompanyTemplateSectionByTemplateId @CompanyId, @CompanyTemplateId"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyId", companyId),
+                       new SqlParameter("@CompanyTemplateId", companyTemplateId)
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        //private async Task<List<CompanyTemplateSectionAdmin>> BindCompanyTemplateSectionImages(List<CompanyTemplateSectionAdmin> companyTemplateSections)
+        //{
+        //    var companyTemplateSectionImageMappings = await GetCompanyTemplateSectionImages(companyTemplateSections);
+        //    foreach (var item in companyTemplateSections)
+        //    {
+        //        item.CompanyTemplateSectionImageMappings.AddRange(companyTemplateSectionImageMappings.Where(x => x.CompanyTemplateSectionId == item.CompanyTemplateSectionId).ToList()); ;
+        //    }
+        //    return companyTemplateSections;
+        //}
+
+        //private async Task<List<CompanyTemplateSectionAdmin>> BindCompanyTemplateSectionItems(List<CompanyTemplateSectionAdmin> companyTemplateSections)
+        //{
+        //    var companyTemplateSectionImageMappings = await GetCompanyTemplateSectionItems(companyTemplateSections);
+        //    foreach (var item in companyTemplateSections)
+        //    {
+        //        item.CompanyTemplateSectionItemMappings.AddRange(companyTemplateSectionImageMappings.Where(x => x.CompanyTemplateSectionId == item.CompanyTemplateSectionId).ToList()); ;
+        //    }
+        //    return companyTemplateSections;
+        //}
+
+        private async Task<List<CompanyTemplateSectionImageMappingAdmin>> GetCompanyTemplateSectionImages(List<CompanyTemplateSectionAdmin> sections)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionImageMappingAdmin
+                    .FromSqlRaw($"dbo.GetImageMappingFromSectionIds @CompanyTemplateSectionIds"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyTemplateSectionIds", String.Join(',',sections.Select(x=>x.CompanyTemplateSectionId).ToList()))
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<CompanyTemplateSectionItemMappingAdmin>> GetCompanyTemplateSectionItems(List<CompanyTemplateSectionAdmin> sections)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionItemMappingAdmin
+                    .FromSqlRaw($"dbo.GetItemMappingFromSectionIds @CompanyTemplateSectionIds"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyTemplateSectionIds", String.Join(',',sections.Select(x=>x.CompanyTemplateSectionId).ToList()))
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<TemplateSectionForMetaData>> GetCustomGroups(long companyId)
+        {
+            string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+            var dataListValue = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlTextdata).ToListAsync();
+            return dataListValue;
+        }
+
+        private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
+        {
+            var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
+            var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
+            returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
+            returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
+            returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
+            returnDataTemplte.TopProfileIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopProfileIconUrl;
+            returnDataTemplte.TopMenuIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopMenuIconUrl;
+            returnDataTemplte.SeeAllArrowIconUrl = appSettings.CommonImagePath + returnDataTemplte.SeeAllArrowIconUrl;
+            returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
+            returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
+            returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
+
+            var customGroups = await GetCustomGroups(companyId);
+
+            foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
+            {
+                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages,
+                    section.ResponseSectionItemAndImage.SectionItems);
+                section.SectionForList = customGroups;
+            }
+            return returnDataTemplte;
+        }
+
+        private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants)
+        {
+            foreach (var item in itemImages)
+            {
+                item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+            }
+        }
+
+        //end For Company Template 
+
+
         public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
         {
             try
@@ -977,9 +1146,9 @@ namespace CompanyManagement.Api.Service
                 {
                     var customIds = "";
                     var displayOrder = 0;
-                    foreach(var x in request.RequestCustomSectionIds)
+                    foreach (var x in request.RequestCustomSectionIds)
                     {
-                        customIds += x.Id.ToString() + '#' + displayOrder +'#' + x.CustomGroupImageLink + ",";
+                        customIds += x.Id.ToString() + '#' + displayOrder + '#' + x.CustomGroupImageLink + ",";
                         displayOrder++;
                     }
                     customIds = customIds.Remove(customIds.Length - 1);
@@ -1047,7 +1216,7 @@ namespace CompanyManagement.Api.Service
                     }
 
                     var distinctItemList = request.RequestCompanyTemplateSectionItems
-                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId=k.VariantId, ItemImage = k.ItemImage })
+                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId = k.VariantId, ItemImage = k.ItemImage })
                         .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
 
                     distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
@@ -1074,7 +1243,7 @@ namespace CompanyManagement.Api.Service
 
                 if (companyTemplateSectionImageList.Any())
                     await _context.CompanyTemplateSectionImageMapping.AddRangeAsync(companyTemplateSectionImageList);
-                   await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 if (companyTemplateSectionItemList.Any())
                     await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
                 await _context.SaveChangesAsync();
