@@ -369,5 +369,4 @@ namespace CompanyManagement.Api.Models
         public Guid? UpdatedByUserID { get; set; }
        
     }
-
 }

@@ -864,7 +864,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var data = await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.ShortName == request.CompShortName
+                var data = await _context.Company.Where(x => x.CompanySiteUrl.ToLower() == request.CompUrl.ToLower() && x.ShortName == request.CompShortName
                  && x.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
                 {
@@ -887,7 +887,7 @@ namespace CompanyManagement.Api.Service
         {
             try
             {
-                var data = await _context.Company.Where(x => x.CompanySiteUrl == request.CompUrl && x.IsActive == true).FirstOrDefaultAsync();
+                var data = await _context.Company.Where(x => x.CompanySiteUrl.ToLower() == request.CompUrl.ToLower() && x.IsActive == true).FirstOrDefaultAsync();
                 if (data != null)
                 {
                     var ret = new CompanyInfo
@@ -914,7 +914,7 @@ namespace CompanyManagement.Api.Service
                 {
                     var urlpart = strlist[1].Split('=')[1];
                     var compUrl = strlist[0];
-                    var data = _context.Company.Where(x => x.CompanySiteUrl == compUrl && x.ShortName == urlpart && x.IsActive == true).FirstOrDefault();
+                    var data = _context.Company.Where(x => x.CompanySiteUrl.ToLower() == compUrl.ToLower() && x.ShortName.ToLower() == urlpart.ToLower() && x.IsActive == true).FirstOrDefault();
                     if (data != null)
                     {
                         return data.CompanyId;
@@ -929,7 +929,7 @@ namespace CompanyManagement.Api.Service
                         var x = compUrl.Substring(0, split + 5);
                         compUrl = x;
                     }
-                    var data = _context.Company.Where(x => x.CompanySiteUrl == compUrl && x.IsActive == true).FirstOrDefault();
+                    var data = _context.Company.Where(x => x.CompanySiteUrl.ToLower() == compUrl.ToLower() && x.IsActive == true).FirstOrDefault();
                     if (data != null)
                     {
                         return data.CompanyId;
@@ -984,10 +984,15 @@ namespace CompanyManagement.Api.Service
                 if (data != null)
                 {
                     _mapper.Map(data, res);
+                    res.IsPhonePeActive = data.IsPhonePeActive ?? false;
+                    res.CompanyLogo = data.ImageFilePath + "" + data.LogoFileName;
+                    res.GoogleClientId = data.GoogleClientId;
+                    res.FaceBookApiId = data.FaceBookApiId;
+                    res.GoogleClientSecret = data.GoogleClientSecret;
 
                     var themeData = await _context.Theme
-                    .Where(c => c.CompanyId == CompanyId
-                    && c.IsActive == true).FirstOrDefaultAsync();
+                                .Where(c => c.CompanyId == CompanyId
+                                && c.IsActive == true).FirstOrDefaultAsync();
                     if (themeData != null)
                     {
                         var theme = new ThemeData();
@@ -1338,7 +1343,7 @@ namespace CompanyManagement.Api.Service
                     new SqlParameter("@CreatedAt",  request.CreatedAt),
                    // new SqlParameter("@CreatedAt", Common.StringToDateTime(request.CreatedAt_Str)),
                     new SqlParameter("@UpdatedByUserID", request.UpdatedByUserID == null ? new Guid() : request.UpdatedByUserID),
-                    
+
                     new SqlParameter("@UpdatedAt", request.UpdatedAt??System.DateTime.Now)
 
 
