@@ -246,6 +246,11 @@ namespace CompanyManagement.Api.Service
                     var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
                     companyTemplate.FontFamilyMaster = fontMaster;
                     companyTemplate.IsEditable = false;
+                    if (companyTemplate.IsEditable==false)
+                    {
+                        companyTemplate.IsEditable = true;
+                    }
+
                 }
                 return await CreateTemplateReturnObject(request.CompanyId, companyTemplate);
             }
