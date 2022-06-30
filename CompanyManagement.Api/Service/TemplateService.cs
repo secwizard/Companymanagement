@@ -245,6 +245,7 @@ namespace CompanyManagement.Api.Service
                      await GetCompanyTemplateSectionItems(companyTemplateSections);
                     var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
                     companyTemplate.FontFamilyMaster = fontMaster;
+                    companyTemplate.IsEditable = false;
                 }
                 return await CreateTemplateReturnObject(request.CompanyId, companyTemplate);
             }
@@ -460,7 +461,16 @@ namespace CompanyManagement.Api.Service
                 var dataTemplte = await _context.CompanyTemplate
                     .Where(t => t.CompanyId == request.CompanyId)
                     .ToListAsync();
+                foreach (var item in dataTemplte)
+                {
+
+                    if (item.IsEditable==false)
+                    {
+                        item.IsEditable = true;
+                    }
+                }
                 var returnDataTemplte = _mapper.Map<List<ResponseCompanyTemplate>>(dataTemplte);
+               
                 return returnDataTemplte;
             }
             catch (Exception ex)
