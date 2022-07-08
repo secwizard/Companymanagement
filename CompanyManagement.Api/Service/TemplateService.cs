@@ -1250,7 +1250,8 @@ namespace CompanyManagement.Api.Service
                                 ItemId = distinctItemList[i].ItemId,
                                 IsActive = true,
                                 UpdatedAt = DateTime.UtcNow,
-                                UpdatedBy = request.UserId.ToString()
+                                UpdatedBy = request.UserId.ToString(),
+                                
                             });
                         }
                     }
@@ -1262,15 +1263,7 @@ namespace CompanyManagement.Api.Service
                 if (companyTemplateSectionItemList.Any())
                     await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
                 await _context.SaveChangesAsync();
-                //if (companyTemplateSectionImageList.Any() || companyTemplateSectionItemList.Any())
-                //    await _context.SaveChangesAsync();
-                //if (companyTemplateSectionItemList != null && companyTemplateSectionItemList.Count > 0)
-                //{
-                //    foreach (var item in companyTemplateSectionItemList)
-                //    {
-                //        response.Add(item.ItemId);
-                //    }
-                //}
+
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
                 MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 return section.ResponseSectionItemAndImage;
