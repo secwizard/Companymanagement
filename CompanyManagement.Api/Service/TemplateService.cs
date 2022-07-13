@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace CompanyManagement.Api.Service
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly IMapper _mapper;
         private readonly AppSettings appSettings;
+        private readonly IServiceAPI _serviceAPI;
+
 
         static TemplateService()
         {
@@ -36,10 +39,11 @@ namespace CompanyManagement.Api.Service
             }).CreateMapper();
         }
 
-        public TemplateService(CompanyDBContext context, IOptions<AppSettings> appSettings)
+        public TemplateService(CompanyDBContext context, IOptions<AppSettings> appSettings, IServiceAPI serviceAPI)
         {
             _context = context;
             this.appSettings = appSettings.Value;
+            _serviceAPI = serviceAPI;
         }
 
         public async Task<List<ResponseFrontendTemplate>> GetFrontendTemplate()
@@ -241,11 +245,17 @@ namespace CompanyManagement.Api.Service
                 var companyTemplateSections = companyTemplate != null ? await GetCompanyTemplateSections(request.CompanyId, request.CompanyTemplateId) : null;
                 if (companyTemplateSections != null && companyTemplateSections.Count > 0)
                 {
-                     await GetCompanyTemplateSectionImages(companyTemplateSections);
-                     await GetCompanyTemplateSectionItems(companyTemplateSections);
+                    await GetCompanyTemplateSectionImages(companyTemplateSections);
+                    await GetCompanyTemplateSectionItems(companyTemplateSections);
+                    //await  MakeVariantWiseVariantDataForSection(companyTemplateSections);
                     var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
                     companyTemplate.FontFamilyMaster = fontMaster;
-                    companyTemplate.IsEditable = false;
+
+                    if (companyTemplate.IsEditable == false)
+                    {
+                        companyTemplate.IsEditable = true;
+
+                    }
                 }
                 return await CreateTemplateReturnObject(request.CompanyId, companyTemplate);
             }
@@ -363,10 +373,15 @@ namespace CompanyManagement.Api.Service
             return dataListValue;
         }
 
+     
+
+
+
         private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
         {
             var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
             var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
+            var companyid = returnDataTemplte.CompanyId;
             returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
             returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
             returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
@@ -376,16 +391,43 @@ namespace CompanyManagement.Api.Service
             returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
             returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
             returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
-
+          
             var customGroups = await GetCustomGroups(companyId);
+
+  
 
             foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
             {
-                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages,
-                    section.ResponseSectionItemAndImage.SectionItems);
+                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
+                //Parameter section.ResponseSectionItemAndImage.SectionItems               
                 section.SectionForList = customGroups;
+                section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
+        }
+
+        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems ,long companyid)
+        {
+            try
+            {
+                var content = JsonConvert.SerializeObject(sectionItems, (Formatting)companyid);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
+                if (data != null && data.Status)
+                {
+                    return data.Data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Info("***MakeVariantWiseVariantDataForSection*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                throw;
+            }
         }
 
         private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants)
@@ -464,13 +506,13 @@ namespace CompanyManagement.Api.Service
                 foreach (var item in dataTemplte)
                 {
 
-                    if (item.IsEditable==false)
+                    if (item.IsEditable == false)
                     {
                         item.IsEditable = true;
                     }
                 }
                 var returnDataTemplte = _mapper.Map<List<ResponseCompanyTemplate>>(dataTemplte);
-               
+
                 return returnDataTemplte;
             }
             catch (Exception ex)
@@ -1276,6 +1318,10 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+     
+
+
     }
 
 }

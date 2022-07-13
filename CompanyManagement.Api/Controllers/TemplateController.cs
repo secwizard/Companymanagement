@@ -5,6 +5,7 @@ using CompanyManagement.Api.Service;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -105,9 +106,12 @@ namespace CompanyManagement.Api.Controllers
                 {
                     request.UserId = user.UserId;
                     response.Data = await _temllateService.GetCompnayAdminTemplateById(request);
+                    //var itmdtls = await MakeVariantWiseVariantDataForSectionAdmin(response.Data);
+                    //response.Data = itmdtls;
+                    response.Status = response.Data != null;
+                    response.Message = response.Data == null ? "Data not found." : string.Empty;
                 }
-                response.Status = response.Data != null;
-                response.Message = response.Data == null ? "Data not found." : string.Empty;
+               
             }
             catch (Exception ex)
             {
@@ -117,7 +121,29 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+        //public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSectionAdmin(Response<ResponseAdminTemplate> item)
+        //{
+        //    try
+        //    {
+        //        var content = JsonConvert.SerializeObject(item);
+        //        var result = await _restAPI.ProcessPostRequest($"{_appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", item);
+        //       var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
+        //        if (data != null && data.Status)
+        //        {
+        //            return data.Data;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Info("***GetVariantWiseDt*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+        //        throw;
+        //    }
 
+        //}
         [HttpPost("GetDefaultTemplateByCompany")]
         public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
         {

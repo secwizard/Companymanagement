@@ -9,6 +9,7 @@ namespace CompanyManagement.Api.Service
 {
     public interface ITemplateService
     {
+        Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long companyid);
         Task<FrontEndTemplate> GetTemplate(RequestCompanyTemplate request);
         Task<List<ItemIdBySection>> GetTemplateBySectionID(RequestItemBySectionId request);
         Task<List<ResponseCompanyTemplate>> GetCompanyTemplates(RequestBase request);

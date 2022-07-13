@@ -55,6 +55,7 @@ namespace CompanyManagement.Api.Models.Response
     }
     public class ResponseAdminCompanyTemplateSection
     {
+        public int CompanyId { get; set; }
         public int CompanyTemplateSectionId { get; set; }//pk
         public int CompanyTemplateId { get; set; }
         public int SectionType { get; set; }
@@ -81,6 +82,7 @@ namespace CompanyManagement.Api.Models.Response
     }
     public class ResponseAdminCompanyTemplateSectionItem
     {
+        public int CompanyId { get; set; }
         public long CompanyTemplateSectionItemMappingId { get; set; }//pk
         public int ItemId { get; set; }
         public int VariantId { get; set; }
@@ -97,6 +99,7 @@ namespace CompanyManagement.Api.Models.Response
         public decimal TaxPercentage { get; set; }
         public decimal MembrPrice { get; set; }
         public List<ReturnImages> Images { get; set; }
+     
     }
     public class ResponseAdminCompanyTemplateSectionImage
     {

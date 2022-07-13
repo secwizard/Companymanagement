@@ -9,5 +9,6 @@ namespace CompanyManagement.Api.Helpers
     {
         public string UserManagementAPI { get; set; }
         public string CommonImagePath { get; set; }
+        public string ProductManagementAPI { get; set; }
     }
 }
