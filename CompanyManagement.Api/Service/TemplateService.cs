@@ -399,9 +399,9 @@ namespace CompanyManagement.Api.Service
             foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
             {
                 MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
+                //var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
                 //Parameter section.ResponseSectionItemAndImage.SectionItems               
-                //section.SectionForList = customGroups;
+                section.SectionForList = customGroups;
                 //section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
