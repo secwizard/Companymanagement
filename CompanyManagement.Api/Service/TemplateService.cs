@@ -401,17 +401,30 @@ namespace CompanyManagement.Api.Service
                 MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
                 //Parameter section.ResponseSectionItemAndImage.SectionItems               
-                section.SectionForList = customGroups;
-                section.ResponseSectionItemAndImage.SectionItems = await variant;
+                //section.SectionForList = customGroups;
+                //section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
         }
 
         public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems ,long companyid)
         {
+            
             try
             {
-                var content = JsonConvert.SerializeObject(sectionItems, (Formatting)companyid);
+
+                ResponseCompany req = new ResponseCompany();
+                req.CompanyId = companyid;
+
+                foreach (var item in sectionItems)
+                {
+                    ResponseAdminCompanyTemplateSectionItem items = new ResponseAdminCompanyTemplateSectionItem();
+                    items.VariantId = item.VariantId;
+                    items.ItemId = item.ItemId;
+                    req.ResponseAdminCompanyTemplateSectionItem.Add(items);
+                }
+       
+                var content = JsonConvert.SerializeObject(req);
                 var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", content);
                 var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
                 if (data != null && data.Status)

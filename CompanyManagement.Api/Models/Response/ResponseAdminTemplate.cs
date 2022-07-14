@@ -80,9 +80,16 @@ namespace CompanyManagement.Api.Models.Response
         public List<ResponseAdminCompanyTemplateSectionImage> SectionImages { get; set; }
         public CompanyTemplateSectionItemMappingData SectionItemDetails { get; set; }
     }
-    public class ResponseAdminCompanyTemplateSectionItem
+
+    public class ResponseCompany
     {
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
+        public List<ResponseAdminCompanyTemplateSectionItem> ResponseAdminCompanyTemplateSectionItem { get; set; }
+        
+    }
+        public class ResponseAdminCompanyTemplateSectionItem
+    {
+        public long CompanyId { get; set; }
         public long CompanyTemplateSectionItemMappingId { get; set; }//pk
         public int ItemId { get; set; }
         public int VariantId { get; set; }
@@ -99,7 +106,7 @@ namespace CompanyManagement.Api.Models.Response
         public decimal TaxPercentage { get; set; }
         public decimal MembrPrice { get; set; }
         public List<ReturnImages> Images { get; set; }
-     
+        public ResponseCompany ResponseCompany { get; set; }
     }
     public class ResponseAdminCompanyTemplateSectionImage
     {
