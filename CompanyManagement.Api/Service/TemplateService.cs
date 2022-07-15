@@ -415,8 +415,6 @@ namespace CompanyManagement.Api.Service
             try
             {
 
-
-
                 foreach (var item in sectionItems)
                 {
                     item.CompanyId = cid;
