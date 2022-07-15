@@ -85,7 +85,7 @@ namespace CompanyManagement.Api.Models.Response
     {
         public long CompanyId { get; set; }
         public List<ResponseAdminCompanyTemplateSectionItem> ResponseAdminCompanyTemplateSectionItem { get; set; }
-
+        public DemoAdminCompanyTemplateSectionItem DemoAdminCompanyTemplateSectionItem { get; set; }
     }
         public class ResponseAdminCompanyTemplateSectionItem
     {
@@ -107,6 +107,27 @@ namespace CompanyManagement.Api.Models.Response
         public decimal MembrPrice { get; set; }
         public List<ReturnImages> Images { get; set; }
       
+    }
+    public class DemoAdminCompanyTemplateSectionItem
+    {
+        public long CompanyId { get; set; }
+        public long CompanyTemplateSectionItemMappingId { get; set; }//pk
+        public int ItemId { get; set; }
+        public int VariantId { get; set; }
+        public bool? IsActive { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public string TertiaryText { get; set; }
+        public int DisplayOrder { get; set; }
+        public string Name { get; set; }
+        public string ImagePath { get; set; }
+        public decimal Price { get; set; }
+        public decimal MRP { get; set; }
+        public decimal SalePrice { get; set; }
+        public decimal TaxPercentage { get; set; }
+        public decimal MembrPrice { get; set; }
+        public List<ReturnImages> Images { get; set; }
+
     }
     public class ResponseAdminCompanyTemplateSectionImage
     {

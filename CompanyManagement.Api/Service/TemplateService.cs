@@ -247,7 +247,7 @@ namespace CompanyManagement.Api.Service
                 {
                     await GetCompanyTemplateSectionImages(companyTemplateSections);
                     await GetCompanyTemplateSectionItems(companyTemplateSections);
-                    //await  MakeVariantWiseVariantDataForSection(companyTemplateSections);
+                   
                     var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
                     companyTemplate.FontFamilyMaster = fontMaster;
 
@@ -381,7 +381,7 @@ namespace CompanyManagement.Api.Service
         {
             var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
             var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
-            var cid = returnDataTemplte.CompanyId;
+            var companyid = returnDataTemplte.CompanyId;
             returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
             returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
             returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
@@ -399,26 +399,30 @@ namespace CompanyManagement.Api.Service
             foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
             {
                 MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, cid);
-                //Parameter section.ResponseSectionItemAndImage.SectionItems
-                
+                var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
+        
                 section.SectionForList = customGroups;
                 section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
         }
 
-        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems ,long cid)
+      
+
+        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long cid)
         {
-            
+
             try
             {
+
+
+
                 foreach (var item in sectionItems)
                 {
                     item.CompanyId = cid;
                 }
 
-                var content = JsonConvert.SerializeObject(sectionItems);          
+                var content = JsonConvert.SerializeObject(sectionItems);
                 var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", content);
                 var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
                 if (data != null && data.Status)
@@ -436,6 +440,11 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+
+
+
+
 
         private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants)
         {
