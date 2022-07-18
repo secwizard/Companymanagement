@@ -400,16 +400,18 @@ namespace CompanyManagement.Api.Service
             {
                 MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, companyid);
-        
+          
+               
+                //section.ResponseSectionItemAndImage.SectionItems = await variant;
+                //MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 section.SectionForList = customGroups;
-                section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
         }
 
       
 
-        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long cid)
+        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long companyid)
         {
 
             try
@@ -417,8 +419,9 @@ namespace CompanyManagement.Api.Service
 
                 foreach (var item in sectionItems)
                 {
-                    item.CompanyId = cid;
+                    item.CompanyId = companyid;
                 }
+
 
                 var content = JsonConvert.SerializeObject(sectionItems);
                 var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", content);
@@ -440,7 +443,13 @@ namespace CompanyManagement.Api.Service
         }
 
 
-
+        private void MakeItemWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants)
+        {
+            foreach (var item in itemImages)
+            {
+                item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+            }
+        }
 
 
 
