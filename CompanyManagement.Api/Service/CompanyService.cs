@@ -989,6 +989,9 @@ namespace CompanyManagement.Api.Service
                     res.GoogleClientId = data.GoogleClientId;
                     res.FaceBookApiId = data.FaceBookApiId;
                     res.GoogleClientSecret = data.GoogleClientSecret;
+                    res.ShowCity = data.ShowCity??false;
+                    res.ShowDistrict = data.ShowDistrict ?? false;
+                    res.ShowState = data.ShowState ?? false;
 
                     var themeData = await _context.Theme
                                 .Where(c => c.CompanyId == CompanyId
