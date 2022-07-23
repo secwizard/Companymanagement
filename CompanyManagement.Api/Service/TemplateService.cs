@@ -373,12 +373,39 @@ namespace CompanyManagement.Api.Service
             return dataListValue;
         }
 
-     
 
+        private async void GetPriceDetailForTemplate(CompanyTemplateAdmin dataTemplte)
+        {
+            List<long> items = new List<long>();
+            List<long> variants = new List<long>();
+            foreach (var item in dataTemplte.CompanyTemplateSections)
+            {
+                foreach (var nItem in item.CompanyTemplateSectionItemMappings)
+                {
+                    if (item.SectionFor == 1)
+                    {
+                        items.Add(nItem.ItemId);
+                    }
+                    else if (item.SectionFor == 2)
+                    {
+                        variants.Add(nItem.VariantId.Value);
+                    }
+                }
+            }
+            RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
+            request.CompanyId = dataTemplte.CompanyId;
+            request.ItemIds = String.Join(',',items);
+            request.VariantIds = String.Join(',', variants);
+            var content = JsonConvert.SerializeObject(request);
+            var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+            var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+        }
 
 
         private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
         {
+
+            GetPriceDetailForTemplate(dataTemplte);
             var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
             var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
             var cid = returnDataTemplte.CompanyId;
@@ -391,26 +418,22 @@ namespace CompanyManagement.Api.Service
             returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
             returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
             returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
-          
-            var customGroups = await GetCustomGroups(companyId);
 
-  
+            var customGroups = await GetCustomGroups(companyId);
 
             foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
             {
                 MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, cid);
-                //Parameter section.ResponseSectionItemAndImage.SectionItems
-                
+                //var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, cid);
+
                 section.SectionForList = customGroups;
-                section.ResponseSectionItemAndImage.SectionItems = await variant;
             }
             return returnDataTemplte;
         }
 
-        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems ,long cid)
+        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long cid)
         {
-            
+
             try
             {
                 foreach (var item in sectionItems)
@@ -418,8 +441,8 @@ namespace CompanyManagement.Api.Service
                     item.CompanyId = cid;
                 }
 
-                var content = JsonConvert.SerializeObject(sectionItems);          
-                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", content);
+                var content = JsonConvert.SerializeObject(sectionItems);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
                 var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
                 if (data != null && data.Status)
                 {
@@ -1326,7 +1349,7 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-     
+
 
 
     }

@@ -122,4 +122,32 @@ namespace CompanyManagement.Api.Models.Response
         public long ItemId { get; set; }
         public List<ResponseAdminCompanyTemplateSectionItem> VariantListWithinThisItem { get; set; }
     }
+    public class RequestPriceDetailTemplate
+    {
+        public long CompanyId { get; set; }
+        public string ItemIds { get; set; }
+        public string VariantIds { get; set; }
+    }
+    public class ResponseItemListForTemplateV2
+    {
+        public long ItemId { get; set; }
+        public long VariantId { get; set; }
+        public string ItemName { get; set; }
+        public decimal ItemMRP { get; set; }
+        public decimal ItemSalePrice { get; set; }
+        public decimal ItemTaxPct { get; set; }
+        public decimal ItemMembrPrice { get; set; }
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; }
+        public long? OfferId { get; set; }
+        public string OfferName { get; set; }
+        public DateTime? OfferStartDate { get; set; }
+        public DateTime? OfferEndDate { get; set; }
+        public string OfferDescription { get; set; }
+        public string OfferDisclaimer { get; set; }
+        public bool? OfferIsPercentage { get; set; }
+        public decimal? OfferValue { get; set; }
+        public decimal? OfferSalePrice { get; set; }
+        public decimal? OfferSavePrice { get; set; }
+    }
 }
