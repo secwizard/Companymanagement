@@ -106,12 +106,10 @@ namespace CompanyManagement.Api.Controllers
                 {
                     request.UserId = user.UserId;
                     response.Data = await _temllateService.GetCompnayAdminTemplateById(request);
-                    //var itmdtls = await MakeVariantWiseVariantDataForSectionAdmin(response.Data);
-                    //response.Data = itmdtls;
                     response.Status = response.Data != null;
                     response.Message = response.Data == null ? "Data not found." : string.Empty;
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -493,7 +491,7 @@ namespace CompanyManagement.Api.Controllers
 
             try
             {
-                var result = await _temllateService.GetTemplateSectionForMetaData( );
+                var result = await _temllateService.GetTemplateSectionForMetaData();
                 returnVal.Data = result;
                 returnVal.Status = result != null;
                 returnVal.Message = result == null ? "Data Not Found" : string.Empty;
@@ -545,19 +543,15 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-       
-      
+
+
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
-        public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ActionResult<ResponseSectionItemAndImage>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            var response =  new Response<List<long>>();
+            var response = new Response<ResponseSectionItemAndImage>();
             try
             {
-                //var user = (UserInfo)HttpContext.Items["User"];
-                //if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-               
-                //    request.UserId = user.UserId;
-                    response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);       
+                response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Item can't be added." : string.Empty;
             }
@@ -575,8 +569,8 @@ namespace CompanyManagement.Api.Controllers
         {
             var response = new Response<ResponseSectionItemAndImage>();
             try
-            {             
-                    response.Data = await _temllateService.AddSectionItemVariantList(request);
+            {
+                response.Data = await _temllateService.AddSectionItemVariantList(request);
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Item can't be added." : string.Empty;
             }

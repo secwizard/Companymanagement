@@ -374,38 +374,43 @@ namespace CompanyManagement.Api.Service
         }
 
 
-        private async void GetPriceDetailForTemplate(CompanyTemplateAdmin dataTemplte)
+        private async Task<List<ResponseItemListForTemplateV2>> GetPriceDetailForTemplate(CompanyTemplateAdmin dataTemplte)
         {
-            List<long> items = new List<long>();
-            List<long> variants = new List<long>();
-            foreach (var item in dataTemplte.CompanyTemplateSections)
+            try
             {
-                foreach (var nItem in item.CompanyTemplateSectionItemMappings)
+                List<long> items = new List<long>();
+                List<long> variants = new List<long>();
+                foreach (var item in dataTemplte.CompanyTemplateSections)
                 {
-                    if (item.SectionFor == 1)
+                    foreach (var nItem in item.CompanyTemplateSectionItemMappings)
                     {
-                        items.Add(nItem.ItemId);
-                    }
-                    else if (item.SectionFor == 2)
-                    {
-                        variants.Add(nItem.VariantId.Value);
+                        if (item.SectionFor == 1)
+                            items.Add(nItem.ItemId);
+                        else if (item.SectionFor == 2)
+                            variants.Add(nItem.VariantId.Value);
                     }
                 }
+                RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
+                request.CompanyId = dataTemplte.CompanyId;
+                request.ItemIds = String.Join(',', items);
+                request.VariantIds = String.Join(',', variants);
+                var content = JsonConvert.SerializeObject(request);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+                return data.Data;
             }
-            RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
-            request.CompanyId = dataTemplte.CompanyId;
-            request.ItemIds = String.Join(',',items);
-            request.VariantIds = String.Join(',', variants);
-            var content = JsonConvert.SerializeObject(request);
-            var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
-            var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+            catch (Exception ex)
+            {
+                log.Info("***GetPriceDetailForTemplate*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                return null;
+            }
         }
 
 
         private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
         {
 
-            GetPriceDetailForTemplate(dataTemplte);
+            var allPrices =await GetPriceDetailForTemplate(dataTemplte);
             var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
             var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
             var cid = returnDataTemplte.CompanyId;
@@ -418,17 +423,49 @@ namespace CompanyManagement.Api.Service
             returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
             returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
             returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
-
             var customGroups = await GetCustomGroups(companyId);
 
             foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
             {
-                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                //var variant = MakeVariantWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionItems, cid);
-
+                SetPriceForItems(section.ResponseSectionItemAndImage.SectionItems, allPrices, section.SectionFor);
+                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems, allPrices, section.SectionFor);
                 section.SectionForList = customGroups;
             }
             return returnDataTemplte;
+        }
+
+        private void SetPriceForItems(List<ResponseAdminCompanyTemplateSectionItem> items, List<ResponseItemListForTemplateV2> prices, int secFor)
+        {
+            if (prices != null && prices.Count > 0 && items != null && items.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    if (secFor == 1)
+                    {
+                        var ePrice = prices.Where(x => x.ItemId == item.ItemId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                    else if (secFor == 2)
+                    {
+                        var ePrice = prices.Where(x => x.VariantId == item.VariantId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                }
+            }
         }
 
         public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long cid)
@@ -460,7 +497,7 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants)
+        private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants, List<ResponseItemListForTemplateV2> prices, int secFor)
         {
             foreach (var item in itemImages)
             {
@@ -627,6 +664,70 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        private async Task<List<ResponseItemListForTemplateV2>> GetPriceDetailForTemplateSection(List<ResponseCompanyTemplateSectionItem> itemList, int companyId, int sccFor)
+        {
+            try
+            {
+                List<long> items = new List<long>();
+                List<long> variants = new List<long>();
+
+                foreach (var item in itemList)
+                {
+                    if (sccFor == 1)
+                        items.Add(item.ItemId);
+                    else if (sccFor == 2)
+                        variants.Add(item.VariantId);
+                }
+                RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
+                request.CompanyId = companyId;
+                request.ItemIds = String.Join(',', items);
+                request.VariantIds = String.Join(',', variants);
+                var content = JsonConvert.SerializeObject(request);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+                return data.Data;
+            }
+            catch (Exception ex)
+            {
+                log.Info("***GetPriceDetailForTemplate*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                return null;
+            }
+        }
+
+        private void SetPriceForSectionItems(List<ResponseCompanyTemplateSectionItem> items, List<ResponseItemListForTemplateV2> prices, int secFor)
+        {
+            if (prices != null && prices.Count > 0 && items != null && items.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    if (secFor == 1)
+                    {
+                        var ePrice = prices.Where(x => x.ItemId == item.ItemId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                    else if (secFor == 2)
+                    {
+                        var ePrice = prices.Where(x => x.VariantId == item.VariantId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                }
+            }
+        }
+
         public async Task<ResponseSectionItemAndImage> AddSectionItem(RequestAddSectionItem request)
         {
             try
@@ -693,6 +794,11 @@ namespace CompanyManagement.Api.Service
                     await _context.SaveChangesAsync();
 
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                if(section != null && section.ResponseSectionItemAndImage != null && section.ResponseSectionItemAndImage.SectionItems != null)
+                {
+                    var allItemData = await GetPriceDetailForTemplateSection(section.ResponseSectionItemAndImage.SectionItems, Convert.ToInt32(request.CompanyId), section.SectionFor);
+                    SetPriceForSectionItems(section.ResponseSectionItemAndImage.SectionItems, allItemData, section.SectionFor);
+                }
                 MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 return section.ResponseSectionItemAndImage;
             }
@@ -934,8 +1040,8 @@ namespace CompanyManagement.Api.Service
         {
             var section =
                 await _context.CompanyTemplateSection
-                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder))
-                .Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder))
+                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp=>mp.IsActive == true))
+                .Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
                 .Where(cts => cts.CompanyTemplateSectionId == companyTemplateSectionId)
                 .FirstOrDefaultAsync();
             return _mapper.Map<ResponseCompanyTemplateSection>(section);
@@ -1219,9 +1325,9 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            List<long> response = new List<long>();
+            ResponseSectionItemAndImage response = new ResponseSectionItemAndImage();
             try
             {
                 if (request.RequestCustomSectionIds.Count > 0)
@@ -1245,13 +1351,9 @@ namespace CompanyManagement.Api.Service
                     string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@IsActive,@CreatedBy,@UpdatedBy";
                     var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
 
-                    if (retval != null && retval.Count > 0)
-                    {
-                        foreach (var item in retval)
-                        {
-                            response.Add(item.ItemId);
-                        }
-                    }
+                    var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                    MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                    return section.ResponseSectionItemAndImage;
                 }
 
             }
