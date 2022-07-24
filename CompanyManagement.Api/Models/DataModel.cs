@@ -49,6 +49,9 @@ namespace CompanyManagement.Api.Models
         public string FaceBookApiId { get; set; }
         public bool? IsPhonePeActive { get; set; }
         public string GoogleClientSecret { get; set; }
+        public bool? ShowState { get; set; }
+        public bool? ShowCity { get; set; }
+        public bool? ShowDistrict { get; set; }
     }
 
     public class Branch

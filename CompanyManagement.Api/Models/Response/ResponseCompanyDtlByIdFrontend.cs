@@ -44,6 +44,9 @@ namespace CompanyManagement.Api.Models.Response
         public bool IsPhonePeActive { get; set; }
         public string CompanyLogo { get; set; }
         public string GoogleClientSecret { get; set; }
+        public bool ShowState { get; set; }
+        public bool ShowCity { get; set; }
+        public bool ShowDistrict { get; set; }
     }
 
     public class ThemeData
