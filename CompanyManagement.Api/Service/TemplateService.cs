@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace CompanyManagement.Api.Service
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly IMapper _mapper;
         private readonly AppSettings appSettings;
+        private readonly IServiceAPI _serviceAPI;
+
 
         static TemplateService()
         {
@@ -36,10 +39,11 @@ namespace CompanyManagement.Api.Service
             }).CreateMapper();
         }
 
-        public TemplateService(CompanyDBContext context, IOptions<AppSettings> appSettings)
+        public TemplateService(CompanyDBContext context, IOptions<AppSettings> appSettings, IServiceAPI serviceAPI)
         {
             _context = context;
             this.appSettings = appSettings.Value;
+            _serviceAPI = serviceAPI;
         }
 
         public async Task<List<ResponseFrontendTemplate>> GetFrontendTemplate()
@@ -229,6 +233,281 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+
+        //proc for company template
+
+        public async Task<ResponseAdminTemplate> GetCompnayAdminTemplateById(RequestGetCompanyTemplateById request)
+        {
+            try
+            {
+                var companyTemplate = await GetCompanyTemplate(request.CompanyId, request.CompanyTemplateId);
+                var companyTemplateSections = companyTemplate != null ? await GetCompanyTemplateSections(request.CompanyId, request.CompanyTemplateId) : null;
+                if (companyTemplateSections != null && companyTemplateSections.Count > 0)
+                {
+                    await GetCompanyTemplateSectionImages(companyTemplateSections);
+                    await GetCompanyTemplateSectionItems(companyTemplateSections);
+                    //await  MakeVariantWiseVariantDataForSection(companyTemplateSections);
+                    var fontMaster = companyTemplateSections != null ? await _context.FrontEndTemplateFontFamilyMaster.FirstOrDefaultAsync(f => f.FontFamilyId == companyTemplate.FontFamilyId) : null;
+                    companyTemplate.FontFamilyMaster = fontMaster;
+
+                    if (companyTemplate.IsEditable == false)
+                    {
+                        companyTemplate.IsEditable = true;
+
+                    }
+                }
+                return await CreateTemplateReturnObject(request.CompanyId, companyTemplate);
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        private async Task<CompanyTemplateAdmin> GetCompanyTemplate(long companyId, int companyTemplateId)
+        {
+            try
+            {
+                var companyTemplates = await _context.CompanyTemplateAdmin
+                    .FromSqlRaw($"dbo.GetCompanyTemplateById @CompanyId, @CompanyTemplateId"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyId", companyId),
+                       new SqlParameter("@CompanyTemplateId", companyTemplateId)
+                     })
+                    .ToListAsync();
+
+                return companyTemplates != null && companyTemplates.Count > 0 ? companyTemplates.FirstOrDefault() : null;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<CompanyTemplateSectionAdmin>> GetCompanyTemplateSections(long companyId, int companyTemplateId)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionAdmin
+                    .FromSqlRaw($"dbo.GetCompanyTemplateSectionByTemplateId @CompanyId, @CompanyTemplateId"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyId", companyId),
+                       new SqlParameter("@CompanyTemplateId", companyTemplateId)
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        //private async Task<List<CompanyTemplateSectionAdmin>> BindCompanyTemplateSectionImages(List<CompanyTemplateSectionAdmin> companyTemplateSections)
+        //{
+        //    var companyTemplateSectionImageMappings = await GetCompanyTemplateSectionImages(companyTemplateSections);
+        //    foreach (var item in companyTemplateSections)
+        //    {
+        //        item.CompanyTemplateSectionImageMappings.AddRange(companyTemplateSectionImageMappings.Where(x => x.CompanyTemplateSectionId == item.CompanyTemplateSectionId).ToList()); ;
+        //    }
+        //    return companyTemplateSections;
+        //}
+
+        //private async Task<List<CompanyTemplateSectionAdmin>> BindCompanyTemplateSectionItems(List<CompanyTemplateSectionAdmin> companyTemplateSections)
+        //{
+        //    var companyTemplateSectionImageMappings = await GetCompanyTemplateSectionItems(companyTemplateSections);
+        //    foreach (var item in companyTemplateSections)
+        //    {
+        //        item.CompanyTemplateSectionItemMappings.AddRange(companyTemplateSectionImageMappings.Where(x => x.CompanyTemplateSectionId == item.CompanyTemplateSectionId).ToList()); ;
+        //    }
+        //    return companyTemplateSections;
+        //}
+
+        private async Task<List<CompanyTemplateSectionImageMappingAdmin>> GetCompanyTemplateSectionImages(List<CompanyTemplateSectionAdmin> sections)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionImageMappingAdmin
+                    .FromSqlRaw($"dbo.GetImageMappingFromSectionIds @CompanyTemplateSectionIds"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyTemplateSectionIds", String.Join(',',sections.Select(x=>x.CompanyTemplateSectionId).ToList()))
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<CompanyTemplateSectionItemMappingAdmin>> GetCompanyTemplateSectionItems(List<CompanyTemplateSectionAdmin> sections)
+        {
+            try
+            {
+                return await _context.CompanyTemplateSectionItemMappingAdmin
+                    .FromSqlRaw($"dbo.GetItemMappingFromSectionIds @CompanyTemplateSectionIds"
+                    , new SqlParameter[]
+                     {
+                       new SqlParameter("@CompanyTemplateSectionIds", String.Join(',',sections.Select(x=>x.CompanyTemplateSectionId).ToList()))
+                     })
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return null;
+        }
+
+        private async Task<List<TemplateSectionForMetaData>> GetCustomGroups(long companyId)
+        {
+            string sqlTextdata = $"EXECUTE dbo.SP_GetTemplateSectionForMetaDataById";
+            var dataListValue = await _context.TemplateSectionForMetaData.FromSqlRaw(sqlTextdata).ToListAsync();
+            return dataListValue;
+        }
+
+
+        private async Task<List<ResponseItemListForTemplateV2>> GetPriceDetailForTemplate(CompanyTemplateAdmin dataTemplte)
+        {
+            try
+            {
+                List<long> items = new List<long>();
+                List<long> variants = new List<long>();
+                foreach (var item in dataTemplte.CompanyTemplateSections)
+                {
+                    foreach (var nItem in item.CompanyTemplateSectionItemMappings)
+                    {
+                        if (item.SectionFor == 1)
+                            items.Add(nItem.ItemId);
+                        else if (item.SectionFor == 2)
+                            variants.Add(nItem.VariantId.Value);
+                    }
+                }
+                RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
+                request.CompanyId = dataTemplte.CompanyId;
+                request.ItemIds = String.Join(',', items);
+                request.VariantIds = String.Join(',', variants);
+                var content = JsonConvert.SerializeObject(request);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+                return data.Data;
+            }
+            catch (Exception ex)
+            {
+                log.Info("***GetPriceDetailForTemplate*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                return null;
+            }
+        }
+
+
+        private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
+        {
+
+            var allPrices =await GetPriceDetailForTemplate(dataTemplte);
+            var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
+            var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
+            var cid = returnDataTemplte.CompanyId;
+            returnDataTemplte.TopLogoUrl = companyImagePath + returnDataTemplte.TopLogoUrl;
+            returnDataTemplte.ImagePath = returnDataTemplte.ImagePath.Contains("http") ? returnDataTemplte.ImagePath : appSettings.CommonImagePath + returnDataTemplte.ImagePath;
+            returnDataTemplte.TopCartIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopCartIconUrl;
+            returnDataTemplte.TopProfileIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopProfileIconUrl;
+            returnDataTemplte.TopMenuIconUrl = appSettings.CommonImagePath + returnDataTemplte.TopMenuIconUrl;
+            returnDataTemplte.SeeAllArrowIconUrl = appSettings.CommonImagePath + returnDataTemplte.SeeAllArrowIconUrl;
+            returnDataTemplte.LargeBrushName = appSettings.CommonImagePath + returnDataTemplte.LargeBrushName;
+            returnDataTemplte.MediumBrushName = appSettings.CommonImagePath + returnDataTemplte.MediumBrushName;
+            returnDataTemplte.SmallBrushName = appSettings.CommonImagePath + returnDataTemplte.SmallBrushName;
+            var customGroups = await GetCustomGroups(companyId);
+
+            foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
+            {
+                SetPriceForItems(section.ResponseSectionItemAndImage.SectionItems, allPrices, section.SectionFor);
+                MakeItemWiseVariantDataForSectionAdmin(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems, allPrices, section.SectionFor);
+                section.SectionForList = customGroups;
+            }
+            return returnDataTemplte;
+        }
+
+        private void SetPriceForItems(List<ResponseAdminCompanyTemplateSectionItem> items, List<ResponseItemListForTemplateV2> prices, int secFor)
+        {
+            if (prices != null && prices.Count > 0 && items != null && items.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    if (secFor == 1)
+                    {
+                        var ePrice = prices.Where(x => x.ItemId == item.ItemId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                    else if (secFor == 2)
+                    {
+                        var ePrice = prices.Where(x => x.VariantId == item.VariantId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                }
+            }
+        }
+
+        public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long cid)
+        {
+
+            try
+            {
+                foreach (var item in sectionItems)
+                {
+                    item.CompanyId = cid;
+                }
+
+                var content = JsonConvert.SerializeObject(sectionItems);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
+                if (data != null && data.Status)
+                {
+                    return data.Data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Info("***MakeVariantWiseVariantDataForSection*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+        private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants, List<ResponseItemListForTemplateV2> prices, int secFor)
+        {
+            foreach (var item in itemImages)
+            {
+                item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+            }
+        }
+
+        //end For Company Template 
+
+
         public async Task<ResponseCompanyTemplate> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
         {
             try
@@ -291,7 +570,16 @@ namespace CompanyManagement.Api.Service
                 var dataTemplte = await _context.CompanyTemplate
                     .Where(t => t.CompanyId == request.CompanyId)
                     .ToListAsync();
+                foreach (var item in dataTemplte)
+                {
+
+                    if (item.IsEditable == false)
+                    {
+                        item.IsEditable = true;
+                    }
+                }
                 var returnDataTemplte = _mapper.Map<List<ResponseCompanyTemplate>>(dataTemplte);
+
                 return returnDataTemplte;
             }
             catch (Exception ex)
@@ -376,6 +664,70 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+        private async Task<List<ResponseItemListForTemplateV2>> GetPriceDetailForTemplateSection(List<ResponseCompanyTemplateSectionItem> itemList, int companyId, int sccFor)
+        {
+            try
+            {
+                List<long> items = new List<long>();
+                List<long> variants = new List<long>();
+
+                foreach (var item in itemList)
+                {
+                    if (sccFor == 1)
+                        items.Add(item.ItemId);
+                    else if (sccFor == 2)
+                        variants.Add(item.VariantId);
+                }
+                RequestPriceDetailTemplate request = new RequestPriceDetailTemplate();
+                request.CompanyId = companyId;
+                request.ItemIds = String.Join(',', items);
+                request.VariantIds = String.Join(',', variants);
+                var content = JsonConvert.SerializeObject(request);
+                var result = await _serviceAPI.ProcessPostRequest($"{appSettings.ProductManagementAPI}Product/GetPriceDetailsForTemplate", content);
+                var data = JsonConvert.DeserializeObject<ResponseList<ResponseItemListForTemplateV2>>(result);
+                return data.Data;
+            }
+            catch (Exception ex)
+            {
+                log.Info("***GetPriceDetailForTemplate*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+                return null;
+            }
+        }
+
+        private void SetPriceForSectionItems(List<ResponseCompanyTemplateSectionItem> items, List<ResponseItemListForTemplateV2> prices, int secFor)
+        {
+            if (prices != null && prices.Count > 0 && items != null && items.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    if (secFor == 1)
+                    {
+                        var ePrice = prices.Where(x => x.ItemId == item.ItemId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                    else if (secFor == 2)
+                    {
+                        var ePrice = prices.Where(x => x.VariantId == item.VariantId).FirstOrDefault();
+                        if (ePrice != null)
+                        {
+                            item.Price = ePrice.Price;
+                            item.SalePrice = ePrice.ItemSalePrice;
+                            item.MRP = ePrice.ItemMRP;
+                            item.MembrPrice = ePrice.ItemMembrPrice;
+                            item.Name = ePrice.ItemName;
+                        }
+                    }
+                }
+            }
+        }
+
         public async Task<ResponseSectionItemAndImage> AddSectionItem(RequestAddSectionItem request)
         {
             try
@@ -442,6 +794,11 @@ namespace CompanyManagement.Api.Service
                     await _context.SaveChangesAsync();
 
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                if(section != null && section.ResponseSectionItemAndImage != null && section.ResponseSectionItemAndImage.SectionItems != null)
+                {
+                    var allItemData = await GetPriceDetailForTemplateSection(section.ResponseSectionItemAndImage.SectionItems, Convert.ToInt32(request.CompanyId), section.SectionFor);
+                    SetPriceForSectionItems(section.ResponseSectionItemAndImage.SectionItems, allItemData, section.SectionFor);
+                }
                 MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
                 return section.ResponseSectionItemAndImage;
             }
@@ -683,8 +1040,8 @@ namespace CompanyManagement.Api.Service
         {
             var section =
                 await _context.CompanyTemplateSection
-                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder))
-                .Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder))
+                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp=>mp.IsActive == true))
+                .Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
                 .Where(cts => cts.CompanyTemplateSectionId == companyTemplateSectionId)
                 .FirstOrDefaultAsync();
             return _mapper.Map<ResponseCompanyTemplateSection>(section);
@@ -968,18 +1325,18 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            List<long> response = new List<long>();
+            ResponseSectionItemAndImage response = new ResponseSectionItemAndImage();
             try
             {
                 if (request.RequestCustomSectionIds.Count > 0)
                 {
                     var customIds = "";
                     var displayOrder = 0;
-                    foreach(var x in request.RequestCustomSectionIds)
+                    foreach (var x in request.RequestCustomSectionIds)
                     {
-                        customIds += x.Id.ToString() + '#' + displayOrder +'#' + x.CustomGroupImageLink + ",";
+                        customIds += x.Id.ToString() + '#' + displayOrder + '#' + x.CustomGroupImageLink + ",";
                         displayOrder++;
                     }
                     customIds = customIds.Remove(customIds.Length - 1);
@@ -994,13 +1351,9 @@ namespace CompanyManagement.Api.Service
                     string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@IsActive,@CreatedBy,@UpdatedBy";
                     var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
 
-                    if (retval != null && retval.Count > 0)
-                    {
-                        foreach (var item in retval)
-                        {
-                            response.Add(item.ItemId);
-                        }
-                    }
+                    var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
+                    MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                    return section.ResponseSectionItemAndImage;
                 }
 
             }
@@ -1047,7 +1400,7 @@ namespace CompanyManagement.Api.Service
                     }
 
                     var distinctItemList = request.RequestCompanyTemplateSectionItems
-                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId=k.VariantId, ItemImage = k.ItemImage })
+                        .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, VariantId = k.VariantId, ItemImage = k.ItemImage })
                         .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
 
                     distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
@@ -1074,7 +1427,7 @@ namespace CompanyManagement.Api.Service
 
                 if (companyTemplateSectionImageList.Any())
                     await _context.CompanyTemplateSectionImageMapping.AddRangeAsync(companyTemplateSectionImageList);
-                   await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 if (companyTemplateSectionItemList.Any())
                     await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
                 await _context.SaveChangesAsync();
@@ -1097,6 +1450,10 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+
+
+
     }
 
 }

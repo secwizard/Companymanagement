@@ -5,6 +5,7 @@ using CompanyManagement.Api.Service;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -94,9 +95,9 @@ namespace CompanyManagement.Api.Controllers
 
         [Authorize]
         [HttpPost("GetCompanyTemplateById")]
-        public async Task<ActionResult<ResponseCompanyTemplate>> GetCompanyTemplateById(RequestGetCompanyTemplateById request)
+        public async Task<ActionResult<ResponseAdminTemplate>> GetCompanyTemplateById(RequestGetCompanyTemplateById request)
         {
-            var response = new Response<ResponseCompanyTemplate>();
+            var response = new Response<ResponseAdminTemplate>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
@@ -104,10 +105,11 @@ namespace CompanyManagement.Api.Controllers
                 if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
                 {
                     request.UserId = user.UserId;
-                    response.Data = await _temllateService.GetCompnayTemplateById(request);
+                    response.Data = await _temllateService.GetCompnayAdminTemplateById(request);
+                    response.Status = response.Data != null;
+                    response.Message = response.Data == null ? "Data not found." : string.Empty;
                 }
-                response.Status = response.Data != null;
-                response.Message = response.Data == null ? "Data not found." : string.Empty;
+
             }
             catch (Exception ex)
             {
@@ -117,7 +119,29 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+        //public async Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSectionAdmin(Response<ResponseAdminTemplate> item)
+        //{
+        //    try
+        //    {
+        //        var content = JsonConvert.SerializeObject(item);
+        //        var result = await _restAPI.ProcessPostRequest($"{_appSettings.ProductManagementAPI}Product/GetItemVariantsByItemandVariantIds", item);
+        //       var data = JsonConvert.DeserializeObject<ResponseList<ResponseAdminCompanyTemplateSectionItem>>(result);
+        //        if (data != null && data.Status)
+        //        {
+        //            return data.Data;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Info("***GetVariantWiseDt*** Date : " + DateTime.UtcNow + " Error : " + ex.Message + "StackTrace : " + ex.StackTrace.ToString());
+        //        throw;
+        //    }
 
+        //}
         [HttpPost("GetDefaultTemplateByCompany")]
         public async Task<ActionResult<ResponseCompanyTemplate>> GetDefaultTemplateByCompany(RequestCompanyTemplate request)
         {
@@ -467,7 +491,7 @@ namespace CompanyManagement.Api.Controllers
 
             try
             {
-                var result = await _temllateService.GetTemplateSectionForMetaData( );
+                var result = await _temllateService.GetTemplateSectionForMetaData();
                 returnVal.Data = result;
                 returnVal.Status = result != null;
                 returnVal.Message = result == null ? "Data Not Found" : string.Empty;
@@ -519,19 +543,15 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(responce);
         }
-       
-      
+
+
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
-        public async Task<ActionResult<CompanyTemplateSectionItemMapping>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ActionResult<ResponseSectionItemAndImage>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            var response =  new Response<List<long>>();
+            var response = new Response<ResponseSectionItemAndImage>();
             try
             {
-                //var user = (UserInfo)HttpContext.Items["User"];
-                //if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
-               
-                //    request.UserId = user.UserId;
-                    response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);       
+                response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Item can't be added." : string.Empty;
             }
@@ -549,8 +569,8 @@ namespace CompanyManagement.Api.Controllers
         {
             var response = new Response<ResponseSectionItemAndImage>();
             try
-            {             
-                    response.Data = await _temllateService.AddSectionItemVariantList(request);
+            {
+                response.Data = await _temllateService.AddSectionItemVariantList(request);
                 response.Status = response.Data != null;
                 response.Message = response.Data == null ? "Item can't be added." : string.Empty;
             }

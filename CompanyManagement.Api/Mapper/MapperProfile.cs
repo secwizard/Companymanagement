@@ -54,6 +54,19 @@ namespace CompanyManagement.Api.Mapper
             this.CreateMap<CurrencyMaster, Currency>(MemberList.None).ReverseMap();
 
             this.CreateMap<FrontEndTemplateFontFamilyMaster, ResponseFrontEndTemplateFontFamilyMaster>(MemberList.None).ReverseMap();
+
+
+
+            this.CreateMap<CompanyTemplateAdmin, ResponseAdminTemplate>(MemberList.None)
+           .ForMember(s => s.ResponseFontFamily, c => c.MapFrom(m => m.FontFamilyMaster))
+            .ForMember(s => s.ResponseCompanyTemplateSections, c => c.MapFrom(m => m.CompanyTemplateSections));
+
+            this.CreateMap<CompanyTemplateSectionAdmin, ResponseAdminCompanyTemplateSection>(MemberList.None)
+            .ForPath(s => s.ResponseSectionItemAndImage.SectionImages, c => c.MapFrom(m => m.CompanyTemplateSectionImageMappings))
+               .ForPath(s => s.ResponseSectionItemAndImage.SectionItems, c => c.MapFrom(m => m.CompanyTemplateSectionItemMappings));
+
+            this.CreateMap<CompanyTemplateSectionItemMappingAdmin, ResponseAdminCompanyTemplateSectionItem>(MemberList.None);
+            this.CreateMap<CompanyTemplateSectionImageMappingAdmin, ResponseAdminCompanyTemplateSectionImage>(MemberList.None);
         }
     }
 }

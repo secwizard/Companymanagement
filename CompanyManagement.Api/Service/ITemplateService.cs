@@ -9,6 +9,7 @@ namespace CompanyManagement.Api.Service
 {
     public interface ITemplateService
     {
+        Task<List<ResponseAdminCompanyTemplateSectionItem>> MakeVariantWiseVariantDataForSection(List<ResponseAdminCompanyTemplateSectionItem> sectionItems, long companyid);
         Task<FrontEndTemplate> GetTemplate(RequestCompanyTemplate request);
         Task<List<ItemIdBySection>> GetTemplateBySectionID(RequestItemBySectionId request);
         Task<List<ResponseCompanyTemplate>> GetCompanyTemplates(RequestBase request);
@@ -31,7 +32,8 @@ namespace CompanyManagement.Api.Service
         Task<ResponseCompanyTemplateSection> GetTemplateSectionForMetaData();
         Task<ResponseCompanyTemplateSection> SaveUpdateCompanyTemplateSectionData(ResponseCompanyTemplateSection request);
         Task<List<long>> GetSelectedCustomGroup(RequestCompanyTempalteSectionMappingById request);
-        Task<List<long>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request);
+        Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request);
         Task<ResponseSectionItemAndImage> AddSectionItemVariantList(RequestAddSectionItem request);
+        Task<ResponseAdminTemplate> GetCompnayAdminTemplateById(RequestGetCompanyTemplateById request);
     }
 }
