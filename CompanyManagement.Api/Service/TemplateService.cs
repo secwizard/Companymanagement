@@ -181,7 +181,7 @@ namespace CompanyManagement.Api.Service
                 foreach (var section in returnDataTemplte.ResponseCompanyTemplateSections)
                 {
                     MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages,
-                        section.ResponseSectionItemAndImage.SectionItems);
+                        section.ResponseSectionItemAndImage.SectionItems, section.SectionFor);
                     section.SectionForList = dataListValue;
                 }
 
@@ -410,7 +410,7 @@ namespace CompanyManagement.Api.Service
         private async Task<ResponseAdminTemplate> CreateTemplateReturnObject(long companyId, CompanyTemplateAdmin dataTemplte)
         {
 
-            var allPrices =await GetPriceDetailForTemplate(dataTemplte);
+            var allPrices = await GetPriceDetailForTemplate(dataTemplte);
             var companyImagePath = (await _context.Company.FirstOrDefaultAsync(k => k.CompanyId == companyId)).ImageFilePath;
             var returnDataTemplte = _mapper.Map<ResponseAdminTemplate>(dataTemplte);
             var cid = returnDataTemplte.CompanyId;
@@ -499,9 +499,19 @@ namespace CompanyManagement.Api.Service
 
         private void MakeItemWiseVariantDataForSectionAdmin(List<ResponseAdminCompanyTemplateSectionImage> itemImages, List<ResponseAdminCompanyTemplateSectionItem> itemVariants, List<ResponseItemListForTemplateV2> prices, int secFor)
         {
-            foreach (var item in itemImages)
+            if (secFor == 2)
             {
-                item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                foreach (var item in itemImages)
+                {
+                    item.VariantListWithinThisItem = itemVariants.Where(k => k.VariantId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                }
+            }
+            else
+            {
+                foreach (var item in itemImages)
+                {
+                    item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                }
             }
         }
 
@@ -734,7 +744,7 @@ namespace CompanyManagement.Api.Service
             {
                 var companyTemplateSectionItemList = new List<CompanyTemplateSectionItemMapping>();
                 var companyTemplateSectionImageList = new List<CompanyTemplateSectionImageMapping>();
-
+                var sectionData = await _context.CompanyTemplateSection.Where(x => x.CompanyTemplateSectionId == request.CompanyTemplateSectionId).FirstOrDefaultAsync();
                 await RemoveDuplicateCompanyTemplateSectionItem(request);
 
                 //Add operation will be done if there is items//
@@ -762,7 +772,13 @@ namespace CompanyManagement.Api.Service
                     var distinctItemList = request.RequestCompanyTemplateSectionItems
                         .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, ItemImage = k.ItemImage })
                         .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
-
+                    if(sectionData != null && sectionData.SectionFor == 2)
+                    {
+                        foreach(var item in distinctItemList)
+                        {
+                            item.ItemId = item.VariantId;
+                        }
+                    }
                     distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
 
                     if (distinctItemList.Count > 0)
@@ -794,12 +810,12 @@ namespace CompanyManagement.Api.Service
                     await _context.SaveChangesAsync();
 
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
-                if(section != null && section.ResponseSectionItemAndImage != null && section.ResponseSectionItemAndImage.SectionItems != null)
+                if (section != null && section.ResponseSectionItemAndImage != null && section.ResponseSectionItemAndImage.SectionItems != null)
                 {
                     var allItemData = await GetPriceDetailForTemplateSection(section.ResponseSectionItemAndImage.SectionItems, Convert.ToInt32(request.CompanyId), section.SectionFor);
                     SetPriceForSectionItems(section.ResponseSectionItemAndImage.SectionItems, allItemData, section.SectionFor);
                 }
-                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems, section.SectionFor);
                 return section.ResponseSectionItemAndImage;
             }
             catch (Exception ex)
@@ -1040,18 +1056,28 @@ namespace CompanyManagement.Api.Service
         {
             var section =
                 await _context.CompanyTemplateSection
-                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp=>mp.IsActive == true))
+                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
                 .Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
                 .Where(cts => cts.CompanyTemplateSectionId == companyTemplateSectionId)
                 .FirstOrDefaultAsync();
             return _mapper.Map<ResponseCompanyTemplateSection>(section);
         }
 
-        private void MakeItemWiseVariantDataForSection(List<ResponseCompanyTemplateSectionImage> itemImages, List<ResponseCompanyTemplateSectionItem> itemVariants)
+        private void MakeItemWiseVariantDataForSection(List<ResponseCompanyTemplateSectionImage> itemImages, List<ResponseCompanyTemplateSectionItem> itemVariants, int secFor)
         {
-            foreach (var item in itemImages)
+            if (secFor == 2)
             {
-                item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                foreach (var item in itemImages)
+                {
+                    item.VariantListWithinThisItem = itemVariants.Where(k => k.VariantId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                }
+            }
+            else
+            {
+                foreach (var item in itemImages)
+                {
+                    item.VariantListWithinThisItem = itemVariants.Where(k => k.ItemId == item.ItemId).OrderBy(k => k.DisplayOrder).ToList();
+                }
             }
         }
 
@@ -1352,7 +1378,7 @@ namespace CompanyManagement.Api.Service
                     var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
 
                     var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
-                    MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                    MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems, section.SectionFor);
                     return section.ResponseSectionItemAndImage;
                 }
 
@@ -1441,7 +1467,7 @@ namespace CompanyManagement.Api.Service
                 //    }
                 //}
                 var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
-                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems, section.SectionFor);
                 return section.ResponseSectionItemAndImage;
             }
             catch (Exception ex)
