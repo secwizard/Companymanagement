@@ -50,6 +50,15 @@ namespace CompanyManagement.Api.Data
 
         public DbSet<FrontEndTemplateFontFamilyMaster> FrontEndTemplateFontFamilyMaster { get; set; }
 
+        //admin template
+        public DbSet<CompanyTemplateAdmin> CompanyTemplateAdmin { get; set; }
+        public DbSet<CompanyTemplateSectionAdmin> CompanyTemplateSectionAdmin { get; set; }
+        public DbSet<CompanyTemplateSectionImageMappingAdmin> CompanyTemplateSectionImageMappingAdmin { get; set; }
+        public DbSet<CompanyTemplateSectionItemMappingAdmin> CompanyTemplateSectionItemMappingAdmin { get; set; }
+
+
+        //end admin template
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

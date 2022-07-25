@@ -198,6 +198,8 @@ namespace CompanyManagement.Api.Models
         public string TertiaryText { get; set; }
         public string ItemImage { get; set; }
         public string VariantImage { get; set; }
+        public string Name { get; set; }
+        public decimal Mrprice { get; set; }
     }
 
    
