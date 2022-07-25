@@ -39,6 +39,14 @@ namespace CompanyManagement.Api.Models.Response
         public bool ShowContactEmailOnline { get; set; }
         public string ContactPhone { get; set; }
         public bool ShowContactPhoneOnline { get; set; }
+        public string GoogleClientId { get; set; }
+        public string FaceBookApiId { get; set; }
+        public bool IsPhonePeActive { get; set; }
+        public string CompanyLogo { get; set; }
+        public string GoogleClientSecret { get; set; }
+        public bool ShowState { get; set; }
+        public bool ShowCity { get; set; }
+        public bool ShowDistrict { get; set; }
     }
 
     public class ThemeData
