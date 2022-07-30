@@ -728,7 +728,7 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<ResponseSectionItemAndImage> AddSectionItem(RequestAddSectionItem request)
+        public async Task<ResponseAdminSectionItemAndImage> AddSectionItem(RequestAddSectionItem request)
         {
             try
             {
@@ -762,45 +762,16 @@ namespace CompanyManagement.Api.Service
                     var distinctItemList = request.RequestCompanyTemplateSectionItems
                         .Select(k => new RequestCompanyTemplateSectionItem { ItemId = k.ItemId, ItemImage = k.ItemImage })
                         .GroupBy(i => i.ItemId).Select(i => i.FirstOrDefault()).ToList();
-
-                    distinctItemList = await RemoveDuplicateCompanyTemplateSectionImage(request, distinctItemList);
-
-                    if (distinctItemList.Count > 0)
-                    {
-                        for (int i = 0; i < distinctItemList.Count; i++)
-                        {
-                            companyTemplateSectionImageList.Add(new CompanyTemplateSectionImageMapping
-                            {
-                                CompanyTemplateSectionId = request.CompanyTemplateSectionId,
-                                CreatedAt = DateTime.UtcNow,
-                                CreatedBy = request.UserId.ToString(),
-                                DisplayOrder = i + 1,
-                                ImagePath = distinctItemList[i].ItemImage,
-                                ItemId = distinctItemList[i].ItemId,
-                                IsActive = true,
-                                UpdatedAt = DateTime.UtcNow,
-                                UpdatedBy = request.UserId.ToString()
-                            });
-                        }
-                    }
                 }
-
-                if (companyTemplateSectionImageList.Any())
-                    await _context.CompanyTemplateSectionImageMapping.AddRangeAsync(companyTemplateSectionImageList);
                 if (companyTemplateSectionItemList.Any())
                     await _context.CompanyTemplateSectionItemMapping.AddRangeAsync(companyTemplateSectionItemList);
 
-                if (companyTemplateSectionImageList.Any() || companyTemplateSectionItemList.Any())
+                if (companyTemplateSectionItemList.Any())
                     await _context.SaveChangesAsync();
 
-                var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
-                if (section != null && section.ResponseSectionItemAndImage != null && section.ResponseSectionItemAndImage.SectionItems != null)
-                {
-                    var allItemData = await GetPriceDetailForTemplateSection(section.ResponseSectionItemAndImage.SectionItems, Convert.ToInt32(request.CompanyId), section.SectionFor);
-                    SetPriceForSectionItems(section.ResponseSectionItemAndImage.SectionItems, allItemData, section.SectionFor);
-                }
-                MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                return section.ResponseSectionItemAndImage;
+                var section = await GetTemplateSectionById(request.CompanyTemplateSectionId);
+               
+                return section;
             }
             catch (Exception ex)
             {
@@ -1325,9 +1296,9 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        public async Task<ResponseSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ResponseAdminSectionItemAndImage> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            ResponseSectionItemAndImage response = new ResponseSectionItemAndImage();
+            ResponseAdminSectionItemAndImage response = new ResponseAdminSectionItemAndImage();
             try
             {
                 if (request.RequestCustomSectionIds.Count > 0)
@@ -1351,9 +1322,9 @@ namespace CompanyManagement.Api.Service
                     string sqlText = $"EXECUTE dbo.SP_SaveUpdateCompanyTemplateSectionItemMapping @CompanyTemplateSectionId,@SectionCustomId,@IsActive,@CreatedBy,@UpdatedBy";
                     var retval = await _context.CustomIdList.FromSqlRaw(sqlText, parms).ToListAsync();
 
-                    var section = await GetSectionDataById(_context, request.CompanyTemplateSectionId);
-                    MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
-                    return section.ResponseSectionItemAndImage;
+                    var section = await GetTemplateSectionById(request.CompanyTemplateSectionId);
+                    //MakeItemWiseVariantDataForSection(section.ResponseSectionItemAndImage.SectionImages, section.ResponseSectionItemAndImage.SectionItems);
+                    return section;
                 }
 
             }
@@ -1495,6 +1466,24 @@ namespace CompanyManagement.Api.Service
             return returnDataTemplte;
         }
 
+        public async Task<ResponseAdminSectionItemAndImage> GetTemplateSectionById(int companyTemplateSectionId)
+        {
+            try
+            {
+                var section =
+                await _context.CompanyTemplateSection
+                .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
+                //.Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
+                .Where(cts => cts.CompanyTemplateSectionId == companyTemplateSectionId)
+                .FirstOrDefaultAsync();
+                return _mapper.Map<ResponseAdminCompanyTemplateSection>(section).ResponseSectionItemAndImage;
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
         #endregion
     }
 
