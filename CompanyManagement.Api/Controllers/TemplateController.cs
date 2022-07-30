@@ -582,6 +582,33 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpPost("GetCompanyTemplate")]
+        public async Task<ActionResult<ResponseAdminTemplate>> GetCompanyTemplate(RequestGetCompanyTemplateById request)
+        {
+            var response = new Response<ResponseAdminTemplate>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    request.UserId = user.UserId;
+                    response.Data = await _temllateService.GetCompnayTemplate(request);
+                    response.Status = response.Data != null;
+                    response.Message = response.Data == null ? "Data not found." : string.Empty;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
     }
 
 }
