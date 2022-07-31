@@ -67,6 +67,13 @@ namespace CompanyManagement.Api.Mapper
 
             this.CreateMap<CompanyTemplateSectionItemMappingAdmin, ResponseAdminCompanyTemplateSectionItem>(MemberList.None);
             this.CreateMap<CompanyTemplateSectionImageMappingAdmin, ResponseAdminCompanyTemplateSectionImage>(MemberList.None);
+
+            this.CreateMap<CompanyTemplateSection, ResponseAdminCompanyTemplateSection>(MemberList.None)
+             .ForPath(s => s.ResponseSectionItemAndImage.SectionImages, c => c.MapFrom(m => m.CompanyTemplateSectionImageMappings))
+                .ForPath(s => s.ResponseSectionItemAndImage.SectionItems, c => c.MapFrom(m => m.CompanyTemplateSectionItemMappings));
+
+            this.CreateMap<CompanyTemplateSectionItemMapping, ResponseAdminCompanyTemplateSectionItem>(MemberList.None);
+            this.CreateMap<CompanyTemplateSectionImageMapping, ResponseAdminCompanyTemplateSectionImage>(MemberList.None);
         }
     }
 }
