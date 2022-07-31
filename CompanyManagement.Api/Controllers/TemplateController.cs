@@ -583,6 +583,13 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+        #region TemplateLatest DO NOT TOUCH
+
+        /// <summary>
+        /// For Get Template By CompanyTemplateId 
+        /// </summary>
+        /// 
+
         [Authorize]
         [HttpPost("GetCompanyTemplate")]
         public async Task<ActionResult<ResponseAdminTemplate>> GetCompanyTemplate(RequestGetCompanyTemplateById request)
@@ -610,6 +617,10 @@ namespace CompanyManagement.Api.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// For Get Template Section Items After Save TemplateSection Items By CompanyTemplateId 
+        /// </summary>
+
         [Authorize]
         [HttpPost("GetTemplateSectionById")]
         public async Task<ActionResult<ResponseAdminSectionItemAndImage>> GetTemplateSectionById(RequestTemplateSectionById request)
@@ -636,6 +647,31 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+
+
+        [HttpPost("GetFrontEndCompanyTemplate")]
+        public async Task<ActionResult<ResponseCompanyTemplate>> GetFrontEndCompanyTemplate(RequestCompanyTemplate request)
+        {
+            log.Info("***GetFrontEndCompanyTemplate api*** Call at Date : " + DateTime.UtcNow);
+
+            var response = new Response<ResponseAdminTemplate>();
+            try
+            {
+                response.Data = await _temllateService.GetFrontEndCompanyTemplate(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+
+            log.Info("***GetFrontEndCompanyTemplate api*** Call end Date : " + DateTime.UtcNow);
+            return Ok(response);
+        }
+        #endregion
     }
 
 }

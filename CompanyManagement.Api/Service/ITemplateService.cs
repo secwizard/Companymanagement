@@ -37,5 +37,7 @@ namespace CompanyManagement.Api.Service
         Task<ResponseAdminTemplate> GetCompnayAdminTemplateById(RequestGetCompanyTemplateById request);
         Task<ResponseAdminTemplate> GetCompnayTemplate(RequestGetCompanyTemplateById request);
         Task<ResponseAdminSectionItemAndImage> GetTemplateSectionById(int companyTemplateSectionId);
+
+        Task<ResponseAdminTemplate> GetFrontEndCompanyTemplate(RequestCompanyTemplate request);
     }
 }

@@ -1422,8 +1422,12 @@ namespace CompanyManagement.Api.Service
             }
         }
 
-        #region Generic Template
+        #region Generic Template DO NOT TOUCH
 
+        /// <summary>
+        /// For Get Template By CompanyTemplateId 
+        /// </summary>
+        
         public async Task<ResponseAdminTemplate> GetCompnayTemplate(RequestGetCompanyTemplateById request)
         {
             try
@@ -1466,6 +1470,10 @@ namespace CompanyManagement.Api.Service
             return returnDataTemplte;
         }
 
+        /// <summary>
+        /// For Get Template Section Items After Save TemplateSection Items By CompanyTemplateId 
+        /// </summary>
+
         public async Task<ResponseAdminSectionItemAndImage> GetTemplateSectionById(int companyTemplateSectionId)
         {
             try
@@ -1473,7 +1481,6 @@ namespace CompanyManagement.Api.Service
                 var section =
                 await _context.CompanyTemplateSection
                 .Include(cts => cts.CompanyTemplateSectionItemMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
-                //.Include(cts => cts.CompanyTemplateSectionImageMappings.OrderBy(mp => mp.DisplayOrder).Where(mp => mp.IsActive == true))
                 .Where(cts => cts.CompanyTemplateSectionId == companyTemplateSectionId)
                 .FirstOrDefaultAsync();
                 return _mapper.Map<ResponseAdminCompanyTemplateSection>(section).ResponseSectionItemAndImage;
@@ -1484,6 +1491,36 @@ namespace CompanyManagement.Api.Service
                 throw;
             }
         }
+
+        public async Task<ResponseAdminTemplate> GetFrontEndCompanyTemplate(RequestCompanyTemplate request)
+        {
+            log.Info("***GetFrontEndCompanyTemplate Method*** Call at Date : " + DateTime.UtcNow);
+
+            try
+            {
+                var templateId = (await _context.CompanyTemplate.FirstOrDefaultAsync(k =>
+                  k.CompanyId == request.CompanyId
+                  && k.IsActive == true
+                  && k.Type == request.Type
+                  && (string.IsNullOrWhiteSpace(request.Url) ? k.IsDefault == true : k.Url == request.Url)))
+                  .CompanyTemplateId;
+
+                log.Info("***GetFrontEndCompanyTemplate Method*** Call end Date : " + DateTime.UtcNow);
+                return
+                    await GetCompnayTemplate(new RequestGetCompanyTemplateById
+                    {
+                        CompanyId = request.CompanyId,
+                        CompanyTemplateId = templateId
+                    });
+            }
+            catch (Exception ex)
+            {
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+                throw;
+            }
+        }
+
+
         #endregion
     }
 
