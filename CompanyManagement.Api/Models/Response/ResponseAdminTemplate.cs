@@ -48,6 +48,7 @@ namespace CompanyManagement.Api.Models.Response
         public string SubSectionGradientPrimaryColor { get; set; }
         public string SubSectionGradientSecondaryColor { get; set; }
         public ResponseFrontEndTemplateFontFamilyMaster ResponseFontFamily { get; set; }
+        public List<ResponseFrontEndTemplateFontFamilyMaster> ResponseTemplateFontFamilyMaster { get; set; }
         public string LargeBrushName { get; set; }
         public string MediumBrushName { get; set; }
         public string SmallBrushName { get; set; }

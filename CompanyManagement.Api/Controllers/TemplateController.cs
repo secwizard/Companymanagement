@@ -260,9 +260,9 @@ namespace CompanyManagement.Api.Controllers
 
         [Authorize]
         [HttpPost("AddSectionItem")]
-        public async Task<ActionResult<ResponseSectionItemAndImage>> AddSectionItem(RequestAddSectionItem request)
+        public async Task<ActionResult<ResponseAdminSectionItemAndImage>> AddSectionItem(RequestAddSectionItem request)
         {
-            var response = new Response<ResponseSectionItemAndImage>();
+            var response = new Response<ResponseAdminSectionItemAndImage>();
             try
             {
                 var user = (UserInfo)HttpContext.Items["User"];
@@ -546,9 +546,9 @@ namespace CompanyManagement.Api.Controllers
 
 
         [HttpPost("SaveUpdateCompanyTemplateSectionItemMapping")]
-        public async Task<ActionResult<ResponseSectionItemAndImage>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
+        public async Task<ActionResult<ResponseAdminSectionItemAndImage>> SaveUpdateCompanyTemplateSectionItemMapping(RequestSectionCustomGroups request)
         {
-            var response = new Response<ResponseSectionItemAndImage>();
+            var response = new Response<ResponseAdminSectionItemAndImage>();
             try
             {
                 response.Data = await _temllateService.SaveUpdateCompanyTemplateSectionItemMapping(request);
@@ -582,6 +582,96 @@ namespace CompanyManagement.Api.Controllers
             }
             return Ok(response);
         }
+
+        #region TemplateLatest DO NOT TOUCH
+
+        /// <summary>
+        /// For Get Template By CompanyTemplateId 
+        /// </summary>
+        /// 
+
+        [Authorize]
+        [HttpPost("GetCompanyTemplate")]
+        public async Task<ActionResult<ResponseAdminTemplate>> GetCompanyTemplate(RequestGetCompanyTemplateById request)
+        {
+            var response = new Response<ResponseAdminTemplate>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    request.UserId = user.UserId;
+                    response.Data = await _temllateService.GetCompnayTemplate(request);
+                    response.Status = response.Data != null;
+                    response.Message = response.Data == null ? "Data not found." : string.Empty;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// For Get Template Section Items After Save TemplateSection Items By CompanyTemplateId 
+        /// </summary>
+
+        [Authorize]
+        [HttpPost("GetTemplateSectionById")]
+        public async Task<ActionResult<ResponseAdminSectionItemAndImage>> GetTemplateSectionById(RequestTemplateSectionById request)
+        {
+            var response = new Response<ResponseAdminSectionItemAndImage>();
+            try
+            {
+                var user = (UserInfo)HttpContext.Items["User"];
+
+                if (user?.CompanyId == request.CompanyId || user?.CompanyId == -1)
+                {
+                    request.UserId = user.UserId;
+                    response.Data = await _temllateService.GetTemplateSectionById(request.CompanyTemplateSectionId);
+                    response.Status = response.Data != null;
+                    response.Message = response.Data == null ? "Data not found." : string.Empty;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+            return Ok(response);
+        }
+
+
+        [HttpPost("GetFrontEndCompanyTemplate")]
+        public async Task<ActionResult<ResponseCompanyTemplate>> GetFrontEndCompanyTemplate(RequestCompanyTemplate request)
+        {
+            log.Info("***GetFrontEndCompanyTemplate api*** Call at Date : " + DateTime.UtcNow);
+
+            var response = new Response<ResponseAdminTemplate>();
+            try
+            {
+                response.Data = await _temllateService.GetFrontEndCompanyTemplate(request);
+                response.Status = response.Data != null;
+                response.Message = response.Data == null ? "Data not found." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = ex.Message;
+                log.Error("\n Error Message: " + ex.Message + " InnerException: " + ex.InnerException + "StackTrace " + ex.StackTrace.ToString());
+            }
+
+            log.Info("***GetFrontEndCompanyTemplate api*** Call end Date : " + DateTime.UtcNow);
+            return Ok(response);
+        }
+        #endregion
     }
 
 }

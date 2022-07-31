@@ -153,6 +153,14 @@ namespace CompanyManagement.Api.Models
         public Guid UserId { get; set; }
     }
 
+    public class RequestTemplateSectionById
+    {
+        public int CompanyTemplateSectionId { get; set; }
+        public long CompanyId { get; set; }
+        public Guid UserId { get; set; }
+    }
+
+
     public class RequestEditCompanyTemplateSection
     {
         public int CompanyTemplateSectionId { get; set; }
