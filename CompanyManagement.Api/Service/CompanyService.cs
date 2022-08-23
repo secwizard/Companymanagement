@@ -992,6 +992,11 @@ namespace CompanyManagement.Api.Service
                     res.ShowCity = data.ShowCity??false;
                     res.ShowDistrict = data.ShowDistrict ?? false;
                     res.ShowState = data.ShowState ?? false;
+                    res.AdminPhoneCode = data.AdminPhoneCode;
+                    res.AdminPhoneCountryCode = data.AdminPhoneCountryCode;
+                    res.ServicePhoneCode = data.ServicePhoneCode;
+                    res.ServicePhoneCountryCode = data.ServicePhoneCountryCode;
+                    res.FavIconFileName = data.FavIconFileName;
 
                     var themeData = await _context.Theme
                                 .Where(c => c.CompanyId == CompanyId
