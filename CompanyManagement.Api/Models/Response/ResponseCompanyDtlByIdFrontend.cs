@@ -20,6 +20,7 @@ namespace CompanyManagement.Api.Models.Response
         public string CurrencyCode { get; set; }
         public string ImageFilePath { get; set; }
         public string LogoFileName { get; set; }
+        public string FavIconFileName { get; set; }
         public bool? PINRequired { get; set; }
         public string CompCustServiceTel { get; set; }
         public string CompanySiteUrl { get; set; }
@@ -47,6 +48,10 @@ namespace CompanyManagement.Api.Models.Response
         public bool ShowState { get; set; }
         public bool ShowCity { get; set; }
         public bool ShowDistrict { get; set; }
+        public string AdminPhoneCode { get; set; }
+        public string ServicePhoneCode { get; set; }
+        public string AdminPhoneCountryCode { get; set; }
+        public string ServicePhoneCountryCode { get; set; }
     }
 
     public class ThemeData
