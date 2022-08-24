@@ -30,6 +30,8 @@ namespace CompanyManagement.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Register Swagger
+            services.AddSwaggerGen();
             services.AddCors();
             services.AddControllers();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -70,6 +72,12 @@ namespace CompanyManagement.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wizard Ecom API");
             });
         }
     }
