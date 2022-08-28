@@ -52,6 +52,8 @@ namespace CompanyManagement.Api.Models
         public bool? ShowState { get; set; }
         public bool? ShowCity { get; set; }
         public bool? ShowDistrict { get; set; }
+        public string FooterLogoFileName { get; set; }
+        public string GoogleMapApiKey { get; set; }
     }
 
     public class Branch
