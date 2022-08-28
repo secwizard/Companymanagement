@@ -985,10 +985,12 @@ namespace CompanyManagement.Api.Service
                 {
                     _mapper.Map(data, res);
                     res.IsPhonePeActive = data.IsPhonePeActive ?? false;
-                    res.CompanyLogo = data.ImageFilePath + "" + data.LogoFileName;
+                    res.CompanyLogo = data.ImageFilePath + data.LogoFileName;
+                    res.CompanyFooterLogo = data.ImageFilePath + data.FooterLogoFileName;
                     res.GoogleClientId = data.GoogleClientId;
                     res.FaceBookApiId = data.FaceBookApiId;
                     res.GoogleClientSecret = data.GoogleClientSecret;
+                    res.GoogleMapApiKey = data.GoogleMapApiKey;
                     res.ShowCity = data.ShowCity??false;
                     res.ShowDistrict = data.ShowDistrict ?? false;
                     res.ShowState = data.ShowState ?? false;
