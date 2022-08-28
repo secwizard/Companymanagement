@@ -44,7 +44,9 @@ namespace CompanyManagement.Api.Models.Response
         public string FaceBookApiId { get; set; }
         public bool IsPhonePeActive { get; set; }
         public string CompanyLogo { get; set; }
+        public string CompanyFooterLogo { get; set; }
         public string GoogleClientSecret { get; set; }
+        public string GoogleMapApiKey { get; set; }
         public bool ShowState { get; set; }
         public bool ShowCity { get; set; }
         public bool ShowDistrict { get; set; }
